@@ -1,4 +1,4 @@
-<!--  原文时间：2024.3.8，翻译时间：2024.5.6，校对时间：2024.7.12  -->
+<!--  原文时间：2024.3.8，校对时间：2025.1.23  -->
 
 # SpanPoint：ESP32 设备之间的点对点通信
 
@@ -94,7 +94,7 @@ SpanPoint 是 HomeSpan 库的一部分，可以通过在草图顶部附近添加
 * *MainDevice.ino* - 一个完整的 HomeSpan 草图，实现了两个温度传感器附件，但它不是进行自己的温度测量，而是使用 SpanPoint 读取包含来自其他远程设备的温度更新的消息
 * *RemoteDevice.ino* - 一个轻量级草图，模拟定期进行温度测量，然后通过 SpanPoint 传输到主设备
 * *RemoteTempSensor.ino* - 一个类似于 *RemoteDevice.ino* 的轻量级草图，不同之处在于它不是模拟温度传感器，而是实现了实际的 Adafruit ADT7410 基于 I2C 的温度传感器。该草图还使用了一些电源管理技术来延长电池寿命，例如降低 CPU 频率并在每次测量后进入深度睡眠
-* *RemoteDevice8266.ino* - 功能与 *RemoteDevice.ino* 类似，但使用本机 ESP-NOW 命令在 ESP8266 设备上运行（因为 HomeSpan 和 SpanPoint 都不支持 ESP8266）。请注意，必须将 ESP32 上从 ESP8266 接收数据的“互补”SpanPoint 对象配置为使用 ESP32 的 *AP MAC 地址*（而不是 *STA MAC 地址*），方法是在 SpanPoint 构造函数将 *useAPaddress* 设置为 *true* 
+* *RemoteDevice8266.ino* - 功能与 *RemoteDevice.ino* 类似，但使用本机 ESP-NOW 命令在 ESP8266 设备上运行（因为 HomeSpan 和 SpanPoint 都不支持 ESP8266）。请注意，必须将 ESP32 上从 ESP8266 接收数据的“互补” SpanPoint 对象配置为使用 ESP32 的 *AP MAC 地址*（而不是 *STA MAC 地址*），方法是在 SpanPoint 构造函数将 *useAPaddress* 设置为 *true* 
 
 另请参阅 [SpanPointLightSwitch 库](https://github.com/abackup/SpanPointLightSwitch-Chinese)，了解如何使用 SpanPoint 在实现两个 HomeKit 灯泡配件的 ESP32 “家庭中心”设备、控制 LED 的远程 ESP32 设备和控制另一个 LED 的单独 ESP8266 设备之间进行双向通信。
 
