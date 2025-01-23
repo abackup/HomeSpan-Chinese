@@ -1,3 +1,5 @@
+
+
 # WiFi 和以太网连接
 
 HomeSpan 可以通过 WiFi 或以太网连接到您的家庭网络。 HomeSpan 支持的所有 ESP32 芯片都带有内置 WiFi，因此不需要额外的硬件。只有少数 ESP32 开发板配备以太网接口（例如 [Silicognition wESP32](https://wesp32.com) ），因此需要额外的硬件（例如 [Adafruit 以太网 FeatherWing](https://www.adafruit.com/product/3201) ）通过以太网进行连接。
