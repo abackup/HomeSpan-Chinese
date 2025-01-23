@@ -607,7 +607,7 @@ A fully worked example showing how to use `autoPoll()` and `homeSpanPAUSE` to au
   * 示例：`(new Characteristic::MyCustomChar())->setDescription("Tuner Frequency");`
 
 * `SpanCharacteristic *setUnit(const char *unit)`
-  * 添加或覆盖特征的 *unit*，如 HAP-R2 表 6-3 中所述HAP-R2 表 6-6
+  * 添加或覆盖特征的 *unit*，如 HAP-R2 表 6-6 中所述
   * 返回指向特征本身的指针，以便在实例化期间可以链接该方法
   * 示例：`(new Characteristic::RotationSpeed())->setUnit("percentage");`
 
