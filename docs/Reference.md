@@ -387,7 +387,7 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 调用时，此**宏**会等待 HomeSpan 轮询任务的当前迭代完成，然后暂停该过程，以便您可以从自己的线程（通常是主 Arduino `loop`）中单独调用 HomeSpan 函数
   * 允许您使用 `setVal` 和 `getVal` 安全地读取和写入 Characteristics 的值，而不必担心在您尝试更改 Characteristics 时 HomeSpan 的轮询函数正在运行时可能发生的竞争条件
   * 暂停持续到调用 `homeSpanPAUSE` 宏的代码块范围结束，此后 HomeSpan 的轮询过程会自动恢复正常操作
-  * **warning:**  此宏只能在与 HomeSpan 轮询过程不同的线程中使用。**请勿**在 HomeSpan 轮询过程管理的任何代码中使用此宏，这些代码基本上是您在 SpanService 结构内创建的所有 `update`, `loop` 和其他方法。但是，您**可以**直接从单独的线程调用这些方法，前提是您首先调用 `homeSpanPAUSE`  宏
+  * **警告:**  此宏只能在与 HomeSpan 轮询过程不同的线程中使用。**请勿**在 HomeSpan 轮询过程管理的任何代码中使用此宏，这些代码基本上是您在 SpanService 结构内创建的所有 `update`, `loop` 和其他方法。但是，您**可以**直接从单独的线程调用这些方法，前提是您首先调用 `homeSpanPAUSE`  宏
  
 * `homeSpanRESUME`
   * 如果您想在通过 `homeSpanPAUSE` 宏暂停 HomeSpan 轮询之后但在到达代码块范围末尾之前提前恢复 HomeSpan 轮询，请调用此 *可选***宏**（此时 HomeSpan 轮询会自动恢复，如上所述）
