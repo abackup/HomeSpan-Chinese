@@ -24,9 +24,9 @@
 
 * 是的，多个 ESP32，每个运行一个单独的 HomeSpan 副本，可以在同一个 HomeKit 网络上使用，前提是每个设备都有一个唯一的*设备 ID* 、唯一的 *Host Name* 和唯一的 *Display Name*。通常，*设备 ID* 是 HomeSpan 在启动时随机生成的，因此在多个设备中将自动唯一。此外，除非你覆盖默认 *Host Name* 的后缀，否则它在多个设备中也是唯一的，因为 HomeSpan 使用 *设备 ID* 作为 *Host Name* 的后缀。你唯一需要确保的是为每个设备分配不同的*显示名称*。有关如何执行此操作的详细信息，请参阅 [API 参考](https://github.com/HomeSpan/HomeSpan/blob/master/docs/Reference.md)。
 
-#### Does HomeSpan require the use of a HomeKit Hub, such as a HomePod or Apple TV?
+#### HomeSpan 是否需要使用 HomeKit 中枢，例如 HomePod 或 Apple TV？
 
-* Yes. If you want HomeSpan to be able to send notifications, such as status updates if a contact sensor is opened, or updates from a temperature sensor, you must use a HomeKit Hub.  If your device can only be operated from the Home App (i.e. it has no local control buttons) and does not generate any status messages, than a HomeKit Hub *may* not be necessary.  Note you will also need a HomeKit Hub if you wish to control your device via the Internet when away from your local WiFi network.  These requirements and conditions are not specific to HomeSpan, but apply to all commercial HomeKit devices as a result of Apple updating its HomeKit Architecture (as of iOS 16.4).
+* 是的。如果您希望 HomeSpan 能够发送通知，例如当接触传感器被打开时的状态更新，或来自温度传感器的更新，您必须使用 HomeKit Hub。如果您的设备只能通过“家庭”应用程序操作（即没有本地控制按钮）并且不生成任何状态消息，那么可能不需要 HomeKit Hub。请注意，如果您希望在离开本地无线网络时通过互联网控制您的设备，您也需要一个 HomeKit Hub。这些要求和条件并非特定于 HomeSpan，而是由于苹果更新了其 HomeKit 架构（自 iOS 16.4 起），适用于所有商业 HomeKit 设备。
 
 #### HomeSpan 是否支持视频和音频流？
 
@@ -38,7 +38,7 @@
 
 #### HomeSpan 可以在 ESP8266 设备上工作吗？
 
-* 不，HomeSpan 是专门为 ESP32 编码的，不能在 ESP8266 设备上运行。
+* 不，HomeSpan 是专门为 ESP32 编码的，不能在 ESP8266 设备上运行，尽管 ESP8266 可以用作远程 SpanPoint ESP-NOW 设备。
 
 
 #### 如何阅读 [OTA](OTA.md) 文档中提到的 HomeSpan 的 MDNS 广播？
@@ -57,7 +57,7 @@
 
 * 不支持。HomeSpan 不支持通过蓝牙连接 HomeKit 的苹果 HAP-R2 协议。但是，如果需要，你仍然可以将设备上的蓝牙无线电用于与 HomeKit 无关的其他连接。
 
-#### 你可以将 HomeSpan 与以太网连接而不是 WiFi 连接一起使用吗？
+#### 你可以将 HomeSpan 与以太网连接而不是无线网络连接一起使用吗？
 
 * 现在不行。尽管使用兼容的以太网板，ESP32 可以配置为作为以太网服务器运行，但由于以太网 UDP 堆栈存在一些明显的问题，使用以太网上的 MDNS 无法在 ESP32 上运行。不幸的是，HomeSpan 和 HAP-R2 需要 MDNS 才能运行。如果有人设法让 MDNS 的以太网版本在 ESP32 上运行，请告诉我 - 将以太网支持添加到 HomeSpan 会很棒。
 
