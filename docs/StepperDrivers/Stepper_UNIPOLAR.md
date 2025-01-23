@@ -62,10 +62,10 @@
 <tr><th>步骤 2</th><td align="center">HIGH</td><td align="center">HIGH</td><td align="center">-</td><td align="center">-</td></td></tr>
 <tr><th>步骤 3</th><td align="center">-</td><td align="center">HIGH</td><td align="center">-</td><td align="center">-</td></td></tr>
 <tr><th>步骤 4</th><td align="center">-</td><td align="center">HIGH</td><td align="center">HIGH</td><td align="center">-</td></td></tr>
-<tr><th>Step 5</th><td align="center">-</td><td align="center">-</td><td align="center">HIGH</td><td align="center">-</td></td></tr>
-<tr><th>Step 6</th><td align="center">-</td><td align="center">-</td><td align="center">HIGH</td><td align="center">HIGH</td></td></tr>
-<tr><th>Step 7</th><td align="center">-</td><td align="center">-</td><td align="center">-</td><td align="center">HIGH</td></td></tr>
-<tr><th>Step 8</th><td align="center">HIGH</td><td align="center">-</td><td align="center">-</td><td align="center">HIGH</td></td></tr> 
+<tr><th>步骤 5</th><td align="center">-</td><td align="center">-</td><td align="center">HIGH</td><td align="center">-</td></td></tr>
+<tr><th>步骤 6</th><td align="center">-</td><td align="center">-</td><td align="center">HIGH</td><td align="center">HIGH</td></td></tr>
+<tr><th>步骤 7</th><td align="center">-</td><td align="center">-</td><td align="center">-</td><td align="center">HIGH</td></td></tr>
+<tr><th>步骤 8</th><td align="center">HIGH</td><td align="center">-</td><td align="center">-</td><td align="center">HIGH</td></td></tr> 
 </table>
 
 ---
