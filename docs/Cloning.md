@@ -1,4 +1,4 @@
-<!--  原文时间：2023.4.6，翻译时间：2024.5.6，校对时间：2024.7.12   -->
+<!--  原文时间：2023.4.6，校对时间：2025.1.23   -->
 
 # 将配对数据从一台设备克隆到另一台设备
 
@@ -52,8 +52,6 @@ Connection #11 (unconnected)
 与 "S" 命令不同，"P" 命令将所有配对数据压缩为 *base-64* 块，以便更轻松地复制和粘贴，如下所示：
 
 ```
-*** 用于克隆另一台设备的配对数据
-
 *** Pairing Data used for Cloning another Device
 
 Accessory data:  ZzbH11I8uNx47Y3Bapq3axQfY5uPOrDfC8D2Q6ke2NwWqat/IGa/6ll8xyY8AShMYO2q6h8gZr/qWXzHJjwBKExg7arqFnNsfXUjy43HgNzc6RDI6RjY6OTk6Q0U6NjUb7mHwbmWzrEWca+5frayfmp=
