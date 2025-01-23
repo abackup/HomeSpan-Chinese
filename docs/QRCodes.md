@@ -15,7 +15,7 @@
 
 HomeSpan 支持与二维码配对，并使用 "HSPN" 作为其默认*设置 ID*。但是，如果你打算将多个设备与二维码配对，则需要确保每个设备都有一个唯一的*设置 ID*。你可以通过以下两种方式之一更改设备上的*设置 ID*：
 
-* 通过在 HomeSpan [命令行界面](./CLI.md) 中键入 "O \<code\>" 将新代码存储在设备 NVS 中；或者
+* 通过在 HomeSpan [命令行界面](./CLI.md) 中键入 "Q \<code\>" 将新代码存储在设备 NVS 中；或者
 * 使用 `homeSpan.setQRID(const char *ID)` 方法直接在你的草图中指定 QR *设置 ID*。
   
 优先顺序如下：如果你的草图包含对 `homeSpan.setQRID(const char *ID)` 的调用，则使用指定的 ID。如果没有，HomeSpan 将改为在 NVS 中搜索存储的*设置 ID*。如果未找到，HomeSpan 默认使用 "HSPN" 作为*设置 ID*。
