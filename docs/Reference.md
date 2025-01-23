@@ -721,6 +721,7 @@ void saveConfig(const char *buf, void *obj){ ... do something with myConfigurati
 ### *CUSTOM_CHAR(name,uuid,perms,format,defaultValue,minValue,maxValue,staticRange)*
 ### *CUSTOM_CHAR_STRING(name,uuid,perms,defaultValue)*
 ### *CUSTOM_CHAR_DATA(name,uuid,perms)*
+### *CUSTOM_CHAR_TLV8(name,uuid,perms)*
 
 创建可添加到任何服务的自定义特性。自定义特性通常被 “家庭”应用忽略，但可能被其他第三方应用程序使用（例如 *Eve 应用*）。第一种形式应该用于创建数值特性（例如，UINT8、BOOL...）。第二种形式用于基于字符串的特性。第三种形式用于基于数据（即字节数组）的特性。参数如下（请注意，任何宏参数都不应使用引号，但应用于基于字符串的特性时的 *defaultValue* 除外）：
 
