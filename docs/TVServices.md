@@ -44,6 +44,7 @@ new Service::Television();
 
 ```C++
 TLV8 orderTLV;             // 创建一个名为“orderTLV”的空 TLV8 对象
+
 orderTLV.add(1,20);        // TAG=1, VALUE=20（要显示的第一个输入源的标识符）
 orderTLV.add(0);           // TAG=0（使用空记录作为分隔符）
 orderTLV.add(1,30);        // TAG=1, VALUE=30（要显示的第二个输入源的标识符）
