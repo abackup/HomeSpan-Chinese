@@ -157,56 +157,55 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * :warning: 安全警告：此函数的目的是允许高级用户使用由 `setApFunction(func)` 指定的自定义接入点函数*动态*设置设备的 WiFi 凭据。不建议使用此函数将你的 WiFi SSID 和密码直接硬编码到你的草图中。相反，使用 HomeSpan 提供的更安全的方法之一，例如从 CLI 输入 "W"，或启动 HomeSpan 的接入点，来设置你的 WiFi 凭据，而无需将它们硬编码到你的草图中
 
 * `Span& setConnectionTimes(uint32_t minTime, uint32_t maxTime, uint8_t nSteps)`
-  * overrides HomeSpan's default repeating pattern of increasing wait times when trying to connect to a WiFi network, where
-    * *minTime* - the minimum time (in seconds) that HomeSpan initially waits when first trying to connect to a WiFi network
-    * *maxTime* - the maximum time (in seconds) that HomeSpan will wait on subequent attempts to connect if first attempt fails
-    * *nSteps* - the number of steps HomeSpan uses to set the increasing intermediate times between *minTime* and *maxTime* as each re-attempt to connect is made
-  * example: `homeSpan.setConnectionTimes(5,60,3);` causes HomeSpan to initially wait 5 seconds when first attempting to connect to a WiFi network, and then wait 11, 26, and finally 60 seconds on the next 3 subsequent attempts. If HomeSpan has still not connected, the pattern repeats indefinitely
-  * if either *minTime* or *nSteps* is set to zero, or if *maxTime* is not strictly greater than *minTime*, HomeSpan ignores the request and reports a warning message to the Serial Monitor
-  * note this is an optional method. If not called HomeSpan uses default parameters of {5,60,5} which yields a wait pattern of 5, 8, 14, 22, 36, and 60 seconds between connection attempts
+  * 覆盖 HomeSpan 在尝试连接 WiFi 网络时增加等待时间的默认重复模式，其中
+    * *minTime* - HomeSpan 首次尝试连接 WiFi 网络时等待的最短时间（以秒为单位）
+    * *maxTime* - 如果第一次尝试失败，HomeSpan 将等待后续连接尝试的最长时间（以秒为单位）
+    * *nSteps* - HomeSpan 每次重新尝试连接时，用来设置 *minTime* 和 *maxTime* 之间增加的中间时间的步骤数
+  * 例如：`homeSpan.setConnectionTimes(5,60,3);` 会导致 HomeSpan 在首次尝试连接 WiFi 网络时最初等待 5 秒，然后在接下来的 3 次尝试中等待 11 秒、26 秒，最后等待 60 秒。如果 HomeSpan 仍未连接，则该模式将无限重复
+  * 如果 *minTime* 或 *nSteps* 设置为零，或者 *maxTime* 不严格大于 *minTime*，HomeSpan 将忽略该请求并向串行监视器报告警告消息
+  * 注意，这是可选方法。如果不调用，HomeSpan 将使用默认参数 {5,60,5}，这将产生连接尝试之间的等待模式 5、8、14、22、36 和 60 秒
 
 * `Span& setWifiBegin(void (*func)(const char *ssid, const char *pwd))`
-  * sets an **alternative** user-defined function, *func*, to be called by HomeSpan when it tries to connect to a WiFi network with specified credentials SSID=*ssid* and password=*pwd*, **instead** of HomeSpan's default behavior of simply calling `WiFi.begin(ssid, pwd)`
-  * this ability to define an alternative *func* is provided for users that either need to use a different type of call to establish WiFi connectivity (e.g. connectivity to an enterprise network), or that require additional functionality to be called when connectivity is established (e.g. changing the WiFi power)
-  * note *func* is called every time HomeSpan tries to connect to WiFi network, including during repeated wait periods as well as reconnects after a disconnect
-  * the function *func* must be of type *void* and accept two argument into which HomeSpan will pass whatever SSID and Password you previously saved as HomeSpan's WiFi Credentials, or that you explicitly set in the sketch using `setWifiCredentials()` above
-    * *func* does not necessarily need to use this information, but it must must be able to accept the data
-  * example: `homeSpan.setWifiBegin(myWifi)` where *myWifi* is defined below would address the issue on some ESP32 boards that will not connect to a WiFi network unless the WiFi radio power is changed to a lower value immediately after calling `WiFi.begin()`:
+  * 设置一个**替代**用户定义函数 *func*，当 HomeSpan 尝试使用指定凭证 SSID=*ssid* 和 password=*pwd* 连接到 WiFi 网络时，它将被调用，**而不是** HomeSpan 的默认行为，即简单地调用 `WiFi.begin(ssid, pwd)` 
+  * 定义替代 *func* 的功能适用于需要使用不同类型的调用来建立 WiFi 连接（例如，连接到企业网络）的用户，或者需要在建立连接时调用其他功能（例如，更改 WiFi 功率）的用户
+  * 注意每次 HomeSpan 尝试连接 WiFi 网络时都会调用 *func*，包括在重复等待期间以及断开连接后的重新连接
+  * 函数 *func* 必须是 *void* 类型，并接受两个参数，HomeSpan 将向其中传递您之前保存为 HomeSpan 的 WiFi 凭证的 SSID 和密码，或者您在上面的 `setWifiCredentials()` 草图中明确设置的 SSID 和密码
+    * *func* 不一定需要使用这些信息，但它必须能够接受数据
+  * 例如：`homeSpan.setWifiBegin(myWifi)`，其中 *myWifi* 定义如下，这将解决某些 ESP32 开发板上无法连接到 WiFi 网络的问题，除非在调用 `WiFi.begin()` 后立即将 WiFi 无线电功率更改为较低值：
 
 ```C++
  void myWifi(const char *ssid, const char *pwd){
-   WiFi.begin(ssid,pwd);                 // don't forget to call WiFi.begin(), if still needed, in your alternative function
-   WiFi.setTxPower(WIFI_POWER_8_5dBm);   // set power immediately after as required for some ESP32 boards
+   WiFi.begin(ssid,pwd);                 // 如果仍然需要，请不要忘记在替代函数中调用 WiFi.begin()
+   WiFi.setTxPower(WIFI_POWER_8_5dBm);   // 根据某些 ESP32 开发板的要求，立即设置电源
 }
 ```
 
 * `Span& enableWiFiRescan(uint32_t iTime=1, uint32_t pTime=0, int thresh=3)`
-  * when you configure HomeSpan to connect to a WiFi SSID that broadcasts from more than one access point (e.g. a mesh network), HomeSpan connects to the access point with the strongest RSSI signal for that SSID
-  * once connected, HomeSpan remains "attached" to that specific access point unless it looses overall connectivity to the network, or is otherwise purposely disconnected, at at which point it will attempt to reconnect once again the strongest access point broadcasting the original SSID
-  * calling `enableWiFiRescan()` enables HomeSpan to further optimize WiFi connectivity in the background during normal operation by periodically rescanning all access points with the original SSID, and automatically performing a disconnect/reconnect if it finds an access point with a stronger RSSI signal, where
-    * *iTime* - the time HomeSpan waits (in minutes) between first making a connection to an access point and rescanning to check for other stronger access points
-    * *pTime* -  the time HomeSpan waits after its first scan before performing any subsequent rescans
-    * *thresh* -  the threshhold difference (in RSSI units) by which the signal strength of a newly-scanned access point must be stronger than that of the access point to which HomeSpan is current connected for HomeSpan to trigger a connect/disconnect.  This prevents the HomeSpan from switching back and forth between two access points with very similar RSSI strengths
-  * example: `homeSpan.enableWiFiRescan(2, 5, 3)` causes HomeSpan to rescan all access points 2 minutes after initially connecting, and then every 5 minutes thereafter; if after any rescan HomeSpan finds a different access point with an RSSI signal that is 3 or more units stronger than the currently-connect access point, it will disconnect from the existing access point and connect to the stronger one
-  * the default is for HomeSpan to NOT perform any background rescans unless you specifically enable this by calling `homeSpan.enableWiFiRescan()` from your sketch
-    * if *iTime* is set to zero, rescanning is disabled
-    * if *iTime* is greater than zero but *pTime* is set to zero, rescanning occurs only once at *iTime* minutes after connecting, but not thereafter
+  * 当您将 HomeSpan 配置为连接到从多个接入点（例如网状网络）广播的 WiFi SSID 时，HomeSpan 将连接到该 SSID 中 RSSI 信号最强的接入点
+  * 一旦连接，HomeSpan 将保持与该特定接入点的“连接”，除非它失去与网络的整体连接，或因其他原因故意断开连接，此时它将再次尝试重新连接广播原始 SSID 的最强接入点
+  * 调用 `enableWiFiRescan()` 可使 HomeSpan 在正常运行期间进一步在后台优化 WiFi 连接，方法是定期重新扫描具有原始 SSID 的所有接入点，并在发现具有更强 RSSI 信号的接入点时自动执行断开连接/重新连接，其中
+    * *iTime* - HomeSpan 在首次连接到接入点和重新扫描以检查其他更强大的接入点之间等待的时间（以分钟为单位）
+    * *pTime* -  HomeSpan 在第一次扫描后等待的时间，然后再执行任何后续重新扫描
+    * *thresh* -  新扫描的接入点的信号强度必须强于 HomeSpan 当前连接的接入点的信号强度，HomeSpan 才能触发连接/断开连接。这可以防止 HomeSpan 在具有非常相似的 RSSI 强度的两个接入点之间来回切换
+  * 例如：`homeSpan.enableWiFiRescan(2, 5, 3)` 使 HomeSpan 在首次连接后 2 分钟重新扫描所有接入点，然后每 5 分钟重新扫描一次；如果在任何重新扫描之后，HomeSpan 发现另一个接入点的 RSSI 信号比当前连接的接入点强 3 个或更多单位，它将断开与现有接入点的连接并连接到更强的接入点
+  * 默认情况下，HomeSpan 不会执行任何后台重新扫描，除非你通过从草图中调用 ` homeSpan.enableWiFiRescan()`  来特别启用此功能
+    * 如果 *iTime* 设置为零，则禁用重新扫描
+    * 如果 *iTime* 大于零但 *pTime* 设置为零，则重新扫描仅在连接后的 *iTime* 分钟内发生一次，此后不会再发生
 
 * `Span& addBssidName(String bssid, string name)`
-  * creates a friendly display name for any given WiFi access point that HomeSpan can display (in both the Serial Monitor and the Web Log) alongside the BSSID whenever needed, where
-    * *bssid* - the 6-byte BSSID MAC address of an access point, in the form "XX:XX:XX:XX:XX:XX"
-    * *name* - a friendly display name for the access point
-  * most useful when HomeSpan is connected to mesh WiFi network containing multiple access points sharing the same SSID, and you want to keep track of which access point is being used withouth having to memorize the BSSIDs of each access point
-  * example: `homeSpan.addBssidName("3A:98:B5:EF:BF:69","Kitchen").addBssidName("3A:98:B5:DB:54:86","Basement");` creates display names "Kitchen" and "Basement" for access points with BSSIDs "3A:98:B5:EF:BF:69" and "3A:98:B5:DB:54:86", respectively
- 
+  * 为任何给定的 WiFi 接入点创建一个友好的显示名称，HomeSpan 可以在需要时将该名称与 BSSID 一起显示（在串行监视器和 Web 日志中）。
+    * *bssid* - 接入点的 6 字节 BSSID MAC 地址，格式为 "XX:XX:XX:XX:XX:XX"
+    * *name* - 接入点的友好显示名称
+  * 当 HomeSpan 连接到包含多个共享相同 SSID 的接入点的网状 WiFi 网络时最有用，并且您想要跟踪正在使用的接入点，而不必记住每个接入点的 BSSID
+  * 例如：`homeSpan.addBssidName("3A:98:B5:EF:BF:69","Kitchen").addBssidName("3A:98:B5:DB:54:86","Basement");` 为 BSSID 分别为 "3A:98:B5:EF:BF:69" 和 "3A:98:B5:DB:54:86" 的接入点创建显示名称 "Kitchen" 和 "Basement"
 * `Span& setVerboseWifiReconnect(bool verbose)`
-  * when trying connecting to WiFi, HomeSpan normally logs "Trying to connect to..." messages to the Serial Monitor and the Web Log
-  * calling this method with *verbose* set to *false* supresses these messages
-  * calling this method a second time with *verbose* set to *true* re-activates these messages (default behavior)
+  * 尝试连接 WiFi 时，HomeSpan 通常会将“尝试连接...”消息记录到串行监视器和 Web 日志
+  * 调用此方法并将 *verbose* 设置为 *false* 可抑制这些消息
+  * 第二次调用此方法并将 *verbose* 设置为 *true* 可重新激活这些消息（默认行为）
 
 * `Span& setConnectionCallback(void (*func)(int count))`
-  * sets an optional user-defined callback function, *func*, to be called by HomeSpan every time WiFi or Ethernet connectivity has been established or re-established after a disconnect.  The function *func* must be of type *void* and accept a single *int* argument, *count*, into which HomeSpan passes the number of times WiFi or Ethernet connectivity has been established or re-established (i.e. *count*=1 on initial WiFi or Ethernet connection; *count*=2 if re-established after the first disconnect, etc.)
-
+  * 设置可选的用户定义回调函数 *func*，每次 WiFi 或以太网连接建立或断开后重新建立时 HomeSpan 都会调用该函数。函数 *func* 必须是 *void* 类型，并接受单个 *int* 参数 *count*，HomeSpan 将 WiFi 或以太网连接建立或重新建立的次数传递给该参数（即，在初始 WiFi 或以太网连接时 *count*=1；如果在第一次断开后重新建立，则 *count*=2，等等）
+    
 * `Span& setPairCallback(void (*func)(boolean status))`
   * 设置可选的用户定义回调函数 *func*，在完成与控制器的配对（*status=true*）或与控制器的配对（*status=false*）后由 HomeSpan 调用
   * 此一次性调用 *func* 是为希望在设备首次配对或设备稍后取消配对时触发其他操作的用户提供的
@@ -385,22 +384,22 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 返回自动轮询任务的任务句柄，如果未使用自动轮询，则返回空
  
 * `homeSpanPAUSE`
-  * when called, this **MACRO** waits for the current iteration of HomeSpan's polling task to complete and then pauses that process so you can separately call HomeSpan functions from your own thread, typically the main Arduino `loop`
-  * allows you to safely read and write values of Characteristics using `setVal` and `getVal` without worrying about race conditions that would have occured if HomeSpan's polling function were running while you were trying to change Characteristics
-  * pausing lasts until the end of the scope of the code block in which the `homeSpanPAUSE` macro was called, after which HomeSpan's polling process automatically resumes normal operations
-  * **warning:** this macro should only be used from a thread that is distinct from HomeSpan's polling process.  **DO NOT** use this macro from within any code that is managed by the HomeSpan polling process, which is basically all the `update`, `loop` and other methods you created inside your SpanService structures.  However, you **CAN** call these methods directly from a separate thread, provided that you first call the `homeSpanPAUSE` macro
+  * 调用时，此**宏**会等待 HomeSpan 轮询任务的当前迭代完成，然后暂停该过程，以便您可以从自己的线程（通常是主 Arduino `loop`）中单独调用 HomeSpan 函数
+  * 允许您使用 `setVal` 和 `getVal` 安全地读取和写入 Characteristics 的值，而不必担心在您尝试更改 Characteristics 时 HomeSpan 的轮询函数正在运行时可能发生的竞争条件
+  * 暂停持续到调用 `homeSpanPAUSE` 宏的代码块范围结束，此后 HomeSpan 的轮询过程会自动恢复正常操作
+  * **warning:**  此宏只能在与 HomeSpan 轮询过程不同的线程中使用。**请勿**在 HomeSpan 轮询过程管理的任何代码中使用此宏，这些代码基本上是您在 SpanService 结构内创建的所有 `update`, `loop` 和其他方法。但是，您**可以**直接从单独的线程调用这些方法，前提是您首先调用 `homeSpanPAUSE`  宏
  
 * `homeSpanRESUME`
-  * call this *optional* **MACRO** if you want to prematurely resume HomeSpan polling after it has been paused via the `homeSpanPAUSE` macro but before reaching the end of the scope of the code block (at which point HomeSpan polling automatically resumes, as noted above)
-  * this macro can only be called **AFTER** the `homeSpanPAUSE` macro has already been called, and it must be from within the same scope of the code block (or sub-block)
-  * you will get a compilation error if you try to use this macro before calling `homeSpanPAUSE` or if it is not called within the same scope of the code block
-  * it is okay to call `homeSpanRESUME` multiple times after calling `homeSpanPAUSE`.  The first instance restarts the HomeSpan polling process; subsequent instances are ignored
+  * 如果您想在通过 `homeSpanPAUSE` 宏暂停 HomeSpan 轮询之后但在到达代码块范围末尾之前提前恢复 HomeSpan 轮询，请调用此 *可选***宏**（此时 HomeSpan 轮询会自动恢复，如上所述）
+  * 此宏只能在 `homeSpanPAUSE` 宏已被调用之后调用，并且必须来自代码块（或子块）的同一范围内
+  * 如果你尝试在调用 `homeSpanPAUSE` 之前使用此宏，或者它不是在代码块的同一范围内调用的，则会出现编译错误
+  * 调用“homeSpanPAUSE”后可以多次调用 `homeSpanPAUSE`。第一个实例重新启动 HomeSpan 轮询过程；后续实例将被忽略
  
 * `std::shared_mutex& getMutex()`
-  * returns a reference to the *shared_mutex* used by the `homeSpanPAUSE` and `homeSpanRESUME` macros to lock and unlock the HomeSpan polling thread
-  * only needed for advanced users who want to manually lock and unlock the HomeSpan polling thread using their own logic instead of simply calling these macros
+  * 返回对 `homeSpanPAUSE` 和 `homeSpanRESUME` 宏使用的 *shared_mutex* 的引用，用于锁定和解锁 HomeSpan 轮询线程
+  * 仅适用于希望使用自己的逻辑手动锁定和解锁 HomeSpan 轮询线程（而不是简单地调用这些宏）的高级用户
  
-A fully worked example showing how to use `autoPoll()` and `homeSpanPAUSE` to automaticlly flip the power of a Simple LightBulb Accessory from a separate thread can be found in the Arduino IDE under [*File → Examples → HomeSpan → Other Examples → MultiThreading*](../examples/Other%20Examples/MultiThreading).
+可以在 Arduino IDE 的 [*文件 → 示例 → HomeSpan → 其他示例 → 多线程*](../examples/Other%20Examples/MultiThreading) 下找到一个完整的示例，该示例展示了如何使用 `autoPoll()` 和 `homeSpanPAUSE` 从单独的线程自动切换简单灯泡配件的电源。 
 
 ## *SpanAccessory(uint32_t aid)*
 
