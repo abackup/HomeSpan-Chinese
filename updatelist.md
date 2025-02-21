@@ -1,3 +1,43 @@
+## ❗最新更新 - HomeSpan 2.1.1 (2025 年 2 月 10 日)
+
+### 集成对 OTA 分区回滚的支持
+
+* **用户现在可以配置 HomeSpan，如果新草图在验证之前使设备崩溃，则自动将通过 OTA 上传的新草图回滚到以前的版本**
+
+  * 添加新的头文件 `SpanRollback.h`
+    * 当包含在用户草图的顶部时，这将禁用 ESP32-Arduino 库在启动时执行的任何新更新的 OTA 分区的自动验证
+    * 用户可以在软件中*手动*验证他们的草图，如果新草图未标记为有效，则允许设备自动回滚到之前的草图
+
+  * 添加新的 homeSpan 方法 `markSketchOK()`，允许用户在通过 OTA 上传新草图后将当前正在运行的分区标记为有效
+  * 添加新的 homeSpan 方法 `setPollingCallback()`，允许用户添加 HomeSpan 的回调函数在第一次调用 `poll()` 完成后调用 *一次*
+  * 添加新的 CLI 'p' 命令，将分区完整表打印到串行监视器
+  * 添加新的 homeSpan 方法 `setCompileTime()`，允许用户将 **草图** 的编译日期/时间设置为任意字符串
+  * 有关如何使用 OTA 回滚的详细信息，请参阅 [HomeSpan OTA](docs/OTA.md) 页面
+
+### HomeSpan 看门狗定时器
+
+* **用户现在可以配置 HomeSpan 以添加看门狗任务，如果设备冻结或进入无限循环阻止正常 HomeSpan 操作，则该任务将重新启动设备**
+
+  * 添加新的 homeSpan 方法 `enableWatchdog(uint16_t nSeconds)`
+    * 创建单独的 HomeSpan **任务看门狗定时器**，旨在触发设备重新启动，如果没有至少每 *nSeconds* 定期重置一次
+
+  * 添加新的 homeSpan 方法 `resetWatchdog()`，用于定期重置HomeSpan 看门狗定时器
+    * 此方法已根据需要嵌入到所有 HomeSpan 库函数中
+  * 添加新的 homeSpan 方法 `disableWatchdog()`，用于在启用 HomeSpan 看门狗定时器后将其禁用
+  * 请参阅 [HomeSpan 看门狗定时器](docs/WDT.md) 页面，了解有关 HomeSpan 和其他系统看门狗定时器的完整讨论
+
+### 其他更新
+
+* 添加 homeSpan 方法 `Span& useEthernet()`，强制 HomeSpan 使用以太网而不是 WiFi，即使在调用 `homeSpan.begin()` 之前尚未调用 ETH 或未找到以太网卡
+
+### 错误修复！
+
+* **修复了 HomeSpan 2.1.0 中引入的一个错误，该错误会根据代码的编译方式错误地初始化 WiFi 和以太网堆栈**
+
+有关此更新中包含的所有更改和错误修复的详细信息，请参阅 [发布](https://github.com/HomeSpan/HomeSpan/releases)。
+
+
+
 ## ❗最新更新 - HomeSpan 2.1.0 (2024/12/27)
 
 * **集成对以太网连接的支持！**
