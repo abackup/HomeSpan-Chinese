@@ -1,4 +1,4 @@
-<!-- 原文时间：2024.12.24，校对时间：2025.1.23  -->
+<!-- 原文时间：2025.2.9，校对时间：2025.2.21  -->
 
 # HomeSpan API 参考
 
@@ -136,6 +136,12 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
    * 此命令使 HomeSpan 忽略但不更改使用 "O" 命令存储的任何密码
    * 如果启用 OTA 成功，则返回 0，否则返回 -1；并向串口监视器报告错误
 
+* `void markSketchOK()`
+* 将当前正在运行的分区的 OTA 状态标记为 *VALID*
+* 必须在启用 HomeSpan OTA 回滚机制后从草图中调用，以避免引导加载程序在设备下次重新启动时自动回滚到草图的先前版本
+* 要启用 HomeSpan OTA 回滚机制，请在草图顶部添加 `#include "SpanRollback.h"`
+* 请参阅 [HomeSpan OTA 回滚](OTA.md#ota-rollback) 了解详情
+
 * `Span& enableAutoStartAP()`
    * 如果在启动时**未**找到 WiFi 凭证，则启用 WiFi 接入点的自动启动
    * 改变 HomeSpan 接入点行为的方法，例如 `setApTimeout()`，必须在 `enableAutoStartAP()` 之前调用才能生效
@@ -205,6 +211,9 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 
 * `Span& setConnectionCallback(void (*func)(int count))`
   * 设置可选的用户定义回调函数 *func*，每次 WiFi 或以太网连接建立或断开后重新建立时 HomeSpan 都会调用该函数。函数 *func* 必须是 *void* 类型，并接受单个 *int* 参数 *count*，HomeSpan 将 WiFi 或以太网连接建立或重新建立的次数传递给该参数（即，在初始 WiFi 或以太网连接时 *count*=1；如果在第一次断开后重新建立，则 *count*=2，等等）
+ 
+* `Span& useEthernet()`
+* 强制 HomeSpan 使用以太网而不是 WiFi，即使在调用 `homeSpan.begin()` 之前尚未调用 ETH 或未找到以太网卡
     
 * `Span& setPairCallback(void (*func)(boolean status))`
   * 设置可选的用户定义回调函数 *func*，在完成与控制器的配对（*status=true*）或与控制器的配对（*status=false*）后由 HomeSpan 调用
@@ -229,6 +238,10 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 返回一个预定义的字符串消息，表示*s*，必须是枚举类型 [HS_STATUS](HS_STATUS.md)
   * 通常与上面的 `setStatusCallback()` 一起使用
 
+* `Span& setPollingCallback(void (*func)())`
+ * 设置可选的用户定义回调函数 *func*，在 HomeSpan 第一次通过 HomeSpan `poll()` 函数后，HomeSpan 将调用该函数 *一次*
+ * 函数 *func* 必须是 *void* 类型，并且没有参数
+
 * `Span& setPairingCode(const char *s)`
   * 将设置配对代码设置为 *s*，**必须**正好是 8 位数字（无破折号）
   * 示例：`homeSpan.setPairingCode("46637726");`
@@ -243,8 +256,13 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * HomeSpan 还包括草图的版本以及用于编译草图的 HomeSpan 库的版本，作为其 HAP MDNS 广播的一部分。HAP *不*使用此数据。相反，它仅用于提供信息，并允许你识别通过 [OTA](OTA.md) 更新的设备的草图版本，而不是连接到计算机
 
 * `const char *getSketchVersion()`
-  * 返回 HomeSpan 草图的版本，使用 `void setSketchVersion(const char *sVer)` 设置，如果未设置则返回 "n/a"
-  * 可以从草图中的任何位置调用
+ * 返回 HomeSpan 草图的版本，如使用上面的 `setSketchVersion(const char *sVer)` 设置的，如果未设置则返回“n/a”
+ * 可以从草图中的任意位置调用
+
+* `Span& setCompileTime(const char *compTime)`
+ * 将 HomeSpan 草图的编译时间设置为 *compTime*，可以是任意字符串
+ * 如果未指定，HomeSpan 会在编译草图时从编译器提供的 `__DATE__` 和 `__TIME__` 宏派生 compTime 字符串
+ * HomeSpan 在启动时在 Arduino IDE 串行监视器中显示草图的编译时间
 
 * `Span& enableWebLog(uint16_t maxEntries, const char *timeServerURL, const char *timeZone, const char *logURL)`
   * 启用滚动网络日志，显示用户使用 `WEBLOG()` 宏创建的最近 *maxEntries* 条目。参数及其默认值（如果未指定）如下：
@@ -364,6 +382,27 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
     }
     ```
     </details>
+
+* `Span& enableWatchdog(uint16_t nSeconds)`
+ * 创建 HomeSpan *任务看门狗*，如果 HomeSpan `poll()` 函数未至少每 *nSeconds* 运行一次，则触发设备重启
+ * *nSeconds* 必须等于或大于 IDF 宏 `CONFIG_ESP_TASK_WDT_TIMEOUT_S` 中指定的 ESP32 默认任务看门狗超时时间（通常为 5 秒）
+ * 如果 *nSeconds* 设置为小于 `CONFIG_ESP_TASK_WDT_TIMEOUT_S` 的持续时间，或者将其留空，则超时持续时间将设置为 `CONFIG_ESP_TASK_WDT_TIMEOUT_S`
+ * 启用 HomeSpan 任务看门狗定时器不会改变任何其他任务（包括 ESP32 的 IDLE 任务）是否也订阅了任务看门狗定时器
+ * 调用`enableWatchdog(nSeconds)` 当 HomeSpan 看门狗已使用不同的 *nSeconds* 值启用时，将超时持续时间更改为指定的新值 *nSeconds*
+ * 注意，ESP32 任务看门狗计时器仅支持订阅任务看门狗的所有任务的单个超时持续时间。因此，当 HomeSpan 看门狗启用时，*nSeconds* 将用作所有订阅了任务看门狗定时器的其他任务（包括 ESP32 的任何 IDLE 任务）的新超时时长
+ * 请参阅 [HomeSpan 看门狗定时器](WDT.md) 页面了解详情
+
+* `void disableWatchdog()`
+ * 如果已启用，则禁用 HomeSpan *任务看门狗*，否则不执行任何操作
+ * 对可能订阅了任务看门狗定时器的其他任务没有影响
+ * 对超时时长没有影响
+ * 请参阅 [HomeSpan 看门狗定时器](WDT.md) 页面了解详情
+
+* `void resetWatchdog()`
+ * 重置 HomeSpan 看门狗定时器（如果已启用），然后通过调用 `vTaskDelay(1)` 暂停 1 毫秒，以让出并允许其他优先级相同或更低的任务获取处理时间
+ * 用户通常**不需要**调用此方法，因为 HomeSpan 已经在 `poll()` 函数运行时这样做了
+ * 仅当您启用 HomeSpan 看门狗并且向 HomeSpan 草图添加代码以阻止 `poll()` 函数或防止其长时间运行时才需要此方法
+ * 请参阅 [HomeSpan 看门狗定时器](WDT.md) 页面了解详情
 
 ---
 
