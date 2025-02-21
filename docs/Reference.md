@@ -137,10 +137,10 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
    * 如果启用 OTA 成功，则返回 0，否则返回 -1；并向串口监视器报告错误
 
 * `void markSketchOK()`
-* 将当前正在运行的分区的 OTA 状态标记为 *VALID*
-* 必须在启用 HomeSpan OTA 回滚机制后从草图中调用，以避免引导加载程序在设备下次重新启动时自动回滚到草图的先前版本
-* 要启用 HomeSpan OTA 回滚机制，请在草图顶部添加 `#include "SpanRollback.h"`
-* 请参阅 [HomeSpan OTA 回滚](OTA.md#ota-rollback) 了解详情
+   * 将当前正在运行的分区的 OTA 状态标记为 *VALID*
+   * 必须在启用 HomeSpan OTA 回滚机制后从草图中调用，以避免引导加载程序在设备下次重新启动时自动回滚到草图的先前版本
+   * 要启用 HomeSpan OTA 回滚机制，请在草图顶部添加 `#include "SpanRollback.h"`
+   * 请参阅 [HomeSpan OTA 回滚](OTA.md#ota-rollback) 了解详情
 
 * `Span& enableAutoStartAP()`
    * 如果在启动时**未**找到 WiFi 凭证，则启用 WiFi 接入点的自动启动
@@ -157,10 +157,10 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
    * 建议 *func* 通过使用 `ESP.restart()` 重新启动设备来终止。重新启动后，HomeSpan 将使用刚刚保存的 SSID 和密码
 
 * `Span& setWifiCredentials(const char *ssid, const char *pwd)`
-  * 设置 HomeSpan 将连接的 WiFi 网络的 SSID (*ssid*) 和密码 (*pwd*)
-  * *ssid* 和 *pwd* 会自动保存在 HomeSpan 的非易失性存储器 (NVS) 中，以便在设备重启时检索
-  * 请注意，如果保存的值超过允许的最大字符数 (ssid=32; pwd=64)，则会被截断
-  * :warning: 安全警告：此函数的目的是允许高级用户使用由 `setApFunction(func)` 指定的自定义接入点函数*动态*设置设备的 WiFi 凭据。不建议使用此函数将你的 WiFi SSID 和密码直接硬编码到你的草图中。相反，使用 HomeSpan 提供的更安全的方法之一，例如从 CLI 输入 "W"，或启动 HomeSpan 的接入点，来设置你的 WiFi 凭据，而无需将它们硬编码到你的草图中
+   * 设置 HomeSpan 将连接的 WiFi 网络的 SSID (*ssid*) 和密码 (*pwd*)
+   * *ssid* 和 *pwd* 会自动保存在 HomeSpan 的非易失性存储器 (NVS) 中，以便在设备重启时检索
+   * 请注意，如果保存的值超过允许的最大字符数 (ssid=32; pwd=64)，则会被截断
+   * :warning: 安全警告：此函数的目的是允许高级用户使用由 `setApFunction(func)` 指定的自定义接入点函数*动态*设置设备的 WiFi 凭据。不建议使用此函数将你的 WiFi SSID 和密码直接硬编码到你的草图中。相反，使用 HomeSpan 提供的更安全的方法之一，例如从 CLI 输入 "W"，或启动 HomeSpan 的接入点，来设置你的 WiFi 凭据，而无需将它们硬编码到你的草图中
 
 * `Span& setConnectionTimes(uint32_t minTime, uint32_t maxTime, uint8_t nSteps)`
   * 覆盖 HomeSpan 在尝试连接 WiFi 网络时增加等待时间的默认重复模式，其中
@@ -239,40 +239,40 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 通常与上面的 `setStatusCallback()` 一起使用
 
 * `Span& setPollingCallback(void (*func)())`
- * 设置可选的用户定义回调函数 *func*，在 HomeSpan 第一次通过 HomeSpan `poll()` 函数后，HomeSpan 将调用该函数 *一次*
- * 函数 *func* 必须是 *void* 类型，并且没有参数
+   * 设置可选的用户定义回调函数 *func*，在 HomeSpan 第一次通过 HomeSpan `poll()` 函数后，HomeSpan 将调用该函数 *一次*
+   * 函数 *func* 必须是 *void* 类型，并且没有参数
 
 * `Span& setPairingCode(const char *s)`
-  * 将设置配对代码设置为 *s*，**必须**正好是 8 位数字（无破折号）
-  * 示例：`homeSpan.setPairingCode("46637726");`
-  * 配对代码的哈希版本将保存到设备的非易失性存储器中，覆盖任何当前存储的配对代码
-  * 如果 *s* 包含无效代码，则会报告错误，并且不会保存代码。相反，将使用当前存储的配对代码（如果未存储任何代码，则使用 HomeSpan 默认配对代码）
-  * :warning: 安全警告：将设备的配对代码硬编码到你的草图中被视为安全风险，不建议这样做。相反，请使用 HomeSpan 提供的更安全的方法之一来设置你的配对代码，例如从 CLI 输入 "S \<code\>"，或启动 HomeSpan 的接入点，而无需将其硬编码到你的草图中
+   * 将设置配对代码设置为 *s*，**必须**正好是 8 位数字（无破折号）
+   * 示例：`homeSpan.setPairingCode("46637726");`
+   * 配对代码的哈希版本将保存到设备的非易失性存储器中，覆盖任何当前存储的配对代码
+   * 如果 *s* 包含无效代码，则会报告错误，并且不会保存代码。相反，将使用当前存储的配对代码（如果未存储任何代码，则使用 HomeSpan 默认配对代码）
+   * :warning: 安全警告：将设备的配对代码硬编码到你的草图中被视为安全风险，不建议这样做。相反，请使用 HomeSpan 提供的更安全的方法之一来设置你的配对代码，例如从 CLI 输入 "S \<code\>"，或启动 HomeSpan 的接入点，而无需将其硬编码到你的草图中
 
 * `Span& setSketchVersion(const char *sVer)`
-  * 将 HomeSpan 草图的版本设置为 *sVer*，可以是任意字符串
-  * 如果未指定，HomeSpan 将使用 "n/a" 作为默认版本文本
-  * HomeSpan 在启动时在 Arduino IDE 串口监视器中显示草图的版本
-  * HomeSpan 还包括草图的版本以及用于编译草图的 HomeSpan 库的版本，作为其 HAP MDNS 广播的一部分。HAP *不*使用此数据。相反，它仅用于提供信息，并允许你识别通过 [OTA](OTA.md) 更新的设备的草图版本，而不是连接到计算机
+   * 将 HomeSpan 草图的版本设置为 *sVer*，可以是任意字符串
+   * 如果未指定，HomeSpan 将使用 "n/a" 作为默认版本文本
+   * HomeSpan 在启动时在 Arduino IDE 串口监视器中显示草图的版本
+   * HomeSpan 还包括草图的版本以及用于编译草图的 HomeSpan 库的版本，作为其 HAP MDNS 广播的一部分。HAP *不*使用此数据。相反，它仅用于提供信息，并允许你识别通过 [OTA](OTA.md) 更新的设备的草图版本，而不是连接到计算机
 
 * `const char *getSketchVersion()`
- * 返回 HomeSpan 草图的版本，如使用上面的 `setSketchVersion(const char *sVer)` 设置的，如果未设置则返回“n/a”
- * 可以从草图中的任意位置调用
+   * 返回 HomeSpan 草图的版本，如使用上面的 `setSketchVersion(const char *sVer)` 设置的，如果未设置则返回“n/a”
+   * 可以从草图中的任意位置调用
 
 * `Span& setCompileTime(const char *compTime)`
- * 将 HomeSpan 草图的编译时间设置为 *compTime*，可以是任意字符串
- * 如果未指定，HomeSpan 会在编译草图时从编译器提供的 `__DATE__` 和 `__TIME__` 宏派生 compTime 字符串
- * HomeSpan 在启动时在 Arduino IDE 串行监视器中显示草图的编译时间
+   * 将 HomeSpan 草图的编译时间设置为 *compTime*，可以是任意字符串
+   * 如果未指定，HomeSpan 会在编译草图时从编译器提供的 `__DATE__` 和 `__TIME__` 宏派生 compTime 字符串
+   * HomeSpan 在启动时在 Arduino IDE 串行监视器中显示草图的编译时间
 
 * `Span& enableWebLog(uint16_t maxEntries, const char *timeServerURL, const char *timeZone, const char *logURL)`
-  * 启用滚动网络日志，显示用户使用 `WEBLOG()` 宏创建的最近 *maxEntries* 条目。参数及其默认值（如果未指定）如下：
-    * *maxEntries* - 要保存的最大（最近）条目数。如果未指定，则默认为 0，在这种情况下，Web 日志将仅显示状态而没有任何日志条目
-    * *timeServerURL* - 时间服务器的 URL，HomeSpan 在建立 WiFi 连接后将使用该时间服务器在启动时设置其时钟。指定时间服务器后，HomeSpan 将保留一个额外的套接字连接。如果未指定，则默认为空，在这种情况下，HomeSpan 将跳过设置设备时钟
-    * *timeZone* - 指定用于设置时钟的时区。仅使用 POSIX.1 格式，不支持 *Time Zone Database* 或 *tzdata*。根据 [TZ 的 GNU libc 文档](https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html)，*偏移量指定你必须**添加到本地时间**才能获得协调世界时值的时间值*。"UTC+5:00" 表示本地时间 + 5 小时为 UTC 时间。请参阅 GNU libc 文档以获取一些示例，包括如何指定北美东部标准时间 (EST) 和东部夏令时间 (EDT)，开始日期和结束日期为 EDT。如果 *serverURL=NULL*，则忽略此字段；如果 *serverURL!=NULL*，则必须填写此字段
-    * *logURL* - 此设备的网络日志页面的 URL。如果未指定，则默认为 "status" 。如果 *logURL* 设置为空，HomeSpan 将使用 *timeServerURL* 和 *timeZone* 参数来设置时钟，但它不会响应任何 HTTP 请求来提供任何网络日志页面。但是，Web 日志数据仍在内部累积，并且可以通过调用 `homeSpan.getWebLog()` 方法随时访问生成的 HTML（见下文）
-  * 示例：`homeSpan.enableWebLog(50,"pool.ntp.org","UTC-1:00","myLog");` 在 URL *http<nolink>://HomeSpan-\[DEVICE-ID\].local:\[TCP-PORT\]/myLog* 处创建一个网络日志，该日志将显示使用 WEBLOG() 宏生成的 50 条最新日志消息。启动时（建立 WiFi 连接后），HomeSpan 将尝试通过调用服务器 "pool.ntp.org" 并将时间调整为比 UTC 早 1 小时来设置设备时钟。
-  * 尝试连接到 *timeServerURL* 时，HomeSpan 会等待 120 秒以获得响应。这是在后台完成的，在 HomeSpan 尝试设置时间时不会阻止其照常运行。如果 120 秒超时期限后仍未收到任何响应，HomeSpan 将假定服务器无法访问并跳过时钟设置程序。使用 `setTimeServerTimeout()` 将 120 秒超时时间重新配置为其他值
-  * 有关完整详细信息，请参阅 [消息日志](Logging.md)
+   * 启用滚动网络日志，显示用户使用 `WEBLOG()` 宏创建的最近 *maxEntries* 条目。参数及其默认值（如果未指定）如下：
+     * *maxEntries* - 要保存的最大（最近）条目数。如果未指定，则默认为 0，在这种情况下，Web 日志将仅显示状态而没有任何日志条目
+     * *timeServerURL* - 时间服务器的 URL，HomeSpan 在建立 WiFi 连接后将使用该时间服务器在启动时设置其时钟。指定时间服务器后，HomeSpan 将保留一个额外的套接字连接。如果未指定，则默认为空，在这种情况下，HomeSpan 将跳过设置设备时钟
+     * *timeZone* - 指定用于设置时钟的时区。仅使用 POSIX.1 格式，不支持 *Time Zone Database* 或 *tzdata*。根据 [TZ 的 GNU libc 文档](https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html)，*偏移量指定你必须**添加到本地时间**才能获得协调世界时值的时间值*。"UTC+5:00" 表示本地时间 + 5 小时为 UTC 时间。请参阅 GNU libc 文档以获取一些示例，包括如何指定北美东部标准时间 (EST) 和东部夏令时间 (EDT)，开始日期和结束日期为 EDT。如果 *serverURL=NULL*，则忽略此字段；如果 *serverURL!=NULL*，则必须填写此字段
+     * *logURL* - 此设备的网络日志页面的 URL。如果未指定，则默认为 "status" 。如果 *logURL* 设置为空，HomeSpan 将使用 *timeServerURL* 和 *timeZone* 参数来设置时钟，但它不会响应任何 HTTP 请求来提供任何网络日志页面。但是，Web 日志数据仍在内部累积，并且可以通过调用 `homeSpan.getWebLog()` 方法随时访问生成的 HTML（见下文）
+   * 示例：`homeSpan.enableWebLog(50,"pool.ntp.org","UTC-1:00","myLog");` 在 URL *http<nolink>://HomeSpan-\[DEVICE-ID\].local:\[TCP-PORT\]/myLog* 处创建一个网络日志，该日志将显示使用 WEBLOG() 宏生成的 50 条最新日志消息。启动时（建立 WiFi 连接后），HomeSpan 将尝试通过调用服务器 "pool.ntp.org" 并将时间调整为比 UTC 早 1 小时来设置设备时钟。
+   * 尝试连接到 *timeServerURL* 时，HomeSpan 会等待 120 秒以获得响应。这是在后台完成的，在 HomeSpan 尝试设置时间时不会阻止其照常运行。如果 120 秒超时期限后仍未收到任何响应，HomeSpan 将假定服务器无法访问并跳过时钟设置程序。使用 `setTimeServerTimeout()` 将 120 秒超时时间重新配置为其他值
+   * 有关完整详细信息，请参阅 [消息日志](Logging.md)
 
 * `Span& setTimeServerTimeout(uint32_t tSec)`
   * 将 HomeSpan 在 `enableWebLog()` 尝试将设备时钟从互联网时间服务器设置为 *tSec* 秒时使用的默认 120 秒超时时间更改为
@@ -384,25 +384,25 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
     </details>
 
 * `Span& enableWatchdog(uint16_t nSeconds)`
- * 创建 HomeSpan *任务看门狗*，如果 HomeSpan `poll()` 函数未至少每 *nSeconds* 运行一次，则触发设备重启
- * *nSeconds* 必须等于或大于 IDF 宏 `CONFIG_ESP_TASK_WDT_TIMEOUT_S` 中指定的 ESP32 默认任务看门狗超时时间（通常为 5 秒）
- * 如果 *nSeconds* 设置为小于 `CONFIG_ESP_TASK_WDT_TIMEOUT_S` 的持续时间，或者将其留空，则超时持续时间将设置为 `CONFIG_ESP_TASK_WDT_TIMEOUT_S`
- * 启用 HomeSpan 任务看门狗定时器不会改变任何其他任务（包括 ESP32 的 IDLE 任务）是否也订阅了任务看门狗定时器
- * 调用`enableWatchdog(nSeconds)` 当 HomeSpan 看门狗已使用不同的 *nSeconds* 值启用时，将超时持续时间更改为指定的新值 *nSeconds*
- * 注意，ESP32 任务看门狗计时器仅支持订阅任务看门狗的所有任务的单个超时持续时间。因此，当 HomeSpan 看门狗启用时，*nSeconds* 将用作所有订阅了任务看门狗定时器的其他任务（包括 ESP32 的任何 IDLE 任务）的新超时时长
+   * 创建 HomeSpan *任务看门狗*，如果 HomeSpan `poll()` 函数未至少每 *nSeconds* 运行一次，则触发设备重启
+   * *nSeconds* 必须等于或大于 IDF 宏 `CONFIG_ESP_TASK_WDT_TIMEOUT_S` 中指定的 ESP32 默认任务看门狗超时时间（通常为 5 秒）
+   * 如果 *nSeconds* 设置为小于 `CONFIG_ESP_TASK_WDT_TIMEOUT_S` 的持续时间，或者将其留空，则超时持续时间将设置为 `CONFIG_ESP_TASK_WDT_TIMEOUT_S`
+   * 启用 HomeSpan 任务看门狗定时器不会改变任何其他任务（包括 ESP32 的 IDLE 任务）是否也订阅了任务看门狗定时器
+   * 调用`enableWatchdog(nSeconds)` 当 HomeSpan 看门狗已使用不同的 *nSeconds* 值启用时，将超时持续时间更改为指定的新值 *nSeconds*
+   * 注意，ESP32 任务看门狗计时器仅支持订阅任务看门狗的所有任务的单个超时持续时间。因此，当 HomeSpan 看门狗启用时，*nSeconds* 将用作所有订阅了任务看门狗定时器的其他任务（包括 ESP32 的任何 IDLE 任务）的新超时时长
  * 请参阅 [HomeSpan 看门狗定时器](WDT.md) 页面了解详情
 
 * `void disableWatchdog()`
- * 如果已启用，则禁用 HomeSpan *任务看门狗*，否则不执行任何操作
- * 对可能订阅了任务看门狗定时器的其他任务没有影响
- * 对超时时长没有影响
- * 请参阅 [HomeSpan 看门狗定时器](WDT.md) 页面了解详情
+   * 如果已启用，则禁用 HomeSpan *任务看门狗*，否则不执行任何操作
+   * 对可能订阅了任务看门狗定时器的其他任务没有影响
+   * 对超时时长没有影响
+   * 请参阅 [HomeSpan 看门狗定时器](WDT.md) 页面了解详情
 
 * `void resetWatchdog()`
- * 重置 HomeSpan 看门狗定时器（如果已启用），然后通过调用 `vTaskDelay(1)` 暂停 1 毫秒，以让出并允许其他优先级相同或更低的任务获取处理时间
- * 用户通常**不需要**调用此方法，因为 HomeSpan 已经在 `poll()` 函数运行时这样做了
- * 仅当您启用 HomeSpan 看门狗并且向 HomeSpan 草图添加代码以阻止 `poll()` 函数或防止其长时间运行时才需要此方法
- * 请参阅 [HomeSpan 看门狗定时器](WDT.md) 页面了解详情
+   * 重置 HomeSpan 看门狗定时器（如果已启用），然后通过调用 `vTaskDelay(1)` 暂停 1 毫秒，以让出并允许其他优先级相同或更低的任务获取处理时间
+   * 用户通常**不需要**调用此方法，因为 HomeSpan 已经在 `poll()` 函数运行时这样做了
+   * 仅当您启用 HomeSpan 看门狗并且向 HomeSpan 草图添加代码以阻止 `poll()` 函数或防止其长时间运行时才需要此方法
+   * 请参阅 [HomeSpan 看门狗定时器](WDT.md) 页面了解详情
 
 ---
 
@@ -429,14 +429,14 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * **警告:**  此宏只能在与 HomeSpan 轮询过程不同的线程中使用。**请勿**在 HomeSpan 轮询过程管理的任何代码中使用此宏，这些代码基本上是您在 SpanService 结构内创建的所有 `update`, `loop` 和其他方法。但是，您**可以**直接从单独的线程调用这些方法，前提是您首先调用 `homeSpanPAUSE`  宏
  
 * `homeSpanRESUME`
-  * 如果您想在通过 `homeSpanPAUSE` 宏暂停 HomeSpan 轮询之后但在到达代码块范围末尾之前提前恢复 HomeSpan 轮询，请调用此 *可选***宏**（此时 HomeSpan 轮询会自动恢复，如上所述）
-  * 此宏只能在 `homeSpanPAUSE` 宏已被调用之后调用，并且必须来自代码块（或子块）的同一范围内
-  * 如果你尝试在调用 `homeSpanPAUSE` 之前使用此宏，或者它不是在代码块的同一范围内调用的，则会出现编译错误
-  * 调用“homeSpanPAUSE”后可以多次调用 `homeSpanPAUSE`。第一个实例重新启动 HomeSpan 轮询过程；后续实例将被忽略
+   * 如果您想在通过 `homeSpanPAUSE` 宏暂停 HomeSpan 轮询之后但在到达代码块范围末尾之前提前恢复 HomeSpan 轮询，请调用此 *可选***宏**（此时 HomeSpan 轮询会自动恢复，如上所述）
+   * 此宏只能在 `homeSpanPAUSE` 宏已被调用之后调用，并且必须来自代码块（或子块）的同一范围内
+   * 如果你尝试在调用 `homeSpanPAUSE` 之前使用此宏，或者它不是在代码块的同一范围内调用的，则会出现编译错误
+   * 调用“homeSpanPAUSE”后可以多次调用 `homeSpanPAUSE`。第一个实例重新启动 HomeSpan 轮询过程；后续实例将被忽略
  
 * `std::shared_mutex& getMutex()`
-  * 返回对 `homeSpanPAUSE` 和 `homeSpanRESUME` 宏使用的 *shared_mutex* 的引用，用于锁定和解锁 HomeSpan 轮询线程
-  * 仅适用于希望使用自己的逻辑手动锁定和解锁 HomeSpan 轮询线程（而不是简单地调用这些宏）的高级用户
+   * 返回对 `homeSpanPAUSE` 和 `homeSpanRESUME` 宏使用的 *shared_mutex* 的引用，用于锁定和解锁 HomeSpan 轮询线程
+   * 仅适用于希望使用自己的逻辑手动锁定和解锁 HomeSpan 轮询线程（而不是简单地调用这些宏）的高级用户
  
 可以在 Arduino IDE 的 [*文件 → 示例 → HomeSpan → 其他示例 → 多线程*](../examples/Other%20Examples/MultiThreading) 下找到一个完整的示例，该示例展示了如何使用 `autoPoll()` 和 `homeSpanPAUSE` 从单独的线程自动切换简单灯泡配件的电源。 
 
@@ -449,10 +449,10 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 * 没有关联方法
 * 参数 *aid* 是可选的。
 
-  * 如果指定且*不*为零，附件 ID 将设置为 *aid*。
-  * 如果未指定或等于零，附件 ID 将设置为比先前实例化的附件的 ID 多 1，如果这是第一个附件，则设置为 1。
-  * 实例化的第一个附件必须始终具有 ID=1（如果未指定 *aid*，则为默认值）。
-  * 将第一个附件的 *aid* 设置为 1 以外的任何值都会在初始化期间引发错误。
+   * 如果指定且*不*为零，附件 ID 将设置为 *aid*。
+   * 如果未指定或等于零，附件 ID 将设置为比先前实例化的附件的 ID 多 1，如果这是第一个附件，则设置为 1。
+   * 实例化的第一个附件必须始终具有 ID=1（如果未指定 *aid*，则为默认值）。
+   * 将第一个附件的 *aid* 设置为 1 以外的任何值都会在初始化期间引发错误。
 
 * 你必须在实例化任何附件之前调用 `homeSpan.begin()`
 * 示例：`new SpanAccessory();`
@@ -468,9 +468,9 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 支持以下方法：
 
 * `SpanService *setPrimary()`
-  * 指定这是附件的主要服务。返回指向服务本身的指针，以便可以在实例化期间链接该方法
-  * 示例：`(new Service::Fan)->setPrimary();`
-  * 注意，尽管此功能由 Apple 在 HAP-R2 中定义，但它似乎已被弃用，不再有任何用途或对 “家庭”应用有任何影响
+   * 指定这是附件的主要服务。返回指向服务本身的指针，以便可以在实例化期间链接该方法
+   * 示例：`(new Service::Fan)->setPrimary();`
+   * 注意，尽管此功能由 Apple 在 HAP-R2 中定义，但它似乎已被弃用，不再有任何用途或对 “家庭”应用有任何影响
 
 * `SpanService *setHidden()`
   * 指定这是配件的隐藏服务。返回指向服务本身的指针，以便可以在实例化期间链接该方法。
