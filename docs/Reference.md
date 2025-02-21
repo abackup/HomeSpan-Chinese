@@ -213,7 +213,7 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 设置可选的用户定义回调函数 *func*，每次 WiFi 或以太网连接建立或断开后重新建立时 HomeSpan 都会调用该函数。函数 *func* 必须是 *void* 类型，并接受单个 *int* 参数 *count*，HomeSpan 将 WiFi 或以太网连接建立或重新建立的次数传递给该参数（即，在初始 WiFi 或以太网连接时 *count*=1；如果在第一次断开后重新建立，则 *count*=2，等等）
  
 * `Span& useEthernet()`
-* 强制 HomeSpan 使用以太网而不是 WiFi，即使在调用 `homeSpan.begin()` 之前尚未调用 ETH 或未找到以太网卡
+  * 强制 HomeSpan 使用以太网而不是 WiFi，即使在调用 `homeSpan.begin()` 之前尚未调用 ETH 或未找到以太网卡
     
 * `Span& setPairCallback(void (*func)(boolean status))`
   * 设置可选的用户定义回调函数 *func*，在完成与控制器的配对（*status=true*）或与控制器的配对（*status=false*）后由 HomeSpan 调用
