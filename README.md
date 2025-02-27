@@ -88,7 +88,7 @@ HomeSpan 包括以下文档：
 * [HomeSpan 控制步进电机](docs/Stepper.md) - 步进电机集成控制，包括 PWM 微步进
 * [HomeSpan Span 热点](docs/NOW.md) - 使用 ESP-NOW 促进 ESP32 设备之间的点对点双向通信
 * [HomeSpan 电视服务](docs/TVServices.md) - 如何使用 HomeKit 未记录的电视服务和特征
-* [HomeSpan 消息记录](docs/Logging.md) - 如何生成在 Arduino 串口监视器上显示的日志消息，以及可选地发布到集成的网络日志页面
+* [HomeSpan 消息日志记录](docs/Logging.md) - 如何生成在 Arduino 串口监视器上显示的日志消息，以及可选地发布到集成的网络日志页面
 * [HomeSpan TLV8 特征](docs/TLV8.md) - 用于创建 TLV8 对象以与基于 TLV8 的特征一起使用的类和方法
 * [HomeSpan 设备克隆](docs/Cloning.md) - 将损坏的设备无缝更换为新设备，而无需重新配对和丢失 HomeKit 自动化
 * [HomeSpan 项目](https://github.com/topics/homespan) - HomePan 库的实际应用
