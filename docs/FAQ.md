@@ -95,11 +95,11 @@ Serial.printf("Current Date = %02d/%02d/%04d\n", myTime.tm_mon+1, myTime.tm_mday
 Serial.printf("Current Time = %02d:%02d:%02d\n", myTime.tm_hour, myTime.tm_min, myTime.tm_sec);
 ```
 
-#### I am getting a "Sketch Too Big" error when I compile
+#### 我在编译时收到 "Sketch Too Big" 错误
 
-* As a result of increases in the size of the Arduino-ESP32 Board Manager, HomeSpan sketches will no longer fit into the Default partition scheme which only allocates 1.3MB to an App partition.  HomeSpan sketches must instead be compiled under a larger partition scheme, such as Minimal SPIFFS, which provides for 1.9MB partitions.  You can select this partition scheme (or any other that has an App or OTA partition that is large enough to fit your sketch) from with Tools menu in the Arduino IDE.
+* 由于 Arduino-ESP32 开发版管理器的大小增加，HomeSpan 草图将不再适合默认分区方案，该方案仅向 App 分区分配 1.3MB。HomeSpan 草图必须在更大的分区方案下编译，例如 Minimal SPIFFS，它提供 1.9MB 的分区。您可以从 Arduino IDE 中的工具菜单中选择此分区方案（或任何其他具有足够大以容纳草图的 App 或 OTA 分区的分区方案）。
 
-* Note that it is NOT possible to change the partition scheme on remote devices via OTA.  The device MUST be connected via USB to your computer.  If you change the partition table on the Arduino IDE and upload your sketch via OTA to a remote device, the remote device will IGNORE the request to change the partition table and if the size of the sketch is too large for the previous partition table on the remote device, the new sketch will not be saved.  To solve this, you need to connect the device to your computer via USB, change the partition table, and then upload. Once the partition table is changed, you can then disconnect and use OTA again.
+* 请注意，无法通过 OTA 更改远程设备上的分区方案。设备必须通过 USB 连接到您的计算机。如果您在 Arduino IDE 上更改分区表并通过 OTA 将您的草图上传到远程设备，则远程设备将忽略更改分区表的请求，并且如果草图的大小对于远程设备上的先前分区表来说太大，则不会保存新草图。要解决此问题，您需要通过 USB 将设备连接到您的计算机，更改分区表，然后上传。更改分区表后，您可以断开连接并再次使用 OTA。
   
 
 ---
