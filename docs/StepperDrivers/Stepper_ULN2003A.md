@@ -6,7 +6,7 @@
 
 [^1]: 仅需 ULN2003A 中的七个达林顿晶体管对中的四个即可驱动典型的单极步进电机。
 
-各个制造商已将该芯片纳入专用的步进电机板中，用于驱动单极电机，例如 [28BYJ&#8209;48 5&#8209;伏步进电机](https://opencircuit.shop/product/28byj-48-5v-stepper-motor-4-phase-5-wire) 和 [28BYJ&#8209;48 12&#8209;伏步进电机](https://opencircuit.shop/product/28byj-48-12v-stepper-motor-4-phase-5-wire)。使用此芯片的 [Opencircuit ULN2003 步进电机驱动板](https://opencircuit.shop/product/uln2003-stepper-motor-driver-module) 的接线如下：
+各个制造商已将该芯片纳入专用的步进电机板中，用于驱动单极电机，例如 [28BYJ&#8209;48 5&#8209;伏步进电机](https://opencircuit.shop/product/28byj-48-5v-stepper-motor-4-phase-5-wire) 和 [28BYJ&#8209;48 12&#8209;伏步进电机](https://opencircuit.shop/product/28byj-48-12v-stepper-motor-4-phase-5-wire)。使用此芯片的 [开路 ULN2003 步进电机驱动板](https://opencircuit.shop/product/uln2003-stepper-motor-driver-module) 的接线如下：
 
 #### **电源连接**[^2]
 * ➕ - 连接到驱动步进电机的外部直流电源 (5-12V)
