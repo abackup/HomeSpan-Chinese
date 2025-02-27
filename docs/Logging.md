@@ -118,7 +118,7 @@ void extraData(String &r){
 
 当从草图调用上述方法时，HomeSpan 将重复调用用户定义的函数 *f()*，并为网络日志页面提供连续的 HTML 文本块作为第一个参数 *htmlText*。一旦所有 HTML 块都发送到函数 *f()*，HomeSpan 将最后一次调用 *f()*，并将 *htmlText* 设置为空，以指示不再发送 HTML 块。
 
-此函数的主要目的是让用户提供自己的 HTML网络日志页服务方法，例如通过安全的 HTTPS 通道。请注意，此通道可以是 HomeSpan 通过 HTTP 请求正常提供网络日志页面的补充，也可以代替 HomeSpan 的正常服务，具体取决于 `homeSpan.enableWebLog()` 方法中使用的 URL 参数是否设置为空（禁用 HomeSpan 提供网络日志页面以响应 HTTP 请求）。
+此函数的主要目的是让用户提供自己的 HTML 网络日志页服务方法，例如通过安全的 HTTPS 通道。请注意，此通道可以是 HomeSpan 通过 HTTP 请求正常提供网络日志页面的补充，也可以代替 HomeSpan 的正常服务，具体取决于 `homeSpan.enableWebLog()` 方法中使用的 URL 参数是否设置为空（禁用 HomeSpan 提供网络日志页面以响应 HTTP 请求）。
 
 以下 psuedo-code 代码片段显示了如何使用 `getWebLog()` ：
 
