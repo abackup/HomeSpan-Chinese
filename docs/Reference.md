@@ -784,11 +784,11 @@ CUSTOM_CHAR(Voltage, E863F10A-079E-48FF-8F27-9C2605A29F52, PR+EV, UINT16, 120, 0
 CUSTOM_CHAR_STRING(UserTag, AAAAAAAA-BBBB-AAAA-AAAA-AAAAAAAAAAAA, PR, "Tag 123");
 ...
 new Service::LightBulb();
-new Characteristic::Name("Low-Voltage Lamp");
-new Characteristic::On(0);
-new Characteristic::Brightness(50);
-new Characteristic::Voltage(12); // 添加电压特征并将初始值设置为 12 伏
-new Characteristic::UserTag(); // 添加用户标签特征并保留默认初始值“标签 123”
+  new Characteristic::Name("Low-Voltage Lamp");
+  new Characteristic::On(0);
+  new Characteristic::Brightness(50);
+  new Characteristic::Voltage(12); // 添加电压特征并将初始值设置为 12 伏
+  new Characteristic::UserTag(); // 添加用户标签特征并保留默认初始值“标签 123”
 ```
 
 请注意，必须在全局级别（即不在 `setup()` 内）创建自定义特征，并在调用 `homeSpan.begin()` 之前创建
