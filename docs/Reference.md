@@ -235,7 +235,7 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 函数 *func* 必须是 *void* 类型并接受一个枚举类型 [HS_STATUS](HS_STATUS.md) 的参数
 
 * `char* statusString(HS_STATUS s)`
-  * 返回一个预定义的字符串消息，表示*s*，必须是枚举类型 [HS_STATUS](HS_STATUS.md)
+  * 返回一个预定义的字符串消息，表示 *s*，必须是枚举类型 [HS_STATUS](HS_STATUS.md)
   * 通常与上面的 `setStatusCallback()` 一起使用
 
 * `Span& setPollingCallback(void (*func)())`
@@ -385,8 +385,8 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 
 * `Span& enableWatchdog(uint16_t nSeconds)`
    * 创建 HomeSpan *任务看门狗*，如果 HomeSpan `poll()` 函数未至少每 *nSeconds* 运行一次，则触发设备重启
-   * *nSeconds* 必须等于或大于 IDF 宏 `CONFIG_ESP_TASK_WDT_TIMEOUT_S` 中指定的 ESP32 默认任务看门狗超时时间（通常为 5 秒）
-   * 如果 *nSeconds* 设置为小于 `CONFIG_ESP_TASK_WDT_TIMEOUT_S` 的持续时间，或者将其留空，则超时持续时间将设置为 `CONFIG_ESP_TASK_WDT_TIMEOUT_S`
+     * *nSeconds* 必须等于或大于 IDF 宏 `CONFIG_ESP_TASK_WDT_TIMEOUT_S` 中指定的 ESP32 默认任务看门狗超时时间（通常为 5 秒）
+     * 如果 *nSeconds* 设置为小于 `CONFIG_ESP_TASK_WDT_TIMEOUT_S` 的持续时间，或者将其留空，则超时持续时间将设置为 `CONFIG_ESP_TASK_WDT_TIMEOUT_S`
    * 启用 HomeSpan 任务看门狗定时器不会改变任何其他任务（包括 ESP32 的 IDLE 任务）是否也订阅了任务看门狗定时器
    * 调用`enableWatchdog(nSeconds)` 当 HomeSpan 看门狗已使用不同的 *nSeconds* 值启用时，将超时持续时间更改为指定的新值 *nSeconds*
    * 注意，ESP32 任务看门狗计时器仅支持订阅任务看门狗的所有任务的单个超时持续时间。因此，当 HomeSpan 看门狗启用时，*nSeconds* 将用作所有订阅了任务看门狗定时器的其他任务（包括 ESP32 的任何 IDLE 任务）的新超时时长
