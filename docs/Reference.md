@@ -649,6 +649,9 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 返回指向特征本身的指针，以便在实例化期间可以链接该方法
   * 示例：`(new Characteristic::RotationSpeed())->setUnit("percentage");`
 
+* `uint32_t getIID()`
+  * 返回特征的 IID
+
 ### *SpanButton(int pin, uint16_t longTime, uint16_t singleTime, uint16_t doubleTime, boolean (\*triggerType)(int))*<a name="spanbutton"></a>
 
 创建此**类**的实例会将按钮处理程序附加到指定的 ESP32 *pin*。
