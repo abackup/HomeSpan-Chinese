@@ -390,7 +390,7 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
    * 启用 HomeSpan 任务看门狗定时器不会改变任何其他任务（包括 ESP32 的 IDLE 任务）是否也订阅了任务看门狗定时器
    * 调用`enableWatchdog(nSeconds)` 当 HomeSpan 看门狗已使用不同的 *nSeconds* 值启用时，将超时持续时间更改为指定的新值 *nSeconds*
    * 注意，ESP32 任务看门狗计时器仅支持订阅任务看门狗的所有任务的单个超时持续时间。因此，当 HomeSpan 看门狗启用时，*nSeconds* 将用作所有订阅了任务看门狗定时器的其他任务（包括 ESP32 的任何 IDLE 任务）的新超时时长
- * 请参阅 [HomeSpan 看门狗定时器](WDT.md) 页面了解详情
+   * 请参阅 [HomeSpan 看门狗定时器](WDT.md) 页面了解详情
 
 * `void disableWatchdog()`
    * 如果已启用，则禁用 HomeSpan *任务看门狗*，否则不执行任何操作
@@ -406,7 +406,7 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 
 ---
 
-以下 `homeSpan` 方法被视为实验性的，因为并非所有用例都经过探索或调试。请谨慎使用：
+以下可选的 `homeSpan` 方法用于创建和管理多线程草图：
 
 * `void autoPoll(uint32_t stackSize, uint32_t priority, uint32_t cpu)`
 
