@@ -72,7 +72,7 @@ void setup() {
 
   homeSpan.setHostNameSuffix("");         // 使用空字符串作为后缀（而不是 HomeSpan 设备 ID）
   homeSpan.setPortNum(1201);              // 更改 HomeSpan 的端口号，以便我们可以将端口 80 用于 Web 服务器
-  homeSpan.setWifiCallback(setupWeb);     // 需要在 WiFi 建立后启动 Web 服务器
+  homeSpan.setConnectionCallback(setupWeb);     // 需要在 WiFi 建立后启动 Web 服务器
 
   homeSpan.begin(Category::Lighting,"HomeSpan Light Hub",HUB_NAME);
 
@@ -256,7 +256,10 @@ void listAccessories(const char *buf){
 ///////////////////////////
 
 void setupWeb(){
-  
+
+  if(count>1)
+      return;
+ 
   Serial.printf("Starting Light Server Hub at %s.local\n\n",HUB_NAME);
   webServer.begin();
 
