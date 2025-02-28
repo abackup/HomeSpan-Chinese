@@ -71,7 +71,7 @@ void setup() {
   
     new Service::AccessoryInformation();    
       new Characteristic::Identify();               
-      new Characteristic::Name(u8"Special chars ÄÖÜß");  // 对非 ASCII 字符使用 UTF-8 编码字符串
+      new Characteristic::Name("Special chars ÄÖÜß");  // 对非 ASCII 字符使用 UTF-8 编码字符串
   
     new DEV_DimmableLED(18);
 
