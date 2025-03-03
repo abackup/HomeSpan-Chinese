@@ -1,6 +1,6 @@
 <!--原文时间：2025.2.10，校对时间：2025.2.21；文件版本号：2.1.1 -->
 
-个人翻译的 [HomeSpan 2.1.1](https://github.com/HomeSpan/HomeSpan)<font color="#9900FF">（家庭扩展）</font>，喜欢的请去 [下载](https://github.com/HomeSpan/HomeSpan/releases) 学习。
+个人翻译的 [HomeSpan 2.1.1](https://github.com/HomeSpan/HomeSpan) <font color="#9900FF">（家庭扩展）</font>，喜欢的请去 [下载](https://github.com/HomeSpan/HomeSpan/releases) 学习。
 
 # 欢迎！
 
