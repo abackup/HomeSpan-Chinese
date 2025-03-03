@@ -5,7 +5,7 @@
 # 欢迎！
 
 
-欢迎使用 HomeSpan - 一个强大且极其易于使用的 Arduino 库，用于完全在 [Arduino IDE](http://www.arduino.cc) 内创建你自己的基于 [ESP32](https://www.espressif.com/en/products/modules/esp32) 的 HomeKit 设备。
+欢迎使用 HomeSpan - 一个强大且极其易于使用的 Arduino 库<mark>被标记的词</mark>，用于完全在 [Arduino IDE](http://www.arduino.cc) 内创建你自己的基于 [ESP32](https://www.espressif.com/en/products/modules/esp32) 的 HomeKit 设备。
 
 HomeSpan 提供以微控制器为中心的苹果 HomeKit 配件协议规范版本 R2 ([HAP-R2](../master/docs/HAP-R2.pdf)) 的实现，专为在 Arduino IDE 中运行的乐鑫 ESP32 微控制器设计。HomeSpan 通过家庭 WiFi 网络直接与 HomeKit 配对，无需任何外部网桥或组件。通过 HomeSpan，你可以使用 ESP32 I/O 的全部功能来创建自定义控制软件和/或硬件，以通过 iPhone、iPad 或 Mac 上的“家庭”应用或 Siri 自动操作外部设备。
 
