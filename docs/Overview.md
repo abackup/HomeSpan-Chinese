@@ -302,7 +302,7 @@ void loop(){
 
 ## 多文件草图
 
-将所有 TableLamp 函数封装到单个结构中表明 TableLamp 代码可以存储在单独的文件中。由于 TableLamp 表示 HAP 的通用灯泡服务的**设备特定**实现，因此建议的约定是将 DEV_ 作为前缀添加到所有此类结构中，并将它们放在具有类似 DEV_ 前缀的 `\*.h` 文件中。例如，我们将 `struct TableLamp` 更改为 `struct DEV_TableLamp` 并将其代码放在单独的文件名 `DEV_TableLamp.h` 中。要使用时，我们只需将 `#include "DEV_TableLamp.h"` 添加到我们的 \*.ino 草图文件中，通常在`#include "HomeSpan.h"`之后。
+将所有 TableLamp 函数封装到单个结构中表明 TableLamp 代码可以存储在单独的文件中。由于 TableLamp 表示 HAP 的通用灯泡服务的**设备特定**实现，因此建议的约定是将 DEV_ 作为前缀添加到所有此类结构中，并将它们放在具有类似 DEV_ 前缀的 \*.h 文件中。例如，我们将 `struct TableLamp` 更改为 `struct DEV_TableLamp` 并将其代码放在单独的文件名 `DEV_TableLamp.h` 中。要使用时，我们只需将 `#include "DEV_TableLamp.h"` 添加到我们的 \*.ino 草图文件中，通常在`#include "HomeSpan.h"`之后。
 
 以这种方式，我们可以为现实世界的灯、吊扇、窗帘、车库门开启器，甚至只是控制独特设备的一系列开关创建一个设备特定结构的“库”。通过将每个结构（或一组相关结构）存储在其自己的 `DEV_\*.h` 文件中，并使用记录良好的构造函数，并仅包含特定 HomeSpan 草图所需的特定于设备的结构，我们提高了整体可读性、可移植性和可重用性。你会看到在 HomeSpan 的教程草图中使用了这个约定。
 
