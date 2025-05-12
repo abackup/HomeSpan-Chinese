@@ -68,8 +68,8 @@
 
   * 添加新的 homeSpan 方法 `resetWatchdog()`，用于定期重置HomeSpan 看门狗定时器
     * 此方法已根据需要嵌入到所有 HomeSpan 库函数中
-  * 添加新的 homeSpan 方法 `disableWatchdog()`，用于在启用 HomeSpan 看门狗定时器后将其禁用
-  * 请参阅 [HomeSpan 看门狗定时器](docs/WDT.md) 页面，了解有关 HomeSpan 和其他系统看门狗定时器的完整讨论
+    * 添加新的 homeSpan 方法 `disableWatchdog()`，用于在启用 HomeSpan 看门狗定时器后将其禁用
+    * 请参阅 [HomeSpan 看门狗定时器](docs/WDT.md) 页面，了解有关 HomeSpan 和其他系统看门狗定时器的完整讨论
 
 ### 其他更新
 
