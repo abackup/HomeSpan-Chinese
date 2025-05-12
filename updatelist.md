@@ -1,3 +1,48 @@
+## ❗最新更新 - HomeSpan 2.1.2 (2025年5月8日)
+
+### 更新和修正
+
+* **新增自定义服务的 UUID 验证**
+* 如果发现无效的服务 UUID，则在启动时在 CLI 中报告错误
+* 类似于现有的自定义特性的 UUID 验证
+
+* **将示例 sketch *RemoteDevice8286.ino* 重命名为 *RemoteDevice8266.ino***
+* 更正了文件名中一个长期存在的拼写错误
+
+* **修改了 OTA 更新，使 HomeSpan 仅在上传新的 *sketch*** 时才检查其 Magic Cookie
+* 避免使用 OTA 上传 SPIFFS 数据时 OTA 中止
+
+* **重构了处理来自 HomeKit 的 PUT 特性请求的 JSON 解析逻辑**
+* 现在正确支持 JSON 字符串值中使用的任何 JSON 允许的 Unicode 字符，从 U+0020 到U+10FFFF
+
+* 允许基于字符串的特性包含转义引号、转义斜线和反斜线，以及任何 JSON 令牌字符 *,:[]{}*，这些字符以前会导致解析错误。
+* 现在还允许基于空字符串的特性（以前会导致解析错误）。
+
+* **在 Characteristics 中添加了新的 `setMaxStringLength(uint8_t n)` 方法**
+* 允许用户将基于字符串的特性的最大长度从 HAP 默认的 64 更改为 *n*（小于 256）。
+* 虽然 HAP 指定了该值，但 HomeKit 似乎并未使用该值，因此该方法似乎没有必要。
+
+* **添加了新的 *homeSpan* 方法 `assumeTimeAcquired()`**
+* 调用此方法会告知 HomeSpan 假定您已使用自己的代码获取时间。
+* 如果您不想在启用 Web 日志时指定 *timeServerURL*，而是希望手动获取时间，则此方法非常有用。
+
+* **添加了新的 *homeSpan* 方法 `setGetCharacteristicsCallback(void (*func)(const char *getCharList))`**
+* 设置一个可选的用户自定义回调函数 *func*，每当 HomeSpan 收到来自 HomeKit 的 *GET /characteristics* 请求时，该函数都会被调用。
+* 每次在 iPhone 或 Mac 上打开 Home 应用时，HomeKit 通常会将此请求发送给所有配对的设备。
+* 此回调在 HomeSpan 必须使用单独的“昂贵”进程读取传感器类特性的当前状态的情况下非常有用，该进程应仅在需要时调用，而不是在服务的 `loop()` 方法中持续更新。
+* 函数 *func* 必须是 void 类型，并接受一个 *const char \** 类型的参数，HomeSpan 将 HomeKit 在其 HTTP *GET* 请求中提供的特性 AID/IID 对列表传递给该参数。
+* *getCharList* 可用于判断 HTTP *GET* 请求是否包含 AID/IID 对。对于任何特定的特性
+* 这允许用户根据 HomeKit 请求的特定特性对回调进行操作
+* 请参阅**新的 SpanCharacteristic 辅助方法 `foundIn(const char *getCharList)`**，该方法根据特定特性的 AID/IID 是否在 *getCharList* 中找到而返回 *true* 或 *false*。
+* 为了完整性，**还向 SpanAccessory、SpanService 和 SpanCharacteristic 类分别添加了 `uint32_t getAID()` 方法。
+
+* **在 *HomeSpan.cpp* 中明确添加了 `#include <mutex>`，以解决与 Arduino-ESP32 v3.2.0 的兼容性问题。**
+
+* **修复了 `Pixel::getPin()` 中报告通道号而不是引脚号的错误。**
+
+有关此版本中包含的所有更改和错误修复的详细信息，请参阅 [发布](https://github.com/HomeSpan/HomeSpan/releases) 更新。
+
+
 ## ❗最新更新 - HomeSpan 2.1.1 (2025 年 2 月 10 日)
 
 ### 集成对 OTA 分区回滚的支持
