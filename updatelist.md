@@ -32,9 +32,9 @@
   * 此回调在 HomeSpan 必须使用单独的“昂贵”进程读取传感器类特性的当前状态的情况下非常有用，该进程应仅在需要时调用，而不是在服务的 `loop()` 方法中持续更新。
   * 函数 *func* 必须是 void 类型，并接受一个 *const char \** 类型的参数，HomeSpan 将 HomeKit 在其 HTTP *GET* 请求中提供的特性 AID/IID 对列表传递给该参数。
   * *getCharList* 可用于判断 HTTP *GET* 请求是否包含 AID/IID 对。对于任何特定的特性
-  * 这允许用户根据 HomeKit 请求的特定特性对回调进行操作
-  * 请参阅**新的 SpanCharacteristic 辅助方法 `foundIn(const char *getCharList)`**，该方法根据特定特性的 AID/IID 是否在 *getCharList* 中找到而返回 *true* 或 *false*。
-  * 为了完整性，**还向 SpanAccessory、SpanService 和 SpanCharacteristic 类分别添加了 `uint32_t getAID()` 方法。
+    * 这允许用户根据 HomeKit 请求的特定特性对回调进行操作
+    * 请参阅**新的 SpanCharacteristic 辅助方法 `foundIn(const char *getCharList)`**，该方法根据特定特性的 AID/IID 是否在 *getCharList* 中找到而返回 *true* 或 *false*。
+    * 为了完整性，**还向 SpanAccessory、SpanService 和 SpanCharacteristic 类分别添加了 `uint32_t getAID()` 方法。
 
 * **在 *HomeSpan.cpp* 中明确添加了 `#include <mutex>`，以解决与 Arduino-ESP32 v3.2.0 的兼容性问题。**
 
@@ -67,9 +67,9 @@
     * 创建单独的 HomeSpan **任务看门狗定时器**，旨在触发设备重新启动，如果没有至少每 *nSeconds* 定期重置一次
 
   * 添加新的 homeSpan 方法 `resetWatchdog()`，用于定期重置HomeSpan 看门狗定时器
-    * 此方法已根据需要嵌入到所有 HomeSpan 库函数中
-    * 添加新的 homeSpan 方法 `disableWatchdog()`，用于在启用 HomeSpan 看门狗定时器后将其禁用
-    * 请参阅 [HomeSpan 看门狗定时器](docs/WDT.md) 页面，了解有关 HomeSpan 和其他系统看门狗定时器的完整讨论
+  * 此方法已根据需要嵌入到所有 HomeSpan 库函数中
+  * 添加新的 homeSpan 方法 `disableWatchdog()`，用于在启用 HomeSpan 看门狗定时器后将其禁用
+  * 请参阅 [HomeSpan 看门狗定时器](docs/WDT.md) 页面，了解有关 HomeSpan 和其他系统看门狗定时器的完整讨论
 
 ### 其他更新
 
