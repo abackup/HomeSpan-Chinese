@@ -242,6 +242,17 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
    * 设置可选的用户定义回调函数 *func*，在 HomeSpan 第一次通过 HomeSpan `poll()` 函数后，HomeSpan 将调用该函数 *一次*
    * 函数 *func* 必须是 *void* 类型，并且没有参数
 
+* `Span& setGetCharacteristicsCallback(void (*func)(const char *getCharList))`
+  * sets an optional user-defined callback function, *func*, to be called by HomeSpan whenever it receives a *GET /characteristics* request from HomeKit
+    * HomeKit generally sends this request to every paired device each time the Home App is opened on an iPhone or Mac
+  * note *func* is called **prior** to HomeSpan reading the requested Characteristics and sending their values back to HomeKit
+    * this callback is useful in circumstances where the current state of a sensor-style Characteristic must be read by HomeSpan using a separate "expensive" process that should be called only when needed as opposed to being continuously updated in a Services `loop()` method
+  * the function *func* must be of type *void* and accept one argument of type *const char \** into which HomeSpan passes the list of Characteristic AID/IID pairs that HomeKit provided in its HTTP GET request
+    * *getCharList* can be used to determine if the HTTP GET request includes the AID/IID pair for any specific Characteristic
+    * this allows the user to act on the callback based on which specific Characteristics were requested by HomeKit
+    * see `SpanCharacteristic::foundIn(const char *getCharList)`
+
+
 * `Span& setPairingCode(const char *s)`
    * 将设置配对代码设置为 *s*，**必须**正好是 8 位数字（无破折号）
    * 示例：`homeSpan.setPairingCode("46637726");`
@@ -295,6 +306,13 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 为避免创建单个大型文本缓冲区，HomeSpan 将网络日志的 HTML 拆分为 1024 字节的块并重复调用 *f()* 直到所有 HTML 都已流式传输；然后 HomeSpan 最后调用 *f()*，并将 *htmlBuf* 设置为空，向用户指示已到达 HTML 文本的末尾
   * 此命令主要用于将网络日志页面重定向到用户定义的进程，以进行其他处理、显示或传输
   * 有关更多详细信息，请参阅 [消息日志](Logging.md)
+ 
+* `void assumeTimeAcquired()`
+  * calling this method tells HomeSpan to assume that you have acquired the time using your own code
+  * useful if you don't want to specify a *timeServerURL* when enabling the Web Log, but would rather acquire it manually
+    * note if a *timeServerURL* is not specified when enabling the Web Log, the Web Log records will show the time as "Unknown" unless and until you call this method   
+  
+
 * `void processSerialCommand(const char *CLIcommand)`
   * 处理 *CLIcommand*，就像输入到串口监视器中一样
   * 允许以编程方式访问所有 CLI 命令，包括用户定义的任何自定义命令
@@ -442,20 +460,21 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 
 ## *SpanAccessory(uint32_t aid)*
 
-创建此**类**的实例会将新的 HAP 附件添加到 HomeSpan HAP 数据库。
+* every HomeSpan sketch requires at least one Accessory
+* a sketch can contain a maximum of 150 Accessories per sketch (if exceeded, a runtime error will the thrown and the sketch will halt)
+* there are no associated methods
+* the argument *aid* is optional:
+  * if specified and *not* zero, the Accessory ID is set to *aid*
+  * if unspecified, or equal to zero, the Accessory ID will be set to one more than the ID of the previously-instantiated Accessory, or to 1 if this is the first Accessory
+  * the first Accessory instantiated must always have an ID=1 (which is the default if *aid* is unspecified)
+  * setting the *aid* of the first Accessory to anything but 1 throws an error during initialization
+* you must call `homeSpan.begin()` before instantiating any Accessories
+* example: `new SpanAccessory();`
 
-* 每个 HomeSpan 草图至少需要一个附件
-* 每个草图最多可包含 150 个附件（如果超过，将引发运行时错误，并且草图将停止）
-* 没有关联方法
-* 参数 *aid* 是可选的。
+The following methods are supported:
 
-   * 如果指定且*不*为零，附件 ID 将设置为 *aid*。
-   * 如果未指定或等于零，附件 ID 将设置为比先前实例化的附件的 ID 多 1，如果这是第一个附件，则设置为 1。
-   * 实例化的第一个附件必须始终具有 ID=1（如果未指定 *aid*，则为默认值）。
-   * 将第一个附件的 *aid* 设置为 1 以外的任何值都会在初始化期间引发错误。
-
-* 你必须在实例化任何附件之前调用 `homeSpan.begin()`
-* 示例：`new SpanAccessory();`
+* `uint32_t getAID()`
+  * returns the Accessory ID (AID)
 
 ## *SpanService()*
 
@@ -575,6 +594,13 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 * `void setString(const char *value)`
   * 相当于 `setVal(value)`，但专用于字符串特征（即以空字符结尾的字符数组）
 
+* `SpanCharacteristic *setMaxStringLength(uint8_t n)`
+  * changes the maximum allowed length of a string-characteristic from the HAP default (64) to *n*
+  * note the Home App seems to properly process strings that exceed 64 characters without needing to reset the maximum length
+  * this method is included in HomeSpan only for completeness with HAP - it is likely not needed
+  * returns a pointer to the Characteristic itself so that the method can be chained during instantiation
+ 
+
 #### DATA（即字节数组）特征支持以下方法：
 
 * `size_t getData(uint8_t *data, size_t len)`
@@ -651,6 +677,17 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 
 * `uint32_t getIID()`
   * 返回特征的 IID
+
+* `uint32_t getAID()`
+  * returns the AID of the Accessory to which the Service belongs
+
+ * `uint32_t getAID()`
+  * returns the AID of the Accessory to which the Characteristic belongs
+
+* `boolean foundIn(const char *getCharList)`
+  * returns *true* if the AID/IID pair for the Characteristic is found in *getCharList*, else returns *false*
+  * *getCharList* is typically passed by HomeSpan to an optional user-defined callback function as specified in *homeSpan.setGetCharacteristicsCallback()*
+  
 
 ### *SpanButton(int pin, uint16_t longTime, uint16_t singleTime, uint16_t doubleTime, boolean (\*triggerType)(int))*<a name="spanbutton"></a>
 
