@@ -24,12 +24,12 @@
 
 * **添加了新的 *homeSpan* 方法 `assumeTimeAcquired()`**
   * 调用此方法会告知 HomeSpan 假定您已使用自己的代码获取时间。
-  * 如果您不想在启用 Web 日志时指定 *timeServerURL*，而是希望手动获取时间，则此方法非常有用。
+  * 如果您不想在启用网络日志时指定 *timeServerURL*，而是希望手动获取时间，则此方法非常有用。
 
 * **添加了新的 *homeSpan* 方法 `setGetCharacteristicsCallback(void (*func)(const char *getCharList))`**
   * 设置一个可选的用户自定义回调函数 *func*，每当 HomeSpan 收到来自 HomeKit 的 *GET /characteristics* 请求时，该函数都会被调用。
-  * 每次在 iPhone 或 Mac 上打开 Home 应用时，HomeKit 通常会将此请求发送给所有配对的设备。
-  * 此回调在 HomeSpan 必须使用单独的“昂贵”进程读取传感器类特性的当前状态的情况下非常有用，该进程应仅在需要时调用，而不是在服务的 `loop()` 方法中持续更新。
+  * 每次在 iPhone 或 Mac 上打开“家庭”应用时，HomeKit 通常会将此请求发送给所有配对的设备。
+  * 此回调在 HomeSpan 必须使用单独的“宝贵”进程读取传感器类特性的当前状态的情况下非常有用，该进程应仅在需要时调用，而不是在服务的 `loop()` 方法中持续更新。
   * 函数 *func* 必须是 void 类型，并接受一个 *const char \** 类型的参数，HomeSpan 将 HomeKit 在其 HTTP *GET* 请求中提供的特性 AID/IID 对列表传递给该参数。
   * *getCharList* 可用于判断 HTTP *GET* 请求是否包含 AID/IID 对。对于任何特定的特性
     * 这允许用户根据 HomeKit 请求的特定特性对回调进行操作
