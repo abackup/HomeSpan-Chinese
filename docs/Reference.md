@@ -243,15 +243,14 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
    * 函数 *func* 必须是 *void* 类型，并且没有参数
 
 * `Span& setGetCharacteristicsCallback(void (*func)(const char *getCharList))`
-  * sets an optional user-defined callback function, *func*, to be called by HomeSpan whenever it receives a *GET /characteristics* request from HomeKit
-    * HomeKit generally sends this request to every paired device each time the Home App is opened on an iPhone or Mac
-  * note *func* is called **prior** to HomeSpan reading the requested Characteristics and sending their values back to HomeKit
-    * this callback is useful in circumstances where the current state of a sensor-style Characteristic must be read by HomeSpan using a separate "expensive" process that should be called only when needed as opposed to being continuously updated in a Services `loop()` method
-  * the function *func* must be of type *void* and accept one argument of type *const char \** into which HomeSpan passes the list of Characteristic AID/IID pairs that HomeKit provided in its HTTP GET request
-    * *getCharList* can be used to determine if the HTTP GET request includes the AID/IID pair for any specific Characteristic
-    * this allows the user to act on the callback based on which specific Characteristics were requested by HomeKit
-    * see `SpanCharacteristic::foundIn(const char *getCharList)`
-
+  * 设置一个可选的用户自定义回调函数 *func*，每当 HomeSpan 收到来自 HomeKit 的 *GET /characteristics* 请求时，该函数都会被调用。
+    * 每次在 iPhone 或 Mac 上打开 Home 应用时，HomeKit 通常会向所有配对设备发送此请求。
+  * 注意：*func* 会在 HomeSpan 读取请求的特性并将其值返回给 HomeKit 之前被调用。
+    * 此回调在 HomeSpan 必须使用单独的“昂贵”进程读取传感器类特性的当前状态的情况下非常有用，该进程应仅在需要时调用，而不是在服务的 `loop()` 方法中持续更新。
+  * 函数 *func* 必须是 *void* 类型，并接受一个 *const char \** 类型的参数，HomeSpan 将 HomeKit 在其 HTTP GET 请求中提供的特性 AID/IID 对列表传递给该参数。
+    * *getCharList* 可用于判断 HTTP GET 请求是否包含任何特定 Characteristic 的 AID/IID 对。
+    * 这允许用户根据 HomeKit 请求的特定 Characteristic 来执行回调。
+    * 参见 `SpanCharacteristic::foundIn(const char *getCharList)`
 
 * `Span& setPairingCode(const char *s)`
    * 将设置配对代码设置为 *s*，**必须**正好是 8 位数字（无破折号）
@@ -306,12 +305,11 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 为避免创建单个大型文本缓冲区，HomeSpan 将网络日志的 HTML 拆分为 1024 字节的块并重复调用 *f()* 直到所有 HTML 都已流式传输；然后 HomeSpan 最后调用 *f()*，并将 *htmlBuf* 设置为空，向用户指示已到达 HTML 文本的末尾
   * 此命令主要用于将网络日志页面重定向到用户定义的进程，以进行其他处理、显示或传输
   * 有关更多详细信息，请参阅 [消息日志](Logging.md)
- 
+
 * `void assumeTimeAcquired()`
-  * calling this method tells HomeSpan to assume that you have acquired the time using your own code
-  * useful if you don't want to specify a *timeServerURL* when enabling the Web Log, but would rather acquire it manually
-    * note if a *timeServerURL* is not specified when enabling the Web Log, the Web Log records will show the time as "Unknown" unless and until you call this method   
-  
+  * 调用此方法会告知 HomeSpan 假定您已使用自己的代码获取时间。
+  * 如果您在启用 Web 日志时不想指定 *timeServerURL*，而是希望手动获取，则此方法非常有用。
+    * 注意：如果在启用 Web 日志时未指定 *timeServerURL*，则 Web 日志记录将显示时间“未知”，除非您调用此方法。
 
 * `void processSerialCommand(const char *CLIcommand)`
   * 处理 *CLIcommand*，就像输入到串口监视器中一样
@@ -460,21 +458,21 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 
 ## *SpanAccessory(uint32_t aid)*
 
-* every HomeSpan sketch requires at least one Accessory
-* a sketch can contain a maximum of 150 Accessories per sketch (if exceeded, a runtime error will the thrown and the sketch will halt)
-* there are no associated methods
-* the argument *aid* is optional:
-  * if specified and *not* zero, the Accessory ID is set to *aid*
-  * if unspecified, or equal to zero, the Accessory ID will be set to one more than the ID of the previously-instantiated Accessory, or to 1 if this is the first Accessory
-  * the first Accessory instantiated must always have an ID=1 (which is the default if *aid* is unspecified)
-  * setting the *aid* of the first Accessory to anything but 1 throws an error during initialization
-* you must call `homeSpan.begin()` before instantiating any Accessories
-* example: `new SpanAccessory();`
+* 每个 HomeSpan 草图都需要至少一个配件
+* 每个草图最多可包含 150 个配件（如果超过，将引发运行时错误并停止草图）
+* 没有关联方法
+* 参数 *aid* 是可选的：
+  * 如果指定且 *不*为零，则配件 ID 将设置为 *aid*
+  * 如果未指定或等于零，则配件 ID 将设置为比先前实例化的配件 ID 大 1，如果这是第一个配件，则设置为 1
+  * 实例化的第一个配件必须始终具有 ID=1（如果未指定 *aid*，则为默认值）
+  * 将第一个配件的 *aid* 设置为 1 以外的任何值都会在初始化期间引发错误
+* 实例化任何配件之前，必须调用 `homeSpan.begin()`
+* 示例：`new SpanAccessory();`
 
-The following methods are supported:
+支持以下方法：
 
 * `uint32_t getAID()`
-  * returns the Accessory ID (AID)
+  * 返回配件 ID （援助）
 
 ## *SpanService()*
 
@@ -595,11 +593,10 @@ The following methods are supported:
   * 相当于 `setVal(value)`，但专用于字符串特征（即以空字符结尾的字符数组）
 
 * `SpanCharacteristic *setMaxStringLength(uint8_t n)`
-  * changes the maximum allowed length of a string-characteristic from the HAP default (64) to *n*
-  * note the Home App seems to properly process strings that exceed 64 characters without needing to reset the maximum length
-  * this method is included in HomeSpan only for completeness with HAP - it is likely not needed
-  * returns a pointer to the Characteristic itself so that the method can be chained during instantiation
- 
+  * 将字符串特征的最大允许长度从 HAP 默认值 (64) 更改为 *n*
+  * 注意：Home 应用似乎可以正确处理超过 64 个字符的字符串，而无需重置最大长度
+  * 此方法包含在 HomeSpan 中，仅用于 HAP 的完整性 - 可能不需要
+  * 返回指向特征本身的指针，以便可以在实例化期间链接该方法 
 
 #### DATA（即字节数组）特征支持以下方法：
 
@@ -679,16 +676,15 @@ The following methods are supported:
   * 返回特征的 IID
 
 * `uint32_t getAID()`
-  * returns the AID of the Accessory to which the Service belongs
+  * 返回服务所属配件的 AID
 
- * `uint32_t getAID()`
-  * returns the AID of the Accessory to which the Characteristic belongs
+* `uint32_t getAID()`
+  * 返回特性所属配件的 AID
 
 * `boolean foundIn(const char *getCharList)`
-  * returns *true* if the AID/IID pair for the Characteristic is found in *getCharList*, else returns *false*
-  * *getCharList* is typically passed by HomeSpan to an optional user-defined callback function as specified in *homeSpan.setGetCharacteristicsCallback()*
+  * 如果在 *getCharList* 中找到特性的 AID/IID 对，则返回 *true*，否则返回 *false*
+  * *getCharList* 通常由 HomeSpan 传递给可选的用户自定义回调函数，如 *homeSpan.setGetCharacteristicsCallback()* 中所述
   
-
 ### *SpanButton(int pin, uint16_t longTime, uint16_t singleTime, uint16_t doubleTime, boolean (\*triggerType)(int))*<a name="spanbutton"></a>
 
 创建此**类**的实例会将按钮处理程序附加到指定的 ESP32 *pin*。
