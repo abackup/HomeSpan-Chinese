@@ -34,7 +34,7 @@
   * *getCharList* 可用于判断 HTTP *GET* 请求是否包含 AID/IID 对。对于任何特定的特性
     * 这允许用户根据 HomeKit 请求的特定特性对回调进行操作
     * 请参阅**新的 SpanCharacteristic 辅助方法 `foundIn(const char *getCharList)`**，该方法根据特定特性的 AID/IID 是否在 *getCharList* 中找到而返回 *true* 或 *false*。
-    * 为了完整性，**还向 SpanAccessory、SpanService 和 SpanCharacteristic 类分别添加了 `uint32_t getAID()` 方法。
+    * 为了完整性，**还向 SpanAccessory、SpanService 和 SpanCharacteristic 类**分别添加了 `uint32_t getAID()` 方法。
 
 * **在 *HomeSpan.cpp* 中明确添加了 `#include <mutex>`，以解决与 Arduino-ESP32 v3.2.0 的兼容性问题。**
 
