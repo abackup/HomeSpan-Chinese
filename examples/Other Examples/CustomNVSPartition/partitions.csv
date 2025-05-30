@@ -1,0 +1,12 @@
+# --- HomeSpan 的自定义分区表 ---
+#
+# 与 min_spiffs 类似，不同之处在于末尾的 128K SPIFF 块被 128K NVS 块替换，并且初始的 20K NVS 块不再使用。请注意，此表设计用于 4MB Flash。
+# 要与 8MB Flash 一起使用，请将 app0 和 app1 分别增加 2048K，使其变为 3968K。
+# 要与 16MB Flash 一起使用，请将 app0 和 app1 分别增加 6144K，使其变为 8064K
+#
+unused_nvs,data,nvs,,20K,
+otadata,data,ota,,8K,
+app0,app,ota_0,,1920K,
+app1,app,ota_1,,1920K,
+nvs,data,nvs,,128K,
+coredump,data,coredump,,64K,
