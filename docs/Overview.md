@@ -31,7 +31,7 @@ void setup() {
  
   Serial.begin(115200);       // 启动串口接口
   
-   HomeSpan.begin();           // 初始化 HomeSpan 
+   homeSpan.begin();           // 初始化 HomeSpan 
   
   /// HAP 附件属性数据库的定义在此处 ///
   
@@ -41,7 +41,7 @@ void setup() {
 
 void loop(){
 
-  HomeSpan.poll(); 
+  homeSpan.poll(); 
 
 } // 循环结束
 ```
@@ -54,11 +54,11 @@ void setup() {
  
   Serial.begin(115200);       // 启动串口接口
   
-   HomeSpan.begin();           // 初始化 HomeSpan 
+   homeSpan.begin();           // 初始化 HomeSpan 
   
   /// HAP 附件属性数据库的定义位于此处 ///
   
-  HomeSpan.autoPoll();         // 启动一个在后台重复调用 HomeSpan.poll() 的任务
+  homeSpan.autoPoll();         // 启动一个在后台重复调用 HomeSpan.poll() 的任务
 
 } // 设置结束
 
@@ -108,7 +108,7 @@ void setup() {
  
   Serial.begin(115200);       // 启动串口接口
   
-   HomeSpan.begin();           // 初始化 HomeSpan 
+   homeSpan.begin();           // 初始化 HomeSpan 
 
   new SpanAccessory();        //带非调光吸顶灯的可逆变速吊扇
    new Service::Fan();       
@@ -127,7 +127,7 @@ void setup() {
 
 void loop(){
 
-  HomeSpan.poll(); 
+  homeSpan.poll(); 
 
 } //结束循环
 ```
@@ -147,7 +147,7 @@ void setup() {
  
   Serial.begin(115200);       // 开启串口
   
-   HomeSpan.begin();           // 初始化  HomeSpan 
+   homeSpan.begin();           // 初始化  HomeSpan 
 
   new SpanAccessory();           // 台灯配件
   
@@ -161,7 +161,7 @@ void setup() {
 
 void loop(){
 
-  HomeSpan.poll(); 
+  homeSpan.poll(); 
 
 } // 结束 loop()
 ```
@@ -278,7 +278,7 @@ void setup() {
  
   Serial.begin(115200);       // 开启串口
   
-   HomeSpan.begin();           // 初始化 HomeSpan 
+   homeSpan.begin();           // 初始化 HomeSpan 
 
   new SpanAccessory();           // Table Lamp Accessory
   
@@ -293,7 +293,7 @@ void setup() {
 
 void loop(){
 
-  HomeSpan.poll(); 
+  homeSpan.poll(); 
 
 } // 结束循环
 ```
