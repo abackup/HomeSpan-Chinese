@@ -45,6 +45,15 @@ HomeSpan 利用 Arduino-ESP32 库的全局 `ETH` 对象来管理以太网连接�
 
 与 WiFi 连接类似，HomeSpan 会自动处理所有以太网断开/重新连接（例如，如果您拔下以太网电缆，然后将其插回路由器，或者路由器本身重新启动），并将此类事件记录在 Web 日志中（如果启用）。与使用 WiFi 类似，要运行自定义函数一次或每次建立以太网连接（或断开连接后重新建立），您可以在草图中实现 homeSpan `setConnectionCallback()` 方法。
 
+## IPv6 Compatability
+
+The Arduino-ESP32 library and the Espressif IDF natively supports the simultaneous use of both IPv4 and IPv6 addresses, though unless IPv6 addresses are enabled, the default behavior for any given sketch is to use only IPv4.  To enable the additional use of IPv6 addresses on the ESP32 WiFi interface, add `WiFi.enableIPv6()` to your sketch.  To enable the additional use of IPv6 addresses on the ESP32 ETH interface, add `ETH.enableIPv6()` to your sketch.
+
+When the use of IPv6 addresses is enabled, HomeSpan will automatically handle all HTTP requests received from either an IPv4 or IPv6 address.  Note that whereas the ESP32 will typically receives only one IPv4 adddress from the router when connecting to a network, it may receive up to three IPv6 addresses: a Link Local Address, a Unique Local Address, and (optionally) a Global Address.  HomeSpan considers network connectivity to be established upon receiving the first IP address (whether IPv4 or IPv6) and will call any user-defined callback set by `homeSpan.setConnectionCallback()` only once upon reception of the first address.  HomeSpan does not call the callback when recediving any addiitonl IP addresses but it does creates a Web Log entry (along with a report to the Serial Monitor) for each address it receives.
+
+
+
+
 ---
 
 [↩️](../README.md#resources)返回欢迎页面
