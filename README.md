@@ -13,7 +13,7 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
 | 1.9.1 或更早  | v2.0.0 - v2.0.17           | *默认分区方案* (1.3MB APP)         | ESP32, S2, S3, C3            |
 | 2.0.0 或以后  | v3.0.2 - **v3.3.0***       | *最小 SPIFFS 分区方案* (1.9MB APP) | ESP32, S2, S3, C3, *还有 C6* |
 
-*HomeSpan 已通过 Arduino-ESP32 开发板管理器 3.2.0 版本（基于 IDF 5.5.0 构建）的测试。后续版本可能可以正常工作，但尚未经过测试。注意 HomeSpan 不支持使用 Arduino-ESP32 开发板管理器的 alpha、beta 或预发布候选版本——仅在开发板管理器的生产版本上进行测试。
+*HomeSpan 已通过 Arduino-ESP32 开发板管理器 3.3.0 版本（基于 IDF 5.5.0 构建）的测试。后续版本可能可以正常工作，但尚未经过测试。注意 HomeSpan 不支持使用 Arduino-ESP32 开发板管理器的 alpha、beta 或预发布候选版本——仅在开发板管理器的生产版本上进行测试。
 
 **附加要求**：Apple HomeKit 架构 [需要使用家庭中心](https://support.apple.com/en-us/HT207057)（HomePod 或 Apple TV）才能完整、正确地操作任何 HomeKit 设备，包括基于 HomeSpan 的设备。***不支持在没有家庭中心的情况下使用***。
 
