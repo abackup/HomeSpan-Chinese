@@ -211,6 +211,9 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 
 * `Span& setConnectionCallback(void (*func)(int count))`
   * 设置可选的用户定义回调函数 *func*，每次 WiFi 或以太网连接建立或断开后重新建立时 HomeSpan 都会调用该函数。函数 *func* 必须是 *void* 类型，并接受单个 *int* 参数 *count*，HomeSpan 将 WiFi 或以太网连接建立或重新建立的次数传递给该参数（即，在初始 WiFi 或以太网连接时 *count*=1；如果在第一次断开后重新建立，则 *count*=2，等等）
+
+* note HomeSpan considers a connection to be established as soon as it acquires an IP address from the router.  If IPv6 has been enabled, HomeSpan will typically receive multiple IP addresses from the router over the course of a few seconds.  HomeSpan calls *func* only once upon receipt of the *first* IP address (regardless of whether is it IPv4 or IPv6).  It does *not* call *func* upon receipt of any subsequent IP addresses it may receive from the router
+  * see [WiFi and Ethernet Connectivity](Networks.md) for more details about HomeSpan's use of IPv4 and IPv6 addresses
  
 * `Span& useEthernet()`
   * 强制 HomeSpan 使用以太网而不是 WiFi，即使在调用 `homeSpan.begin()` 之前尚未调用 ETH 或未找到以太网卡
@@ -360,6 +363,9 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 在动态添加一个或多个附件（使用 `new SpanAccessory(aid)`）或删除一个或多个附件（使用`homeSpan.deleteAccessory(aid)`)
   * **重要**：删除配件后，你不能在添加新配件时（在同一设备上）重复使用相同的 *aid*，除非新配件配置了与已删除配件完全相同的服务和特性
   * 注意：如果你有一个在草图的 Arduino `setup()` 函数中完全定义的静态配件数据库，则**不需要**此方法
+
+* `Span& forceNewConfigNumber()`
+  * forces HomeSpan to update the database configuration number at start-up, as well as anytime `updateDatabase()` is called from a sketch, regardless of whether there has been any change to the database configuration  
 
 * `Span& resetIID(uint32_t newIID)`
   * 将当前附件的 IID 计数重置为 *newIID*，该计数必须大于 0
