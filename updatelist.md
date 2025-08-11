@@ -4,11 +4,11 @@
 
 * **新增对 IPv6 地址的支持**
 
-* 可以通过在草图中添加 Arduino-ESP32 函数 `WiFi.enableIPv6()` 或 `ETH.enableIPv6()` 来启用 IPv6。
-* 启用 IPv6 后，HomeSpan 会在串口监视器和 Web 日志中报告 IPv6 **唯一链路地址 (ULA)** 以及 IPv4 地址（如果未启用 IPv6，则 IPv6 地址报告为 "::"）。
-* 获取的每个 IP 地址（无论是 IPv6 还是 IPv4）都会在从路由器接收时记录到串口监视器和 Web 日志中。
-* 请注意，如果使用 `homeSpan.setConnectionCallback()` 在初始 WiFi 或 ETH 连接时设置回调函数，则该回调函数仅在从路由器获取第一个 IP 地址时调用一次（无论是否IPv4 或 IPv6 地址）
-* 详情请参阅 [WiFi 和以太网连接](docs/Networks.md)
+  * 可以通过在草图中添加 Arduino-ESP32 函数 `WiFi.enableIPv6()` 或 `ETH.enableIPv6()` 来启用 IPv6。
+  * 启用 IPv6 后，HomeSpan 会在串口监视器和 Web 日志中报告 IPv6 **唯一链路地址 (ULA)** 以及 IPv4 地址（如果未启用 IPv6，则 IPv6 地址报告为 "::"）。
+  * 获取的每个 IP 地址（无论是 IPv6 还是 IPv4）都会在从路由器接收时记录到串口监视器和 Web 日志中。
+  * 请注意，如果使用 `homeSpan.setConnectionCallback()` 在初始 WiFi 或 ETH 连接时设置回调函数，则该回调函数仅在从路由器获取第一个 IP 地址时调用一次（无论是否IPv4 或 IPv6 地址）
+  * 详情请参阅 [WiFi 和以太网连接](docs/Networks.md)
 
 * **更新了 HomeSpan 接入点代码，（希望）解决了之前导致 HomeSpan 设置页面无法在非 Apple 设备上显示的问题**
 
@@ -16,19 +16,19 @@
 
 * **添加了新的 *homeSpan* 方法 `forceNewConfigNumber()`**
 
-* 当包含在 sketch 中时，此方法会强制 HomeSpan 在启动时以及每次调用 `homeSpan.updateDatabase()` 时更新数据库配置编号，无论数据库配置是否有任何更改。
-* 此函数的目的是尝试鼓励 HomeKit 后端架构更快地重新建立与已重启的 HomeSpan 设备的连接，而无需用户打开 Home App（在这种情况下，HomeKit 会立即连接到设备）
-* 以这种方式提示 HomeKit 的效果有限（希望 Apple 能在 iOS 26 中更全面地解决这个问题）
+  * 当包含在 sketch 中时，此方法会强制 HomeSpan 在启动时以及每次调用 `homeSpan.updateDatabase()` 时更新数据库配置编号，无论数据库配置是否有任何更改。
+  * 此函数的目的是尝试鼓励 HomeKit 后端架构更快地重新建立与已重启的 HomeSpan 设备的连接，而无需用户打开 Home App（在这种情况下，HomeKit 会立即连接到设备）
+  * 以这种方式提示 HomeKit 的效果有限（希望 Apple 能在 iOS 26 中更全面地解决这个问题）
 
 ### 兼容性问题
 
 * **解决了在 Arduino-ESP32 3.2 或更高版本下运行时与 HomeSpan 的 *LedPin*、*RFControl* 和 *Pixel* 模块的兼容性问题，这是由于乐鑫在 IDF 5.4 中向各种 *LEDC* 和 *RMT* 配置结构添加了新字段。**
 
-* 这些模块中的初始化例程已修改，始终会预先清除所有相关的 IDF 配置结构，这样，如果/当乐鑫在后续 IDF 更新中添加任何额外的配置字段时，此类问题（希望）不会再次出现。
+  * 这些模块中的初始化例程已修改，始终会预先清除所有相关的 IDF 配置结构，这样，如果/当乐鑫在后续 IDF 更新中添加任何额外的配置字段时，此类问题（希望）不会再次出现。
 
 * **解决了在 IDF 5.5 / Arduino-ESP32 3.3.0 下 ESP-NOW 回调函数签名更改导致的兼容性问题。**
 
-* 根据 ESP-NOW IDF 5.5 调整了回调函数签名 [重大更改](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/migration-guides/release-5.x/5.5/wifi.html)
+  * 根据 ESP-NOW IDF 5.5 调整了回调函数签名 [重大更改](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/migration-guides/release-5.x/5.5/wifi.html)
 
 有关此版本中包含的所有更改和错误修复的详细信息，请参阅 [发布](https://github.com/HomeSpan/HomeSpan/releases) 更新。
 
