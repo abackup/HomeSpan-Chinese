@@ -1,37 +1,36 @@
-## ❗Latest Update - HomeSpan 2.1.3 (02 Aug 2025)
+## ❗最新更新 - HomeSpan 2.1.3（2025 年 8 月 2 日）
 
-### Updates and Corrections
+### 更新和修正
 
-* **Added support for IPv6 addresses**
-  
-  * IPv6 can be enabled by adding the Arduino-ESP32 functions `WiFi.enableIPv6()` or `ETH.enableIPv6()` to a sketch
-  * when IPv6 is enabled, HomeSpan reports the IPv6 **Unique Link Address (ULA)** alongside the IPv4 address in the Serial Monitor and Web Log (if IPv6 is not enabled, the IPv6 address is reported as "::")
-  * each IP address acquired (whether IPv6 or IPv4) is logged to the Serial Monitor and Web Log at the time it is received from the router
-  * note that if `homeSpan.setConnectionCallback()` is used to set a callback function upon initial WiFi or ETH connection, the callback function is called only ONCE upon acquisition of the very first IP address received from the router (regardless of whether it is an IPv4 or IPv6 address)
-  * see  [WiFi and Ethernet Connectivity](docs/Networks.md) for details
+* **新增对 IPv6 地址的支持**
 
-* **Updated the HomeSpan Access Point code to (hopefully) address issues that previously prevented the HomeSpan Setup pages from being displayed on non-Apple devices**
+* 可以通过在草图中添加 Arduino-ESP32 函数 `WiFi.enableIPv6()` 或 `ETH.enableIPv6()` 来启用 IPv6。
+* 启用 IPv6 后，HomeSpan 会在串口监视器和 Web 日志中报告 IPv6 **唯一链路地址 (ULA)** 以及 IPv4 地址（如果未启用 IPv6，则 IPv6 地址报告为 "::"）。
+* 获取的每个 IP 地址（无论是 IPv6 还是 IPv4）都会在从路由器接收时记录到串口监视器和 Web 日志中。
+* 请注意，如果使用 `homeSpan.setConnectionCallback()` 在初始 WiFi 或 ETH 连接时设置回调函数，则该回调函数仅在从路由器获取第一个 IP 地址时调用一次（无论是否IPv4 或 IPv6 地址）
+* 详情请参阅 [WiFi 和以太网连接](docs/Networks.md)
 
-* **Fixed bug in PID interpretation for HAP Timed Writes that was introduced when the JSON-parser was refactored in HomeSpan 2.1.2**
+* **更新了 HomeSpan 接入点代码，（希望）解决了之前导致 HomeSpan 设置页面无法在非 Apple 设备上显示的问题**
 
-* **Added new *homeSpan* method `forceNewConfigNumber()`**
-  
-  * when included in a sketch, this forces HomeSpan to update the database configuration number upon start-up, as well as anytime `homeSpan.updateDatabase()` is called, regardless of whether there has been any change to the database configuration
-  * purpose of this function is an attempt to encourage the HomeKit backend architecture to more quickly re-establish a connection to a HomeSpan device that has been rebooted without the user opening the Home App (in which case HomeKit would immediately connect to the device)
-  * prompting HomeKit in this fashion has had limited success (hopefully Apple will address this shortcoming more generally in iOS26)
+* **修复了 HomeSpan 2.1.2 中重构 JSON 解析器时引入的 HAP 定时写入 PID 解释错误**
 
-### Compatibility Issues
+* **添加了新的 *homeSpan* 方法 `forceNewConfigNumber()`**
 
-* **Addressed compatibility issues with HomeSpan's *LedPin*, *RFControl* and *Pixel* modules when run under Arduino-ESP32 version 3.2 or later as a result of new fields added by Espressif to various *LEDC* and *RMT* configuration structures in IDF 5.4**
-  
-  * the initialization routines in these  modules has been modified to always pre-clear all relevant IDF config structures so that such issues will (hopefully) not re-surface in the future if/when Espressif adds any additional config fields in subsequent IDF updates
+* 当包含在 sketch 中时，此方法会强制 HomeSpan 在启动时以及每次调用 `homeSpan.updateDatabase()` 时更新数据库配置编号，无论数据库配置是否有任何更改。
+* 此函数的目的是尝试鼓励 HomeKit 后端架构更快地重新建立与已重启的 HomeSpan 设备的连接，而无需用户打开 Home App（在这种情况下，HomeKit 会立即连接到设备）
+* 以这种方式提示 HomeKit 的效果有限（希望 Apple 能在 iOS 26 中更全面地解决这个问题）
 
-* **Addressed compatibility issue with change in function signature for ESP-NOW callback under IDF 5.5 / Arduino-ESP32 3.3.0**
-  
-  * adjusted signature of callback as per ESP-NOW IDF 5.5 [breaking change](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/migration-guides/release-5.x/5.5/wifi.html)
+### 兼容性问题
 
-See [Releases](https://github.com/HomeSpan/HomeSpan/releases) for details on all changes and bug fixes included in this update.
+* **解决了在 Arduino-ESP32 3.2 或更高版本下运行时与 HomeSpan 的 *LedPin*、*RFControl* 和 *Pixel* 模块的兼容性问题，这是由于乐鑫在 IDF 5.4 中向各种 *LEDC* 和 *RMT* 配置结构添加了新字段。**
 
+* 这些模块中的初始化例程已修改，始终会预先清除所有相关的 IDF 配置结构，这样，如果/当乐鑫在后续 IDF 更新中添加任何额外的配置字段时，此类问题（希望）不会再次出现。
+
+* **解决了在 IDF 5.5 / Arduino-ESP32 3.3.0 下 ESP-NOW 回调函数签名更改导致的兼容性问题。**
+
+* 根据 ESP-NOW IDF 5.5 调整了回调函数签名 [重大更改](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/migration-guides/release-5.x/5.5/wifi.html)
+
+有关此版本中包含的所有更改和错误修复的详细信息，请参阅 [发布](https://github.com/HomeSpan/HomeSpan/releases) 更新。
 
 
 ## ❗最新更新 - HomeSpan 2.1.2 (2025年5月8日)
