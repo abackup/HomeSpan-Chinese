@@ -45,19 +45,19 @@ HomeSpan 利用 Arduino-ESP32 库的全局 `ETH` 对象来管理以太网连接�
 
 与 WiFi 连接类似，HomeSpan 会自动处理所有以太网断开/重新连接（例如，如果您拔下以太网电缆，然后将其插回路由器，或者路由器本身重新启动），并将此类事件记录在 Web 日志中（如果启用）。与使用 WiFi 类似，要运行自定义函数一次或每次建立以太网连接（或断开连接后重新建立），您可以在草图中实现 homeSpan `setConnectionCallback()` 方法。
 
-IPv6 Compatability
+## IPv6 兼容性
 
-The Arduino-ESP32 library and the Espressif IDF natively supports the simultaneous use of both IPv4 and IPv6 addresses, though unless IPv6 addresses are enabled, the default behavior for any given sketch is to use only IPv4.[^ipv6] To enable IPv6 addresses on the ESP32 WiFi interface, add `WiFi.enableIPv6()` to your sketch. To enable IPv6 addresses on the ESP32 Ethernet interface, add `ETH.enableIPv6()` to your sketch.
+Arduino-ESP32 库和 Espressif IDF 原生支持同时使用 IPv4 和 IPv6 地址，但除非启用 IPv6 地址，否则任何给定草图的默认行为都是仅使用 IPv4。[^ipv6] 要在 ESP32 WiFi 接口上启用 IPv6 地址，请在草图中添加 `WiFi.enableIPv6()`。要在 ESP32 以太网接口上启用 IPv6 地址，请在草图中添加 `ETH.enableIPv6()`。
 
-[^ipv6]:IPv4 addresses are 4 bytes long and usually written as 4 decimal numbers (from 0-255) separated by periods, such as 192.168.1.10. IPv6 addresses are 16 bytes long and usually written as 8 groups of 2 bytes each, separated by colons, such as 2001:0db8:85a3:0000:0000:8a2e:0370:7334. By convention, leading zeros for each 2-byte group are usually omitted, and the longest *repeated* group of zero can be abbreviated by "::" as such: 2001:db8:85a3::8a2e:370:7334.
+[^ipv6]：IPv4 地址长度为 4 个字节，通常写为 4 个十进制数字（0-255），以句点分隔，例如 192.168.1.10。 IPv6 地址长度为 16 个字节，通常写成 8 组，每组 2 个字节，以冒号分隔，例如 2001:0db8:85a3:0000:0000:8a2e:0370:7334。按照惯例，每个 2 字节组的前导零通常会被省略，最长的 *重复* 零组可以用“::”缩写，例如：2001:db8:85a3::8a2e:370:7334。
 
-When the use of IPv6 addresses is enabled, HomeSpan will automatically handle all HTTP requests received from either an IPv4 or IPv6 address. Note that whereas the ESP32 will typically receive only one IPv4 adddress from the router when connecting to a network, it may receive up to three IPv6 addresses: a *Link Local Address*, a *Unique Local Address*, and (optionally) a *Global Address*. The exact order in which IPv4 and IPv6 addresses are acquired is indeterminant and can change everytime the device reboots and tries to connect to your network.
+启用 IPv6 地址后，HomeSpan 将自动处理从 IPv4 或 IPv6 地址接收的所有 HTTP 请求。请注意，ESP32 在连接到网络时通常只会从路由器接收一个 IPv4 地址，但它最多可以接收三个 IPv6 地址：一个 *链路本地地址*、一个 *唯一本地地址* 和一个（可选） *全局地址*。获取 IPv4 和 IPv6 地址的具体顺序是不确定的，并且每次设备重启并尝试连接到网络时都可能发生变化。
 
-HomeSpan considers network connectivity to be established upon receiving the first IP address (whether IPv4 or IPv6) and will call any user-defined callback function set by `homeSpan.setConnectionCallback()` *only once upon reception of the first address*. HomeSpan does not call the callback when receiving any additional IP addresses but it does creates a Web Log entry (along with a report to the Serial Monitor) for each IP address when acquired.[^events]
+HomeSpan 认为在收到第一个 IP 地址（无论是 IPv4 还是 IPv6）时网络连接已建立，并且只会在收到第一个地址时调用一次由 `homeSpan.setConnectionCallback()` 设置的用户自定义回调函数。HomeSpan 在收到任何其他 IP 地址时不会调用回调函数，但它会在获取每个 IP 地址时创建一个 Web 日志条目（以及向串行监视器发送的报告）。[^events]
 
-[^events]:If you need more advanced callback handling for network connectivity events, such as calling a function for *each* IP address acquired (instead of just the first one), please use the Arduino-ESP32's built-in network event handling methods: `WiFi.onEvent()` and `ETH.onEvent()`, or more generically, `Network.onEvent()`.
+[^events]：如果您需要更高级的网络连接事件回调处理，例如为获取的每个 IP 地址（而不仅仅是第一个）调用一个函数，请使用 Arduino-ESP32 的内置网络事件处理方法：`WiFi.onEvent()` 和 `ETH.onEvent()`，或者更通用的 `Network.onEvent()`。
 
-In addition, HomeSpan reports the device's IPv6 *Unique Local Address* alongside its IPv4 address whenever displayed in either the Serial Monitor or the Web Log. If IPv6 addressing has not been enabled, or if it has been enabled but an IPv6 *Unique Local Address* has not been acquired, the IPv6 address will be shown as "::".
+此外，无论设备在串口监视器还是 Web 日志中显示，HomeSpan 都会报告其 IPv6 *唯一本地地址* 及其 IPv4 地址。如果未启用 IPv6 寻址，或者已启用但未获取 IPv6 *唯一本地地址*，则 IPv6 地址将显示为“::”。
 
 
 ---
