@@ -1,44 +1,45 @@
-<!--   原文时间：2023.7.3,校对时间：2025.2.27  -->
+<!--   原文时间：2023.7.3,校对时间：2025.8.12  -->
 
-# 使用可闪烁接口创建自定义状态指示灯
+# 使用 Blinkable 接口创建自定义状态 LED
 
-HomeSpan 通过状态指示灯不同的闪烁模式向用户传达有关 HomeSpan 状态的信息。*HomeSpan* 允许你使用 `setStatusPin()` and `setStatusPixel()` 方法分别选择标准 LED 或 NeoPixel LED 作为状态指示灯。另外，可以使用 *homeSpan* 的`setStatusDevice(Blinkable *sDev)`方法将状态指示设置为实现**闪烁**接口[^1]的任何对象，其中 *sDev*  是闪烁对象。
+HomeSpan 的状态 LED 会通过不同的闪烁模式向用户传达 HomeSpan 的运行状态信息。  
+*HomeSpan* 的 `setStatusPin()` 和 `setStatusPixel()` 方法分别允许你将状态 LED 设为普通 LED 或 NeoPixel LED。  
+然而，状态 LED 也可以设置为**任何实现了 Blinkable 接口**[^1] 的对象，只需通过 `homeSpan` 方法 `setStatusDevice(Blinkable *sDev)` 指定，其中 `sDev` 即为一个 Blinkable 对象。
 
-要创建你自己的闪烁对象，请首先创建从 **Blinkable** 派生的子类。接下来，添加一个定义引脚的构造函数并根据需要执行任何初始化。最后，定义 **Blinkable** 调用以使设备闪烁的以下*必需*方法：
+要创建你自己的 Blinkable 对象，首先需要新建一个继承自 **Blinkable** 的子类。  
+接着，添加一个构造函数，用于定义引脚并在需要时执行初始化操作。  
+最后，实现以下**必须**的方法，这些方法会在 **Blinkable** 控制设备闪烁时被调用：
 
+* `void on()` - 打开设备（例如点亮 LED）
+* `void off()` - 关闭设备（例如熄灭 LED）
+* `int getPin()` - 返回设备的引脚编号（任意数字均可，不必是真正的 ESP32 引脚号）
 
-* `void on()` - 打开设备（例如使 LED 亮起）
-* `void off()` - 关闭设备（例如使 LED 熄灭）
-* `int getPin()` - 返回设备的引脚号（任何数字都可以，不必是实际的 ESP32 引脚）
-
-
-例如，以下代码为倒置 LED 定义了一个 Blinkable 对象，当 ESP32 引脚为低电平时，该 LED 会*打开*，当 ESP32 引脚为高电平时，该 LED 会*关闭*：
+例如，下面的代码定义了一个 Blinkable 对象，用于驱动**反向 LED**（当 ESP32 引脚为 LOW 时点亮，为 HIGH 时熄灭）：
 
 ```C++
+// 在代码顶部附近创建如下结构体
 
-// 在草图顶部附近创建此结构
+struct invertedLED : Blinkable {        // 创建继承自 Blinkable 的子类
 
-struct invertedLED : Blinkable {        // 创建一个派生自 Blinkable 的子类
+  int pin;                              // 存储引脚编号的变量
 
-  int pin;                              // 用于存储引脚号的变量
-  
-  invertedLED(int pin) : pin{pin} {     // 初始化 pin 参数的构造函数
-    pinMode(pin,OUTPUT);                // 将引脚设置为输出
-    digitalWrite(pin,HIGH);             // 将引脚设置为高电平（对于倒置的 LED，该引脚处于关闭状态）
+  invertedLED(int pin) : pin{pin} {     // 构造函数，初始化引脚
+    pinMode(pin,OUTPUT);                // 将引脚设置为输出模式
+    digitalWrite(pin,HIGH);             // 先置高电平（对于反向 LED 来说表示熄灭）
   }
 
-  void on() override { digitalWrite(pin,LOW); }        // 将必需的函数 on() - 将引脚设置为低电平
-  void off() override { digitalWrite(pin,HIGH); }      // 必需的函数 off() - 将引脚设置为高电平
-  int getPin() override { return(pin); }               // 必需函数 getPin() - 返回引脚号
+  void on() override { digitalWrite(pin,LOW); }        // 必需的 on() 方法-置低电平点亮
+  void off() override { digitalWrite(pin,HIGH); }      // 必需的 off() 方法-置高电平熄灭
+  int getPin() override { return(pin); }               // 必需的 getPin() 方法-返回引脚编号
 };
 
 ...
 
-// 然后使用 SETUP() 中的结构体设置状态指示灯
+// 然后在 setup() 中使用该结构体来设置状态 LED
 
 void setup(){
 
-  homeSpan.setStatusDevice(new invertedLED(13));    // 将状态指示灯设置为连接到引脚 13 的新的可闪烁设备
+  homeSpan.setStatusDevice(new invertedLED(13));    // 将状态 LED 设置为连接在引脚 13 的新 Blinkable 设备
 
 ...
 }
