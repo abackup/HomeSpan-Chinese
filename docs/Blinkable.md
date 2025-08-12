@@ -2,13 +2,9 @@
 
 # 使用 Blinkable 接口创建自定义状态 LED
 
-HomeSpan 的状态 LED 会通过不同的闪烁模式向用户传达 HomeSpan 的运行状态信息。  
-*HomeSpan* 的 `setStatusPin()` 和 `setStatusPixel()` 方法分别允许你将状态 LED 设为普通 LED 或 NeoPixel LED。  
-然而，状态 LED 也可以设置为**任何实现了 Blinkable 接口**[^1] 的对象，只需通过 `homeSpan` 方法 `setStatusDevice(Blinkable *sDev)` 指定，其中 `sDev` 即为一个 Blinkable 对象。
+HomeSpan 的状态 LED 会通过不同的闪烁模式向用户传达 HomeSpan 的运行状态信息。*HomeSpan* 的 `setStatusPin()` 和 `setStatusPixel()` 方法分别允许你将状态 LED 设为普通 LED 或 NeoPixel LED。然而，状态 LED 也可以设置为**任何实现了 Blinkable 接口**[^1] 的对象，只需通过 `homeSpan` 方法 `setStatusDevice(Blinkable *sDev)` 指定，其中 `sDev` 即为一个 Blinkable 对象。
 
-要创建你自己的 Blinkable 对象，首先需要新建一个继承自 **Blinkable** 的子类。  
-接着，添加一个构造函数，用于定义引脚并在需要时执行初始化操作。  
-最后，实现以下**必须**的方法，这些方法会在 **Blinkable** 控制设备闪烁时被调用：
+要创建你自己的 Blinkable 对象，首先需要新建一个继承自 **Blinkable** 的子类。接着，添加一个构造函数，用于定义引脚并在需要时执行初始化操作。最后，实现以下**必须**的方法，这些方法会在 **Blinkable** 控制设备闪烁时被调用：
 
 * `void on()` - 打开设备（例如点亮 LED）
 * `void off()` - 关闭设备（例如熄灭 LED）
