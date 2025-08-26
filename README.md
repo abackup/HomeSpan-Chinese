@@ -6,16 +6,28 @@
 
 HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范版本 R2 ([HAP-R2](../master/docs/HAP-R2.pdf))，专为在 Arduino IDE 中运行的乐鑫 ESP32 微控制器设计。HomeSpan 通过家庭无线网络与 HomeKit 配对，无需任何外部网桥。通过 HomeSpan，你可以使用 ESP32 I/O 的全部功能来创建自定义控制软件和/或硬件，并能以 iPhone、iPad 或 Mac 上的“家庭”应用或 Siri 自动操作外部设备。
 
-运行 HomeSpan 的要求取决于您选择的版本：
+### Requirements
 
-| HomeSpan 版本 | Arduino-ESP32 开发板管理器 | 分区方案                           | 支持芯片                     |
-|:---:|:---:|:---:|---|
-| 1.9.1 或更早  | v2.0.0 - v2.0.17           | *默认分区方案* (1.3MB APP)         | ESP32, S2, S3, C3            |
-| 2.0.0 或以后  | v3.0.2 - **v3.3.0***       | *最小 SPIFFS 分区方案* (1.9MB APP) | ESP32, S2, S3, C3, *还有 C6* |
+|Component | Requirement | See Note |
+|---|:---:|:---:|
+|Current HomeSpan Production Release | **2.1.4** | - |
+| Supported Chips | **ESP32, S2, S3, C3, and C6** | [^8266] |
+| Minimum Required [Arduino-ESP32 Core](https://github.com/espressif/arduino-esp32) | **3.1.0** | [^fail] |
+| Latest Core fully tested with HomeSpan | **3.3.0** | [^tested] |
+| Minimum Flash Partition Size | **1.9MB** | - |
+| Recommended Partition Scheme | **Minimal SPIFFS (1.9MB APP with OTA)** | [^partition] |
+| HomeKit Hub | **HomePod or Apple TV** | [^homehub] |
 
-*HomeSpan 已通过 Arduino-ESP32 开发板管理器 3.3.0 版本（基于 IDF 5.5.0 构建）的测试。后续版本可能可以正常工作，但尚未经过测试。注意 HomeSpan 不支持使用 Arduino-ESP32 开发板管理器的 alpha、beta 或预发布候选版本——仅在开发板管理器的生产版本上进行测试。
 
-**附加要求**：Apple HomeKit 架构 [需要使用家庭中心](https://support.apple.com/en-us/HT207057)（HomePod 或 Apple TV）才能完整、正确地操作任何 HomeKit 设备，包括基于 HomeSpan 的设备。***不支持在没有家庭中心的情况下使用***。
+[^8266]:HomeSpan cannot be run on an ESP-8266, though an ESP-8266 can be used as a remote sensor in conjunction with HomeSpan's SpanPoint functionality
+
+[^fail]: The current production release of HomeSpan will fail to compile under any Arduino-ESP32 Core release earlier than the minimum version listed.  However, prior versions of HomeSpan can be compiled and run under earlier versions of the core.  The README file under the [HomeSpan branch](https://github.com/HomeSpan/HomeSpan/branches/all) for each release provides details on which version of the Core can be used for that release
+
+[^tested]: Later releases may work fine, but have not (yet) been tested.  Note HomeSpan does *not* support the use of alpha, beta, or pre-release candidates of the Arduino-ESP32 Core - testing is only done on production releases of the Core.
+
+[^homehub]: Apple's HomeKit architecture [requires the use of a Home Hub](https://support.apple.com/en-us/HT207057) (either a HomePod or Apple TV) for full and proper operation of any HomeKit device, including those based on HomeSpan.  ***Use of HomeSpan without a Home Hub is NOT supported.***
+
+[^partition]: This recommendation assumes an ESP device with 4MB of flash memory.  For devices with 8MB or more of flash memory you may choose any partition scheme that provides at least 1.9MB APP space and 1.9MB of OTA space (if using OTA)
 
 ### HomeSpan 亮点
 
