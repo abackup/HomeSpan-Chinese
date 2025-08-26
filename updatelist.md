@@ -1,3 +1,32 @@
+## ❗Latest Update - HomeSpan 2.1.4 (25 Aug 2025)
+
+### Updates and Corrections
+
+* **Refactored *Pixel* Library for Improved Performance**
+  
+  * also addresses a latent issue introduced during the original re-factoring of the Pixel library in HomeSpan 2.0.0 that prevented certain pixels strands from operating
+  * kudos to Randy for [identifying the issue and providing a solution](https://github.com/HomeSpan/HomeSpan/pull/1102)!
+  * IMPORTANT: this fix utilizes IDF functionality only available since IDF 5.3.  As a result:
+    
+    * **HomeSpan 2.1.4 requires Arduino-ESP32 version 3.1.0 or later**
+    * **HomeSpan will *not* compile on prior versions of the Arduino-ESP32 library**
+
+  * removed the following *deprecated* Pixel constructors and method:
+    
+    * `Pixel(uint8_t pin, boolean isRGBW)`      
+      * deprecated since HomeSpan 1.9.1
+      * use `Pixel(int pin, const char *pixelType)` instead
+    * `Pixel(int pin, pixelType_t pixelType)`
+      * deprecated since HomeSpan 2.0.0
+      * use `Pixel(int pin, const char *pixelType)` instead
+    * `boolean isRGBW()`
+      *  deprecated since HomeSpan 2.0.0
+      *  use `boolean hasColor(char c)` instead
+        
+See [Releases](https://github.com/HomeSpan/HomeSpan/releases) for details on all changes and bug fixes included in this update.
+
+
+
 ## ❗最新更新 - HomeSpan 2.1.3（2025 年 8 月 2 日）
 
 ### 更新和修正
