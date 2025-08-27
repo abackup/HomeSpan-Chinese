@@ -6,6 +6,18 @@
 
 HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范版本 R2 ([HAP-R2](../master/docs/HAP-R2.pdf))，专为在 Arduino IDE 中运行的乐鑫 ESP32 微控制器设计。HomeSpan 通过家庭无线网络与 HomeKit 配对，无需任何外部网桥。通过 HomeSpan，你可以使用 ESP32 I/O 的全部功能来创建自定义控制软件和/或硬件，并能以 iPhone、iPad 或 Mac 上的“家庭”应用或 Siri 自动操作外部设备。
 
+### 要求
+
+|组件 | 要求 | 参见注释 |
+|---|:---:|:---:|
+|当前 HomeSpan 生产版本 | **2.1.4** | - |
+|支持的芯片 | **ESP32、S2、S3、C3 和 C6** | [^8266] |
+|最低要求 [Arduino-ESP32 核心](https://github.com/espressif/arduino-esp32) | **3.1.0** | [^fail] |
+|最新核心已使用 HomeSpan 进行全面测试 | **3.3.0** | [^tested] |
+|最小 Flash 分区大小 | **1.9MB** | - |
+|推荐分区方案 | **最小 SPIFFS（1.9MB APP，带 OTA）** | [^partition] |
+| HomeKit 集线器 | **HomePod 或 Apple TV** | [^homehub] |
+
 ### Requirements
 
 |Component | Requirement | See Note |
