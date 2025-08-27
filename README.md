@@ -25,32 +25,9 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
 
 [^tested]: 更高版本可能可以正常运行，但尚未测试。注意：HomeSpan 不支持使用 Arduino-ESP32 核心的 alpha、beta 或预发布候选版本——测试仅在核心的正式版上进行。
 
-[^homehub]：Apple 的 HomeKit 架构[需要使用 Home Hub](https://support.apple.com/en-us/HT207057)（HomePod 或 Apple TV）才能完整正常运行任何 HomeKit 设备，包括基于 HomeSpan 的设备。***不支持在没有 Home Hub 的情况下使用 HomeSpan。***
+[^homehub]: Apple 的 HomeKit 架构[需要使用 Home Hub](https://support.apple.com/en-us/HT207057)（HomePod 或 Apple TV）才能完整正常运行任何 HomeKit 设备，包括基于 HomeSpan 的设备。***不支持在没有 Home Hub 的情况下使用 HomeSpan。***
 
-[^partition]：此建议假设 ESP 设备具有 4MB 闪存。对于具有 8MB 或更多闪存的设备，您可以选择任何提供至少 1.9MB APP 空间和 1.9MB OTA 空间（如果使用 OTA）的分区方案。
-
-### Requirements
-
-|Component | Requirement | See Note |
-|---|:---:|:---:|
-|Current HomeSpan Production Release | **2.1.4** | - |
-| Supported Chips | **ESP32, S2, S3, C3, and C6** | [^8266] |
-| Minimum Required [Arduino-ESP32 Core](https://github.com/espressif/arduino-esp32) | **3.1.0** | [^fail] |
-| Latest Core fully tested with HomeSpan | **3.3.0** | [^tested] |
-| Minimum Flash Partition Size | **1.9MB** | - |
-| Recommended Partition Scheme | **Minimal SPIFFS (1.9MB APP with OTA)** | [^partition] |
-| HomeKit Hub | **HomePod or Apple TV** | [^homehub] |
-
-
-[^8266]:HomeSpan cannot be run on an ESP-8266, though an ESP-8266 can be used as a remote sensor in conjunction with HomeSpan's SpanPoint functionality
-
-[^fail]: The current production release of HomeSpan will fail to compile under any Arduino-ESP32 Core release earlier than the minimum version listed.  However, prior versions of HomeSpan can be compiled and run under earlier versions of the core.  The README file under the [HomeSpan branch](https://github.com/HomeSpan/HomeSpan/branches/all) for each release provides details on which version of the Core can be used for that release
-
-[^tested]: Later releases may work fine, but have not (yet) been tested.  Note HomeSpan does *not* support the use of alpha, beta, or pre-release candidates of the Arduino-ESP32 Core - testing is only done on production releases of the Core.
-
-[^homehub]: Apple's HomeKit architecture [requires the use of a Home Hub](https://support.apple.com/en-us/HT207057) (either a HomePod or Apple TV) for full and proper operation of any HomeKit device, including those based on HomeSpan.  ***Use of HomeSpan without a Home Hub is NOT supported.***
-
-[^partition]: This recommendation assumes an ESP device with 4MB of flash memory.  For devices with 8MB or more of flash memory you may choose any partition scheme that provides at least 1.9MB APP space and 1.9MB of OTA space (if using OTA)
+[^partition]: 此建议假设 ESP 设备具有 4MB 闪存。对于具有 8MB 或更多闪存的设备，您可以选择任何提供至少 1.9MB APP 空间和 1.9MB OTA 空间（如果使用 OTA）的分区方案。
 
 ### HomeSpan 亮点
 
