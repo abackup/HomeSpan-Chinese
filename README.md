@@ -18,6 +18,17 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
 |推荐分区方案 | **最小 SPIFFS（1.9MB APP，带 OTA）** | [^partition] |
 | HomeKit 集线器 | **HomePod 或 Apple TV** | [^homehub] |
 
+
+[^8266]:HomeSpan 无法在 ESP-8266 上运行，但 ESP-8266 可以与 HomeSpan 的 SpanPoint 功能配合使用，用作远程传感器。
+
+[^fail]: HomeSpan 的当前正式版无法在任何低于最低要求版本的 Arduino-ESP32 核心版本下编译。不过，HomeSpan 的早期版本可以在更早版本的 Arduino-ESP32 核心版本下编译和运行。每个版本的 [HomeSpan 分支](https://github.com/HomeSpan/HomeSpan/branches/all) 下的 README 文件详细说明了该版本可以使用哪个核心版本。
+
+[^tested]: 更高版本可能可以正常运行，但尚未测试。注意：HomeSpan 不支持使用 Arduino-ESP32 核心的 alpha、beta 或预发布候选版本——测试仅在核心的正式版上进行。
+
+[^homehub]：Apple 的 HomeKit 架构[需要使用 Home Hub](https://support.apple.com/en-us/HT207057)（HomePod 或 Apple TV）才能完整正常运行任何 HomeKit 设备，包括基于 HomeSpan 的设备。***不支持在没有 Home Hub 的情况下使用 HomeSpan。***
+
+[^partition]：此建议假设 ESP 设备具有 4MB 闪存。对于具有 8MB 或更多闪存的设备，您可以选择任何提供至少 1.9MB APP 空间和 1.9MB OTA 空间（如果使用 OTA）的分区方案。
+
 ### Requirements
 
 |Component | Requirement | See Note |
