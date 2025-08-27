@@ -1,31 +1,30 @@
-## ❗Latest Update - HomeSpan 2.1.4 (25 Aug 2025)
+## ❗最新更新 - HomeSpan 2.1.4（2025 年 8 月 25 日）
 
-### Updates and Corrections
+### 更新和修正
 
-* **Refactored *Pixel* Library for Improved Performance**
-  
-  * also addresses a latent issue introduced during the original re-factoring of the Pixel library in HomeSpan 2.0.0 that prevented certain pixels strands from operating
-  * kudos to Randy for [identifying the issue and providing a solution](https://github.com/HomeSpan/HomeSpan/pull/1102)!
-  * IMPORTANT: this fix utilizes IDF functionality only available since IDF 5.3.  As a result:
-    
-    * **HomeSpan 2.1.4 requires Arduino-ESP32 version 3.1.0 or later**
-    * **HomeSpan will *not* compile on prior versions of the Arduino-ESP32 library**
+* **重构了 *Pixel* 库以提升性能**
 
-  * removed the following *deprecated* Pixel constructors and method:
-    
-    * `Pixel(uint8_t pin, boolean isRGBW)`      
-      * deprecated since HomeSpan 1.9.1
-      * use `Pixel(int pin, const char *pixelType)` instead
-    * `Pixel(int pin, pixelType_t pixelType)`
-      * deprecated since HomeSpan 2.0.0
-      * use `Pixel(int pin, const char *pixelType)` instead
-    * `boolean isRGBW()`
-      *  deprecated since HomeSpan 2.0.0
-      *  use `boolean hasColor(char c)` instead
-        
-See [Releases](https://github.com/HomeSpan/HomeSpan/releases) for details on all changes and bug fixes included in this update.
+* 还解决了 HomeSpan 2.0.0 中 Pixel 库最初重构过程中引入的一个潜在问题，该问题导致某些像素线程无法运行。
+* 感谢 Randy [发现问题并提供解决方案](https://github.com/HomeSpan/HomeSpan/pull/1102)！
+* 重要提示：此修复使用了 IDF 5.3 及更高版本中才提供的 IDF 功能。因此：
 
+* **HomeSpan 2.1.4 需要 Arduino-ESP32 3.1.0 或更高版本**
+* **HomeSpan *无法*在 Arduino-ESP32 库的早期版本上编译**
 
+* 移除了以下*已弃用的 Pixel 构造函数和方法：
+
+* `Pixel(uint8_t pin, boolean isRGBW)`
+* 自 HomeSpan 1.9.1 起已弃用
+* 改用 `Pixel(int pin, const char *pixelType)`
+* `Pixel(int pin,pixelType_tpixelType)`
+* 自 HomeSpan 2.0.0 起已弃用
+* 改用 `Pixel(int pin, const char *pixelType)`
+* `boolean isRGBW()`
+* 自 HomeSpan 2.0.0 起已弃用
+* 改用 `Pixel(int pin, const char *pixelType)`
+* `boolean hasColor(char c)`
+
+有关此版本中包含的所有更改和错误修复的详细信息，请参阅 [发布](https://github.com/HomeSpan/HomeSpan/releases) 更新。
 
 ## ❗最新更新 - HomeSpan 2.1.3（2025 年 8 月 2 日）
 
