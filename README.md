@@ -74,8 +74,6 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
   - 启动无线网络接入点
 - 独立、详细的最终用户指南
 
-[HomeSpan 更新明细](updatelist.md)
-
 ## ❗最新更新 - HomeSpan 2.1.4（2025 年 8 月 25 日）
 
 ### 更新和修正
@@ -102,6 +100,8 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
       * 改用  `boolean hasColor(char c)`
 
 有关此版本中包含的所有更改和错误修复的详细信息，请参阅 [发布](https://github.com/HomeSpan/HomeSpan/releases) 更新。
+
+[HomeSpan 更新明细](updatelist.md)
 
 # HomeSpan 资源<a name="resources"></a>
 
