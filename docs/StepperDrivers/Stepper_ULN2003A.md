@@ -27,7 +27,7 @@
 ❗注意：ULN2003A 芯片不支持短制动状态。调用 `brake()` 方法以及将 `move()` 和 `moveTo()` 方法中的 *endAction* 参数设置为 **StepperControl::BRAKE** 对电机驱动器没有影响。<br><br>
 
 > [!TIP]
-> 如果您将电机设置为非常缓慢地移动（例如每步 500 毫秒），您将能够通过观察内置在驱动板上的四个 LED（标记为 *A、B、C、D*）来跟踪电机线圈每个相的电流如何打开和关闭，具体取决于所选的*步进模式*。另请参阅此 [Last Minute Engineers 教程](https://lastminuteengineers.com/28byj48-stepper-motor-arduino-tutorial)，详细了解 ULN2003A 及其用于驱动 28BYJ&#8209;48 5&#8209;伏步进电机的用途。
+> 如果您将电机设置为非常缓慢地移动（例如每步 500 毫秒），您将能够通过观察内置在驱动板上的四个 LED（标记为 *A、B、C、D*）来跟踪电机线圈每个相的电流如何打开和关闭，具体取决于所选的*步进模式*。另请参阅此 [Last Minute Engineers 教程](https://lastminuteengineers.com/28byj48-stepper-motor-arduino-tutorial)，详细了解 ULN2003A 及其用于驱动 28BYJ&#8209;48 5 伏步进电机的用途。
 
 [^2]: ULN2003A 是无源芯片 - 驱动板和 ESP32 之间没有 VCC 电源连接
 
