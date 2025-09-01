@@ -65,4 +65,6 @@ HomeKit 设备的设置有效负载 始终以 "X-HM://" 开头，后跟 9 个 ba
 
 ---
 
+（译者注）一个在线二维码生成网页 [homekit-code-generator](https://luisfontes19.github.io/homekit-code-generator/),只是没有设置 ID 选项，需要修改的可以另存为网页修改代码实现。
+
 [↩️](../README.md#resources) 返回欢迎页面
