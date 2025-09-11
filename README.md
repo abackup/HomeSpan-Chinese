@@ -87,7 +87,7 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
     * **HomeSpan 2.1.4 需要 Arduino-ESP32 3.1.0 或更高版本**
     * **HomeSpan *无法*在 Arduino-ESP32 库的早期版本上编译**
 
-  * 移除了以下*已弃用的 Pixel 构造函数和方法：
+  * 移除了以下*已弃用*的 Pixel 构造函数和方法：
 
     * `Pixel(uint8_t pin, boolean isRGBW)`
       * 自 HomeSpan 1.9.1 起已弃用
