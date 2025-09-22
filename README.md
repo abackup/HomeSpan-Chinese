@@ -1,4 +1,4 @@
-个人翻译的 [HomeSpan 2.1.4](https://github.com/HomeSpan/HomeSpan)（家庭扩展），请前往原文 [下载](https://github.com/HomeSpan/HomeSpan/releases) 体验。
+个人翻译的 [HomeSpan 2.1.5](https://github.com/HomeSpan/HomeSpan)（家庭扩展），请前往原文 [下载](https://github.com/HomeSpan/HomeSpan/releases) 体验。
 
 # 欢迎！
 
@@ -13,7 +13,7 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
 |当前 HomeSpan 生产版本 | **2.1.4** | - |
 |支持的芯片 | **ESP32、S2、S3、C3 和 C6** | [^8266] |
 |最低要求 [Arduino-ESP32 核心](https://github.com/espressif/arduino-esp32) | **3.1.0** | [^fail] |
-|最新核心已使用 HomeSpan 进行全面测试 | **3.3.0** | [^tested] |
+|最新核心已使用 HomeSpan 进行全面测试 | **3.3.1** | [^tested] |
 |最小 Flash 分区大小 | **1.9MB** | - |
 |推荐分区方案 | **最小 SPIFFS（1.9MB APP，带 OTA）** | [^partition] |
 | HomeKit 集线器 | **HomePod 或 Apple TV** | [^homehub] |
