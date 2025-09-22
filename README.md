@@ -139,8 +139,6 @@ HomeSpan 包括以下文档：
 
 由于 HomeSpan 完全围绕 HAP-R2 构建，因此没有计划使 HomeSpan 与 Matter 兼容。此外，Apple 和乐鑫都发布了供公众使用的 Matter SDK，从而减少了对另一个 Matter SDK 的需求。
 
-尚未计划通过 Thread 直接将 HomeSpan 连接到 HomeKit（甚至可能不行）。但是，Thread 对于设备间通信可能很有用，类似于 HomeSpan 如何使用 ESP-NOW 来实现远程电池供电设备。这可能会在未来版本的某个时候添加。
-
 ### 反馈或问题？
 
 请将 HomeSpan 的错误报告或其他问题提交至 [Issues](https://github.com/HomeSpan/HomeSpan/issues) 页面。请将有关 HomeSpan 的所有其他问题（使用、功能、规格、示例等）或你对新功能的任何想法、建议或有关 HomeSpan 或 HomeKit 的任何反馈发布到 [Discussion](https://github.com/HomeSpan/HomeSpan/discussions) 页面。对于与特定 HomeSpan 问题或与功能无关的更一般的问题或反馈，你可以直接 [homespan@icloud.com](mailto:homespan@icloud.com) 给我发电子邮件。
