@@ -74,30 +74,24 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
   - 启动无线网络接入点
 - 独立、详细的最终用户指南
 
-## ❗最新更新 - HomeSpan 2.1.4（2025 年 8 月 25 日）
+## ❗最新更新 - HomeSpan 2.1.5（2025 年 9 月 21 日）
 
 ### 更新和修正
 
-* **重构了 *Pixel* 库以提升性能**
+* **添加了新的 *homeSpan* 方法 `setWebLogFavicon(const char *faviconURL)`**
 
-  * 还解决了 HomeSpan 2.0.0 中 Pixel 库最初重构过程中引入的一个潜在问题，该问题导致某些像素线程无法运行。
-  * 感谢 Randy [发现问题并提供解决方案](https://github.com/HomeSpan/HomeSpan/pull/1102)！
-  * 重要提示：此修复使用了 IDF 5.3 及更高版本中才提供的 IDF 功能。因此：
+  * 向 HomeSpan 网络日志添加一个网站图标，其中 *faviconURL* 指向包含该网站图标的托管 **PNG** 图片文件。
+  * 如果未指定，*faviconURL* 默认为标准的 HomeSpan 徽标：
+    * https://raw.githubusercontent.com/HomeSpan/HomeSpan/refs/heads/master/docs/images/HomeSpanLogo.png
+  * 如需将徽标重新置于白色背景的中心，请将 *faviconURL* 设置为：
+    * https://raw.githubusercontent.com/HomeSpan/HomeSpan/refs/heads/master/docs/images/HomeSpanLogoW.png
+  * 如需透明背景上的徽标版本，请将 *faviconURL* 设置为：
+    * https://raw.githubusercontent.com/HomeSpan/HomeSpan/refs/heads/master/docs/images/HomeSpanLogoX.png
+  * 详情请参阅 [HomeSpan 消息日志](docs/Logging.md)
 
-    * **HomeSpan 2.1.4 需要 Arduino-ESP32 3.1.0 或更高版本**
-    * **HomeSpan *无法*在 Arduino-ESP32 库的早期版本上编译**
+* **对 SpanButton 中的触摸传感器逻辑进行了细微更新，以确保与 Arduino-ESP32 核心版本 3.3.1 中引入的 [重大变更](https://github.com/espressif/arduino-esp32/pull/11643) 兼容**
 
-  * 移除了以下*已弃用*的 Pixel 构造函数和方法：
-
-    * `Pixel(uint8_t pin, boolean isRGBW)`
-      * 自 HomeSpan 1.9.1 起已弃用
-      * 改用 `Pixel(int pin, const char *pixelType)`
-    * `Pixel(int pin,pixelType_tpixelType)`
-      * 自 HomeSpan 2.0.0 起已弃用
-      * 改用 `Pixel(int pin, const char *pixelType)`
-    * `boolean isRGBW()`
-      * 自 HomeSpan 2.0.0 起已弃用
-      * 改用  `boolean hasColor(char c)`
+  * 删除了 `SpanButton::setTouchCycles()`，因为底层 Arduino-ESP32 `touchSetCycles()` 函数已在迁移到新的 ESP-IDF 触摸传感器逻辑时被移除
 
 有关此版本中包含的所有更改和错误修复的详细信息，请参阅 [发布](https://github.com/HomeSpan/HomeSpan/releases) 更新。
 
