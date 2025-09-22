@@ -224,7 +224,6 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 函数 *func* 必须是 *void* 类型并接受一个 *boolean* 参数
 
 * `Span& setControllerCallback(void (*func)())`
-
   * 设置可选的用户定义回调函数 func，每次添加、删除或更新新控制器时，即使配对状态没有更改，HomeSpan 也会调用该函数
   * 注意此方法与 `setPairCallback()` 不同，仅当设备的配对状态发生变化时，例如在初始配对时添加第一个控制器，或在取消配对时删除最后一个控制器时，才会调用该方法 
   * 函数 func 的类型必须为 void 并且没有参数
@@ -292,6 +291,11 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 * `Span& setWebLogCSS(const char *css)`
   * 将 HomeSpan网络日志的格式设置为 *css* 指定的自定义样式表
   * 有关如何构造 *css* 的详细信息，请参阅 [消息日志](Logging.md)
+ 
+* `Span& setWebLogFavicon(const char *faviconURL)`
+  * adds a favicon to the HomeSpan Web Log, where *faviconURL* points to a hosted **PNG** image file containing the favicon
+  * if left unspecified, *faviconURL* defaults to [docs/images/HomeSpanLogo.png](images/HomeSpanLogo.png) hosted in the master branch of this repository
+  * see [Message Logging](Logging.md) for further details
 
 * `Span& setWebLogCallback(void (*func)(String &htmlText))`
   * 设置可选的用户定义回调函数 *func*，每当生成网络日志时 HomeSpan 都会调用该函数
@@ -733,17 +737,12 @@ HomeSpan 会在与该服务关联的任何 SpanButton 中触发事件时自动�
 
 使用一个或多个触摸传感器时，HomeSpan 会在实例化第一个类型为 "SpanButton::TRIGGER_ON_TOUCH" 的 SpanButton 时轮询基线传感器读数，从而自动校准触发触摸传感器的阈值。对于 ESP32 设备，阈值设置为基线值的 50%，因为当传感器值低于阈值水平时会发生触发。对于 ESP32-S2 和 ESP32-S3 设备，阈值设置为基线值的 200%，因为当传感器值高于阈值水平时会发生触发。通常，HomeSpan 的自动校准功能可以准确检测触摸传感器的单击、双击和长按。但是，如果需要，你可以使用以下类级方法覆盖校准并设置自己的阈值：
 
-* `void SpanButton::setTouchThreshold(uintXX_t thresh)`
+* `void SpanButton::setTouchThreshold(uint32_t thresh)`
   * 将阈值设置为高于（对于 ESP32 设备）或低于（对于 ESP32-S2 和 ESP32-S3 设备）触发触摸传感器的 *thresh*
-  * *XX* 为 16（对于 ESP32 设备）或 32（对于 ESP32-S2 和 ESP32-S3 设备）
   * 指定的阈值被视为全局的，用于 *所有* 类型为 `SpanButton::TRIGGER_ON_TOUCH` 的 SpanButton 实例
   * 此方法可以在创建 SpanButton 之前或之后调用
-
-此外，你还可以使用以下类级方法覆盖 ESP32 的触摸传感器时序参数：
-
-* `void SpanButton::setTouchCycles(uint16_t measureTime, uint16_t sleepTime)`
-  * 将测量时间和睡眠时间时钟周期分别更改为 *measureTime* 和 *sleepTime*。这只是对 Arduino-ESP32 库 `touchSetCycles()` 函数的传递调用
-  * 除非已使用 `setTouchThreshold()` 设置特定阈值，否则必须在实例化第一个类型为 `SpanButton::TRIGGER_ON_TOUCH` 的 SpanButton() *之前*调用 `setTouchCycles()`，以便 HomeSpan 根据指定的新计时参数校准触摸阈值
+ 
+请注意，Arduino-ESP32 核心和 ESP-IDF 包含其他功能，您可以根据需要使用这些功能来更精细地调整 ESP32 触摸传感器外围逻辑。
 
 ### *SpanToggle(int pin, boolean (\*triggerType)(int)=PushButton::TRIGGER_ON_LOW, uint16_32 toggleTime=5)*
 
