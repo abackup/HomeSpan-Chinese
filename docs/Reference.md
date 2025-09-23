@@ -293,9 +293,9 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 有关如何构造 *css* 的详细信息，请参阅 [消息日志](Logging.md)
  
 * `Span& setWebLogFavicon(const char *faviconURL)`
-  * adds a favicon to the HomeSpan Web Log, where *faviconURL* points to a hosted **PNG** image file containing the favicon
-  * if left unspecified, *faviconURL* defaults to [docs/images/HomeSpanLogo.png](images/HomeSpanLogo.png) hosted in the master branch of this repository
-  * see [Message Logging](Logging.md) for further details
+ * 向 HomeSpan Web 日志添加一个网站图标，其中 *faviconURL* 指向包含该网站图标的托管 **PNG** 图片文件。
+ * 如果未指定，*faviconURL* 默认为托管在此代码库主分支中的 [docs/images/HomeSpanLogo.png](images/HomeSpanLogo.png)。
+ * 更多详情，请参阅 [消息日志](Logging.md)。
 
 * `Span& setWebLogCallback(void (*func)(String &htmlText))`
   * 设置可选的用户定义回调函数 *func*，每当生成网络日志时 HomeSpan 都会调用该函数
