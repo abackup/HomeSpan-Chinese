@@ -6,6 +6,9 @@
 
 HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范版本 R2 ([HAP-R2](../master/docs/HAP-R2.pdf))，专为在 Arduino IDE 中运行的乐鑫 ESP32 微控制器设计。HomeSpan 通过家庭无线网络与 HomeKit 配对，无需任何外部网桥。通过 HomeSpan，你可以使用 ESP32 I/O 的全部功能来创建自定义控制软件和/或硬件，并能以 iPhone、iPad 或 Mac 上的“家庭”应用或 Siri 自动操作外部设备。
 
+>[!WARNING]
+>如果您使用带密码的 OTA 方式将 Arduino-ESP32 上传到设备，**请勿**更新至 3.3.1 版（或更高版本）。乐鑫修改了 OTA 密码的哈希机制，使其与之前存储的密码不兼容，因此如果您更新至 3.3.1 版，将无法使用 OTA 进行任何后续更新。如果您使用 OTA 进行上传，请暂时保留核心版本 3.3.0，或者在切换到 3.3.1 之前，使用 `homeSpan.enableOTA(false)` 更改您的草图以消除使用 OTA 密码。
+
 ### 要求
 
 |组件 | 要求 | 参见注释 |
@@ -13,11 +16,13 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
 |当前 HomeSpan 生产版本 | **2.1.5** | - |
 |支持的芯片 | **ESP32、S2、S3、C3 和 C6** | [^8266] |
 |最低要求 [Arduino-ESP32 核心](https://github.com/espressif/arduino-esp32) | **3.1.0** | [^fail] |
-|最新核心已使用 HomeSpan 进行全面测试 | **3.3.1** | [^tested] |
+|最新核心已使用 HomeSpan 进行全面测试 | **3.3.2** | [^tested] |
 |最小 Flash 分区大小 | **1.9MB** | - |
 |推荐分区方案 | **最小 SPIFFS（1.9MB APP，带 OTA）** | [^partition] |
 | HomeKit 集线器 | **HomePod 或 Apple TV** | [^homehub] |
 
+>[!NOTE]
+>在 Arduino-ESP32 Core 3.3.1 版本下尝试使用 OTA 上传草图时存在一些已知问题。**乐鑫已在 Arduino-ESP32 Core 3.3.2 版本中解决了这些问题**。无论您当前在 HomeSpan 设备上运行的是哪个版本的 Core，使用 Core 3.3.2 版本都允许您通过 OTA 上传草图。不过，您会收到警告，提示您草图使用较旧的哈希算法 (MD5) 存储 OTA 密码，而不是乐鑫在 Core 3.3.1 版本中采用的更安全的哈希算法 (SHA256)。目前您可以忽略这些警告，下一版 HomeSpan 将使用 SHA256 而非 MD5 存储 OTA 密码。
 
 [^8266]:HomeSpan 无法在 ESP-8266 上运行，但 ESP-8266 可以与 HomeSpan 的 SpanPoint 功能配合使用，用作远程传感器。
 
