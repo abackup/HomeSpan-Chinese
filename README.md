@@ -10,9 +10,9 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
 
 |组件 | 要求 | 参见注释 |
 |---|:---:|:---:|
-|当前 HomeSpan 生产版本 | **2.1.5** | - |
-|支持的芯片 | **ESP32、S2、S3、C3 和 C6** | [^8266] |
-|最低要求 [Arduino-ESP32 核心](https://github.com/espressif/arduino-esp32) | **3.1.0** | [^fail] |
+|当前 HomeSpan 生产版本 | **2.1.6** | - |
+|支持的芯片 | **ESP32、S2、S3、C3 、C5和 C6** | [^8266] |
+|最低要求 [Arduino-ESP32 核心](https://github.com/espressif/arduino-esp32) | **3.1.1** | [^fail] |
 |最新核心已使用 HomeSpan 进行全面测试 | **3.3.2** | [^tested] |
 |最小 Flash 分区大小 | **1.9MB** | - |
 |推荐分区方案 | **最小 SPIFFS（1.9MB APP，带 OTA）** | [^partition] |
@@ -76,26 +76,34 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
   - 启动无线网络接入点
 - 独立、详细的最终用户指南
 
-## ❗最新更新 - HomeSpan 2.1.5（2025 年 9 月 21 日）
+## ❗Latest Update - HomeSpan 2.1.6 (26 Oct 2025)
 
-### 更新和修正
+### New Features
 
-* **添加了新的 *homeSpan* 方法 `setWebLogFavicon(const char *faviconURL)`**
+* **HomeSpan now supports the ESP32-C5!**
 
-  * 向 HomeSpan 网络日志添加一个网站图标，其中 *faviconURL* 指向包含该网站图标的托管 **PNG** 图片文件。
-  * 如果未指定，*faviconURL* 默认为标准的 HomeSpan 徽标：
-    * https://raw.githubusercontent.com/HomeSpan/HomeSpan/refs/heads/master/docs/images/HomeSpanLogo.png
-  * 如需将徽标重新置于白色背景的中心，请将 *faviconURL* 设置为：
-    * https://raw.githubusercontent.com/HomeSpan/HomeSpan/refs/heads/master/docs/images/HomeSpanLogoW.png
-  * 如需透明背景上的徽标版本，请将 *faviconURL* 设置为：
-    * https://raw.githubusercontent.com/HomeSpan/HomeSpan/refs/heads/master/docs/images/HomeSpanLogoX.png
-  * 详情请参阅 [HomeSpan 消息日志](docs/Logging.md)
+  * the ESP32-C5 has the ability to use both the **5.0 GHz** and **2.4 GHz** WiFi bands 
+    * added WiFi band information to all log file output to indicate which band is being used
+  * to require the ESP-C5 to use the 5.0 GHz band, add the following to the `setup()` function in your sketch:
+    * `WiFi.STA.begin(); WiFi.setBandMode(WIFI_BAND_MODE_5G_ONLY);`
+    * note: `setBandMode()` is only available in Arduino-ESP32 Core 3.3.0 or greater
+  * see [WiFi and Ethernet Connectivity](docs/Networks.md) for details
 
-* **对 SpanButton 中的触摸传感器逻辑进行了细微更新，以确保与 Arduino-ESP32 核心版本 3.3.1 中引入的 [重大变更](https://github.com/espressif/arduino-esp32/pull/11643) 兼容**
+### Updates and Corrections
 
-  * 删除了 `SpanButton::setTouchCycles()`，因为底层 Arduino-ESP32 `touchSetCycles()` 函数已在迁移到新的 ESP-IDF 触摸传感器逻辑时被移除
+* **Updated OTA password storage to use SHA256 instead of MD5 hashing to conform with latest ArduinoOTA library protocol**
+  * for backwards compatibility with prior Cores, HomeSpan uses SHA256 hashing only if compiled under Core 3.3.2 or greater, else it continues to use MD5
+  * if you set your OTA password from within your sketch using `homeSpan.enableOTA(char *pwd)`, the new hashing will be automatic
+  * if instead you previously entered your password into the Serial Monitor using the "O" CLI command, you will need to re-enter it again so that HomeSpan can save it as SHA256
+    * if not re-entered, uploading OTA sketches using Core 3.3.2 or greater will still work, but a diagnostic message will warn you to migrate from MD5 to SHA256 hashing
+  * to facilitate the ability to set a password as a **hash** instead of **plain-text** from within a sketch, `homeSpan.enableOTA(char *pwd)` has been modified so that if *pwd* starts with "0x" followed by 64 hexidecimal characters, *pwd* will be interpreted as a SHA256 hash instead of plain-text and HomeSpan will store it directly instead of first hashing it
+    * specifying the hash of your OTA password inside a sketch is more secure than specifying the plain-text password
+    * useful for devices that cannot be readily connected to a Serial port, which prevents you from using the "O" CLI command to enter your OTA password
 
-有关此版本中包含的所有更改和错误修复的详细信息，请参阅 [发布](https://github.com/HomeSpan/HomeSpan/releases) 更新。
+* **Added new "c" CLI command that outputs to the Serial Monitor the same chip and sketch configuration information HomeSpan displays during initial start-up**
+              
+See [Releases](https://github.com/HomeSpan/HomeSpan/releases) for details on all changes and bug fixes included in this update.
+
 
 [HomeSpan 更新明细](updatelist.md)
 
