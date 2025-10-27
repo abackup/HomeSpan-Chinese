@@ -1,3 +1,24 @@
+## ❗最新更新 - HomeSpan 2.1.5（2025 年 9 月 21 日）
+
+### 更新和修正
+
+* **添加了新的 *homeSpan* 方法 `setWebLogFavicon(const char *faviconURL)`**
+
+  * 向 HomeSpan 网络日志添加一个网站图标，其中 *faviconURL* 指向包含该网站图标的托管 **PNG** 图片文件。
+  * 如果未指定，*faviconURL* 默认为标准的 HomeSpan 徽标：
+    * https://raw.githubusercontent.com/HomeSpan/HomeSpan/refs/heads/master/docs/images/HomeSpanLogo.png
+  * 如需将徽标重新置于白色背景的中心，请将 *faviconURL* 设置为：
+    * https://raw.githubusercontent.com/HomeSpan/HomeSpan/refs/heads/master/docs/images/HomeSpanLogoW.png
+  * 如需透明背景上的徽标版本，请将 *faviconURL* 设置为：
+    * https://raw.githubusercontent.com/HomeSpan/HomeSpan/refs/heads/master/docs/images/HomeSpanLogoX.png
+  * 详情请参阅 [HomeSpan 消息日志](docs/Logging.md)
+
+* **对 SpanButton 中的触摸传感器逻辑进行了细微更新，以确保与 Arduino-ESP32 核心版本 3.3.1 中引入的 [重大变更](https://github.com/espressif/arduino-esp32/pull/11643) 兼容**
+
+  * 删除了 `SpanButton::setTouchCycles()`，因为底层 Arduino-ESP32 `touchSetCycles()` 函数已在迁移到新的 ESP-IDF 触摸传感器逻辑时被移除
+
+有关此版本中包含的所有更改和错误修复的详细信息，请参阅 [发布](https://github.com/HomeSpan/HomeSpan/releases) 更新。
+
 ## ❗最新更新 - HomeSpan 2.1.4（2025 年 8 月 25 日）
 
 ### 更新和修正
