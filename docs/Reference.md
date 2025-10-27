@@ -131,10 +131,14 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
    * 如果启用 OTA 成功，则返回 0，否则返回 -1；并向串口监视器报告错误
 
 * `int enableOTA(const char *pwd, boolean safeLoad=true)`
-   * `enableOTA()` 的替代形式，允许你以编程方式将 OTA 密码更改为指定的 *pwd*
-   * *pwd* 必须包含 1 至 32 个字符
-   * 此命令使 HomeSpan 忽略但不更改使用 "O" 命令存储的任何密码
-   * 如果启用 OTA 成功，则返回 0，否则返回 -1；并向串口监视器报告错误
+    * an alternative form of `enableOTA()` that allows you to programmatically change the OTA password to the specified plain-text *pwd*, which must contain between 1 and 32 characters
+  * the plain-text password you specify is automatically converted into a SHA256 hash (default) or MD5 hash (for legacy systems running on Arduino-ESP32 Cores *prior* to version 3.3.2) for use by the sketch for OTA uploads 
+  * this command causes HomeSpan to ignore, but does not otherwise alter, any hashed password previously stored using the 'O' command 
+  * as an alternative to setting *pwd* to your desired plain-text OTA password, you may instead specify your password in pre-hashed format as follows:
+    * if pwd begins with "0x" followed by exactly 64 hexidecimal digits HomeSpan interprets pwd as a SHA256 hash
+    * if pwd begins with "0x" followed by exactly 32 hexidecimal digits HomeSpan interprets pwd as an MD5 hash
+  * use SHA256 for devices running Arduino-ESP32 Core version 3.3.2 or later, else use MD5 for earlier versions 
+  * this command returns 0 if enabling OTA was successful, or -1 and reports an error to the Serial Monitor if not
 
 * `void markSketchOK()`
    * 将当前正在运行的分区的 OTA 状态标记为 *VALID*
