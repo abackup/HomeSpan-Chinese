@@ -16,7 +16,7 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
 |最新核心已使用 HomeSpan 进行全面测试 | **3.3.2** | [^tested] |
 |最小 Flash 分区大小 | **1.9MB** | - |
 |推荐分区方案 | **最小 SPIFFS（1.9MB APP，带 OTA）** | [^partition] |
-| HomeKit 集线器 | **HomePod 或 Apple TV** | [^homehub] |
+| HomeKit 中心 | **HomePod 或 Apple TV** | [^homehub] |
 
 >[!NOTE]
 >在 Arduino-ESP32 Core 3.3.1 版本下尝试使用 OTA 上传草图时存在一些已知问题。**乐鑫已在 Arduino-ESP32 Core 3.3.2 版本中解决了这些问题**。无论您当前在 HomeSpan 设备上运行的是哪个版本的 Core，使用 Core 3.3.2 版本都允许您通过 OTA 上传草图。不过，您会收到警告，提示您草图使用较旧的哈希算法 (MD5) 存储 OTA 密码，而不是乐鑫在 Core 3.3.1 版本中采用的更安全的哈希算法 (SHA256)。目前您可以忽略这些警告，下一版 HomeSpan 将使用 SHA256 而非 MD5 存储 OTA 密码。
