@@ -29,7 +29,7 @@ HomeSpan 可以通过 WiFi 或以太网连接到您的家庭网络。 HomeSpan �
 
 连接后，如果连接丢失，HomeSpan 会自动管理所有重新连接（使用与上面相同的请求/响应等待模式）。如果您启用了 Web 日志记录，则会记录所有断开连接和重新连接。
 
-#### 与 WiFi 网状网络一起使用
+#### 与 WiFi Mesh 网络一起使用
 
 如果您的家庭网络基于网状路由器，并且多个接入点共享相同的 SSID，HomeSpan 会自动连接具有最强 RSSI 信号的接入点。作为一个选项，您可以将 homeSpan `enableWiFiRescan()` 方法添加到您的草图中，让 HomeSpan 定期重新扫描您的 WiFi 网络，以查看是否存在具有相同 SSID 的更强接入点。如果找到一个接入点，HomeSpan 会断开与现有接入点的连接，并重新连接到更强的接入点。在串行监视器和 Web 日志（如果启用）中，HomeSpan 指示其所连接的特定接入点的 BSSID（即 6 字节 MAC 地址）。作为一个选项，您可以使用 homeSpan `addBssidName()` 方法将 BSSID 映射到自定义显示名称。指定后，HomeSpan 将在日志文件中的任何 BSSID 旁边显示这些显示名称，以便更轻松地跟踪正在使用的接入点。
 
