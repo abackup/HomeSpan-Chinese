@@ -137,7 +137,7 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 除了将 *pwd* 设置为您想要的纯文本 OTA 密码之外，您还可以按如下方式以预散列格式指定您的密码：
     * 如果 pwd 以 "0x" 开头，后跟正好 64 位十六进制数字，HomeSpan 会将 pwd 解释为 SHA256 哈希值
     * 如果 pwd 以 "0x" 开头，后跟正好 32 个十六进制数字，HomeSpan 会将 pwd 解释为 MD5 哈希值
-  * 对于运行 Arduino-ESP32 Core 版本 3.3.2 或更高版本的设备使用 SHA256，对于早期版本使用
+  * 对于运行 Arduino-ESP32 Core 版本 3.3.2 或更高版本的设备使用 SHA256，对于早期版本使用 MD5
   * 如果启用 OTA 成功，则此命令返回 0；否则返回 -1 并向串行监视器报告错误
 
 * `void markSketchOK()`
