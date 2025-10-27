@@ -144,7 +144,7 @@ HomeSpan 包括以下文档：
 
 ### Matter 和 Thread
 
-由于 HomeSpan 完全围绕 HAP-R2 构建，因此没有计划使 HomeSpan 与 Matter 兼容。此外，Apple 和乐鑫都发布了供公众使用的 Matter SDK，从而减少了对另一个 Matter SDK 的需求。
+由于 HomeSpan 完全围绕 HAP-R2 构建，因此没有计划使 HomeSpan 与 Matter 兼容。此外，Apple 和乐鑫都发布了供公众使用的 Matter SDK，因此无需再额外开发 Matter SDK。
 
 ### 反馈或问题？
 
