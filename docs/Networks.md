@@ -33,23 +33,23 @@ HomeSpan 可以通过 WiFi 或以太网连接到您的家庭网络。 HomeSpan �
 
 如果您的家庭网络基于网状路由器，并且多个接入点共享相同的 SSID，HomeSpan 会自动连接具有最强 RSSI 信号的接入点。作为一个选项，您可以将 homeSpan `enableWiFiRescan()` 方法添加到您的草图中，让 HomeSpan 定期重新扫描您的 WiFi 网络，以查看是否存在具有相同 SSID 的更强接入点。如果找到一个接入点，HomeSpan 会断开与现有接入点的连接，并重新连接到更强的接入点。在串行监视器和 Web 日志（如果启用）中，HomeSpan 指示其所连接的特定接入点的 BSSID（即 6 字节 MAC 地址）。作为一个选项，您可以使用 homeSpan `addBssidName()` 方法将 BSSID 映射到自定义显示名称。指定后，HomeSpan 将在日志文件中的任何 BSSID 旁边显示这些显示名称，以便更轻松地跟踪正在使用的接入点。
 
-#### Use with Enterprise WiFi Networks or Specialized WiFi Configurations
+#### 与企业 WiFi 网络或专用 WiFi 配置一起使用
 
 在内部，HomeSpan 使用 Arduino-ESP32 库的全局 `WiFi` 对象管理 WiFi 连接，并使用 `WiFi.begin()` 方法启动连接。此方法假设连接到需要 SSID 和密码的标准 WiFi 网络。如果您尝试连接到企业 WiFi 网络，或者在连接到 WiFi 网络时需要进行其他特殊配置要求（例如更改 WiFi 天线的功率），您可以创建自己的 "begin" HomeSpan 的函数将通过在草图中实现 homeSpan `setWifiBegin()` 方法来调用。
 
-#### Connectivity CallBacks
+#### 连接回调
 
 如果您需要一次或每次建立 WiFi 连接（或断开连接后重新建立）时调用任何其他函数，您可以在草图中实现 homeSpan `setConnectionCallback()` 方法。
 
-#### WiFi Frequency Bands: 2.4 GHz vs 5.0 GHz
+#### WiFi 频段：2.4 GHz 对比 5.0 GHz
 
-All ESP32 chips supported by HomeSpan include a 2.4 GHz WiFi radio, which is the default for most IoT devices that prioritize range over speed.  However, the ESP32-C5 chip also includes a 5.0 GHz WiFi radio.  To enable the use of the 5.0 GHz band on the ESP32-C5, add the following to the `setup()` function in your sketch:
+HomeSpan 支持的所有 ESP32 芯片均包含 2.4 GHz WiFi 频段，这是大多数优先考虑覆盖范围而非速度的物联网设备的默认配置。然而，ESP32-C5 芯片还包含 5.0 GHz WiFi 频段。要在 ESP32-C5 上启用 5.0 GHz 频段，请在代码的 setup() 函数中添加以下内容：
 
 ```
 WiFi.STA.begin();
 WiFi.setBandMode(WIFI_BAND_MODE_5G_ONLY);
 ```
-Note that `setBandMode()` is only supported by Arduino-ESP32 Core 3.3.0 or greater.
+请注意，`setBandMode()` 仅受 Arduino-ESP32 Core 3.3.0 或更高版本支持。
 
 ## HomeSpan 以太网连接
 
@@ -59,7 +59,7 @@ HomeSpan 利用 Arduino-ESP32 库的全局 `ETH` 对象来管理以太网连接�
 
 但是，如果由于某种原因 HomeSpan 无法自动检测已配置的以太网接口，或者使用 `ETH.begin()` 对以太网接口的初始化是在主 Arduino `setup()` 函数之外完成的，则可以通过在 `homeSpan.begin()` 之前调用 `homeSpan.useEthernet()` 来强制 HomeSpan 使用以太网模式而不是 WiFi。
 
-#### Connectivity CallBacks
+#### 连接回调
 
 与 WiFi 连接类似，HomeSpan 会自动处理所有以太网断开/重新连接（例如，如果您拔下以太网电缆，然后将其插回路由器，或者路由器本身重新启动），并将此类事件记录在 Web 日志中（如果启用）。与使用 WiFi 类似，要运行自定义函数一次或每次建立以太网连接（或断开连接后重新建立），您可以在草图中实现 homeSpan `setConnectionCallback()` 方法。
 
