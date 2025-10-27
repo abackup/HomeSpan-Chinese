@@ -12,7 +12,7 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
 |---|:---:|:---:|
 |当前 HomeSpan 生产版本 | **2.1.6** | - |
 |支持的芯片 | **ESP32、S2、S3、C3 、C5和 C6** | [^8266] |
-|最低要求 [Arduino-ESP32 核心](https://github.com/espressif/arduino-esp32) | **3.1.1** | [^fail] |
+|最低要求 [Arduino-ESP32 核心](https://github.com/espressif/arduino-esp32) | **3.1.0** | [^fail] |
 |最新核心已使用 HomeSpan 进行全面测试 | **3.3.2** | [^tested] |
 |最小 Flash 分区大小 | **1.9MB** | - |
 |推荐分区方案 | **最小 SPIFFS（1.9MB APP，带 OTA）** | [^partition] |
