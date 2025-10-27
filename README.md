@@ -18,9 +18,6 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
 |推荐分区方案 | **最小 SPIFFS（1.9MB APP，带 OTA）** | [^partition] |
 | HomeKit 中心 | **HomePod 或 Apple TV** | [^homehub] |
 
->[!NOTE]
->在 Arduino-ESP32 Core 3.3.1 版本下尝试使用 OTA 上传草图时存在一些已知问题。**乐鑫已在 Arduino-ESP32 Core 3.3.2 版本中解决了这些问题**。无论您当前在 HomeSpan 设备上运行的是哪个版本的 Core，使用 Core 3.3.2 版本都允许您通过 OTA 上传草图。不过，您会收到警告，提示您草图使用较旧的哈希算法 (MD5) 存储 OTA 密码，而不是乐鑫在 Core 3.3.1 版本中采用的更安全的哈希算法 (SHA256)。目前您可以忽略这些警告，下一版 HomeSpan 将使用 SHA256 而非 MD5 存储 OTA 密码。
-
 [^8266]:HomeSpan 无法在 ESP-8266 上运行，但 ESP-8266 可以与 HomeSpan 的 SpanPoint 功能配合使用，用作远程传感器。
 
 [^fail]: HomeSpan 的当前正式版无法在任何低于最低要求版本的 Arduino-ESP32 核心版本下编译。不过，HomeSpan 的早期版本可以在更早版本的 Arduino-ESP32 核心版本下编译和运行。每个版本的 [HomeSpan 分支](https://github.com/HomeSpan/HomeSpan/branches/all) 下的 README 文件详细说明了该版本可以使用哪个核心版本。
