@@ -137,6 +137,7 @@ HomeSpan 包括两个专用类，用于轻松控制“可寻址” RGB LEDs。**
 * ESP32-S2 - 4 通道;
 * ESP32-S3 - 4 通道;
 * ESP32-C3 - 2 通道;
+* ESP32-C5 - 2 通道;
 * ESP32-C6 - 2 通道;
 
 请注意，**RFControl** 类也使用 ESP32 的 RMT 外围设备，因此 **RFControl** 的任何实例也将消耗 RMT 通道（例如，在 ESP32-C3 上，您可以创建两个像素、两个 RFControls 或一个像素和一个 RFControl）。
