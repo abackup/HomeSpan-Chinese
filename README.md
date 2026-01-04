@@ -73,31 +73,23 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
   - 启动无线网络接入点
 - 独立、详细的最终用户指南
 
-## ❗最新更新 - HomeSpan 2.1.6（2025 年 10 月 26 日）
+## ❗最新更新 - HomeSpan 2.1.7（2026 年 1 月 1 日 - 新年快乐 ）
 
 ### 新功能
 
-* **HomeSpan 现在支持 ESP32-C5！**
-
-  * ESP32-C5 能够使用 **5.0 GHz** 和 **2.4 GHz** WiFi 频段
-    * 在所有日志文件输出中添加 WiFi 频段信息，以指示正在使用哪个频段
-  * 如要求 ESP-C5 使用 5.0 GHz 频段，请将以下内容添加到草图中的 `setup()` 函数中:
-    * `WiFi.STA.begin(); WiFi.setBandMode(WIFI_BAND_MODE_5G_ONLY);`
-    * 注意： `setBandMode()` 仅在 Arduino-ESP32 Core 3.3.0 或更高版本中可用
-  * 请参阅 [WiFi 和以太网连接](docs/Networks.md)  以了解详细信息
+* **HomeSpan 现在支持基于 WS2801 的双线可寻址 RGB LED**
+  
+  * 新增 **WS2801_LED**  类 
+  * 使用 SPI 总线以获得最佳性能
+  * 包含与 HomeSpan 现有 **Pixel** 和 **Dot** 类相同的 `set()` 和 `Color()` 方法：
+  * 在 HomeSpan 的 [Pixels](examples/Other%20Examples/Pixel) 教程草图中添加了一个完整的示例，演示如何实现一个 [25 像素的 WS2801 RGB LED 灯串](https://www.adafruit.com/product/738)。
+  * 请参阅 [Pixels](docs/Pixels.md) 页面以获取完整文档。
 
 ### 更新和更正
 
-* **更新了 OTA 密码存储，使用 SHA256 而不是 MD5 哈希，以符合最新的 ArduinoOTA 库协议**
-  * 为了与之前版本的 Core 保持向后兼容，HomeSpan 仅在 Core 3.3.2 或更高版本下编译时才使用 SHA256 哈希，否则继续使用 MD5
-  * 如果您使用 `homeSpan.enableOTA(char *pwd)` 在草图中设置 OTA 密码，则新的哈希将自动进行
-  * 如果您之前使用 "O" 命令将密码输入到串行监视器中，则需要重新输入，以便 HomeSpan 可以将其保存为 SHA256
-    * 如果没有重新输入，使用 Core 3.3.2 或更高版本上传 OTA 草图仍然有效，但诊断消息会警告您从 MD5 迁移到 SHA256 哈希
-  * 为了便于在草图中将密码设置为**哈希值**而不是**纯文本** ， `homeSpan.enableOTA(char *pwd)` 已被修改，以便如果 *pwd* 以 "0x" 开头，后跟 64 个十六进制字符，则 *pwd* 将被解释为 SHA256 哈希值而不是纯文本，并且 HomeSpan 将直接存储它而不是先对其进行哈希处理
-    * 在草图中指定 OTA 密码的哈希值比指定纯文本密码更安全
-    * 对于无法轻松连接到串行端口的设备很有用，这会阻止您使用 "O" 命令输入 OTA 密码
-
-* **添加了新的 "c" 命令，该命令将 HomeSpan 在初始启动期间显示的相同芯片和草图配置信息输出到串行监视器**
+* **修正了 Dot 类中的开始/结束块逻辑，以提高 DotStar RGB LED 的性能。**
+* **将 Arduino-ESP32 Core 的最低版本要求从 3.1.0 提升至 3.3.0。**
+  * 反映了 HomeSpan 2.1.6 版本中引入的重大变更。
               
 有关此版本中包含的所有更改和错误修复的详细信息，请参阅 [发布](https://github.com/HomeSpan/HomeSpan/releases) 更新。
 
