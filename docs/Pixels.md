@@ -209,27 +209,27 @@ HomeSpan 包含三个专用类，可轻松控制“可寻址” RGB LED：
 
 创建此**类**的实例会将指定的引脚配置为输出适用于控制基于 *WS2801* 协议的双线可寻址 RGB LED 设备的波形信号，该设备可具有任意数量的像素。参数及其默认值（如果未指定）如下：
 
-* *dataPin* - RGB 数据信号的输出引脚；通常连接到可寻址 LED 设备的“数据”输入端
+  * *dataPin* - RGB 数据信号的输出引脚；通常连接到可寻址 LED 设备的“数据”输入端
 
-* *clockPin* - RGB 时钟信号的输出引脚；通常连接到可寻址 LED 设备的“时钟”输入端
+  * *clockPin* - RGB 时钟信号的输出引脚；通常连接到可寻址 LED 设备的“时钟”输入端
 
-* *spiBus* - 指定用于信号生成的 SPI 总线控制器。允许的值和默认值取决于设备：
+  * *spiBus* - 指定用于信号生成的 SPI 总线控制器。允许的值和默认值取决于设备：
 
-* 对于 ESP32，*spiBus* 可以设置为 **SPI2_HOST** 或 **SPI3_HOST**。如果未指定，*spiBus* 默认为 **SPI2_HOST**。
+    * 对于 ESP32，*spiBus* 可以设置为 **SPI2_HOST** 或 **SPI3_HOST**。如果未指定，*spiBus* 默认为 **SPI2_HOST**。
 
-* 对于 ESP32-S2/S3，*spiBus* 可以设置为 **SPI2_HOST** 或 **SPI3_HOST**。如果未指定，*spiBus* 默认为 **SPI3_HOST**
+    * 对于 ESP32-S2/S3，*spiBus* 可以设置为 **SPI2_HOST** 或 **SPI3_HOST**。如果未指定，*spiBus* 默认为 **SPI3_HOST**
 
-* 对于 ESP32-C3/C5/C6，*spiBus* 只能设置为 **SPI2_HOST**，因此如果未指定，则默认为 **SPI2_HOST**
+    * 对于 ESP32-C3/C5/C6，*spiBus* 只能设置为 **SPI2_HOST**，因此如果未指定，则默认为 **SPI2_HOST**
 
 设置像素颜色的两种主要方法是：
 
 * `void set(Color color, int nPixels=1)`
 
-* 将单像素设备中单个像素的颜色，或等效地，将多像素设备中前 *nPixels* 个像素的颜色设置为 *color*，其中 *color* 是下面定义的 **Color** 类型的对象。如果未指定，*nPixels* 默认为 1（即单个像素）。*nPixels* 的值与设备中实际 RGB 像素的总数不匹配不会有问题；如果 *nPixels* 小于设备像素的总数，则只会将前 *nPixels* 个像素的颜色设置为 *color*；如果 *nPixels* 大于设备像素总数，设备将忽略额外的输入。
+  * 将单像素设备中单个像素的颜色，或等效地，将多像素设备中前 *nPixels* 个像素的颜色设置为 *color*，其中 *color* 是下面定义的 **Color** 类型的对象。如果未指定，*nPixels* 默认为 1（即单个像素）。*nPixels* 的值与设备中实际 RGB 像素的总数不匹配不会有问题；如果 *nPixels* 小于设备像素的总数，则只会将前 *nPixels* 个像素的颜色设置为 *color*；如果 *nPixels* 大于设备像素总数，设备将忽略额外的输入。
 
 * `void set(Color *color, int nPixels)`
 
-* 将多像素设备中每个像素的颜色分别设置为大小为 *nPixels* 的 **Color** 数组 *color* 中指定的颜色值。其中，设备的第一个像素设置为 *color[0]* 中的值，第二个像素设置为 *color[1]* 中的值，……最后一个像素设置为 *color[nPixels-1]* 中的值。与上述类似，如果 *nPixels* 指定的值与设备中实际的 RGB 像素总数不匹配，也不会出现问题。
+  * 将多像素设备中每个像素的颜色分别设置为大小为 *nPixels* 的 **Color** 数组 *color* 中指定的颜色值。其中，设备的第一个像素设置为 *color[0]* 中的值，第二个像素设置为 *color[1]* 中的值，……最后一个像素设置为 *color[nPixels-1]* 中的值。与上述类似，如果 *nPixels* 指定的值与设备中实际的 RGB 像素总数不匹配，也不会出现问题。
 
 在上述两种方法中，颜色都存储在一个 24 位 **Color** 对象中，该对象配置为存储三个 8 位 RGB 值。 **Color** 对象可以实例化为单个变量（例如 `WS2801_LED::Color myColor;`），但不应直接实例化为简单的数组变量（例如 `WS2801_LED::Color myColors[8];`）。这是因为 **WS2801_LED** 需要 SPI 总线的 DMA 功能来确保颜色数据正确传输到 LED，因此 **Color** 数组必须创建在 32 位对齐且支持 DMA 的内存中。
 
@@ -239,26 +239,26 @@ ESP32 操作系统提供了两种创建存储在 32 位对齐且支持 DMA 的�
 
 * `static Color *getMem(size_t nColors)`
 
-* 返回一个指向动态分配的 32 位对齐的 DMA 内存段的 **Color** 指针，该内存段的大小足以容纳 *nColors* 个对象
+  * 返回一个指向动态分配的 32 位对齐的 DMA 内存段的 **Color** 指针，该内存段的大小足以容纳 *nColors* 个对象
 
-* 例如：`WS2801_LED::Color *myColors = WS2801_LED::getMem(8)` 将 *myColors* 设置为包含 8 个 **Color** 对象的数组
+  * 例如：`WS2801_LED::Color *myColors = WS2801_LED::getMem(8)` 将 *myColors* 设置为包含 8 个 **Color** 对象的数组
 
-* 请记住，与任何动态分配的内存一样，当不再需要时，必须释放它（例如，`free(myColors);`）。此类内存不会在函数结束时自动销毁！
+  * 请记住，与任何动态分配的内存一样，当不再需要时，必须释放它（例如，`free(myColors);`）。此类内存不会在函数结束时自动销毁！
 
 请注意，**WS2801_LED** 类使用的 **Color** 对象的作用域仅限于 **WS2801_LED** 类本身，因此在创建 Color 变量时，需要使用完全限定类名“WS2801_LED::Color”。
 
 创建 **Color** 对象后，可以使用以下两种方法之一设置其存储的颜色：
 
-* `Color RGB(uint8_t r, uint8_t g, uint8_t b)`
+  * `Color RGB(uint8_t r, uint8_t g, uint8_t b)`
 
-* 其中 *r*、*g* 和 *b* 分别表示 0-255 范围内的 8 位红色、绿色和蓝色值。
+    * 其中 *r*、*g* 和 *b* 分别表示 0-255 范围内的 8 位红色、绿色和蓝色值。
 
-* 例如：`myColor.RGB(128,128,0)` 将 myColor 设置为黄色，亮度为一半，红绿 LED 的占空比为 50%（即 128/256）。
-* * `Color HSV(float h, float s, float v)`
+    * 例如：`myColor.RGB(128,128,0)` 将 myColor 设置为黄色，亮度为一半，红绿 LED 的占空比为 50%（即 128/256）。
+  *  `Color HSV(float h, float s, float v)`
 
-* 其中，*h* 表示色调，取值范围为 0-360；*s* 表示饱和度，取值范围为 0-100%；*v* 表示亮度，取值范围为 0-100%。这些值会被转换为等效的 8 位 RGB 值 (0-255)，并存储在 *Color* 对象中。
+    * 其中，*h* 表示色调，取值范围为 0-360；*s* 表示饱和度，取值范围为 0-100%；*v* 表示亮度，取值范围为 0-100%。这些值会被转换为等效的 8 位 RGB 值 (0-255)，并存储在 *Color* 对象中。
 
-* 例如：`myColor.HSV(120,100,50)` 将 myColor 设置为半亮度、完全饱和的绿色，占空比为 50%。
+    * 例如：`myColor.HSV(120,100,50)` 将 myColor 设置为半亮度、完全饱和的绿色，占空比为 50%。
 
 请注意，以上两种方法都会返回完整的 **Color** 对象本身，因此可以在任何需要 **Color** 对象的地方使用：例如：`WS2801_LED p(5,6); WS2801_LED::Color myColor;` `p.set(myColor.RGB(255,215,0))` 将连接到引脚 5 和 6 的单个像素设备的颜色设置为亮金色。
 
@@ -266,23 +266,23 @@ ESP32 操作系统提供了两种创建存储在 32 位对齐且支持 DMA 的�
 
 * `static Color RGB(uint8_t r, uint8_t g, uint8_t b)`
 
-* 等效于 `return(Color().RGB(r,g,b));`
+  * 等效于 `return(Color().RGB(r,g,b));`
 
-* 例如：`WS2801_LED p(8,11);` `p.set(WS2801_LED::RGB(0,0,255),8);` 将 8 像素设备中的每个像素的颜色设置为蓝色。
+  * 例如：`WS2801_LED p(8,11);` `p.set(WS2801_LED::RGB(0,0,255),8);` 将 8 像素设备中的每个像素的颜色设置为蓝色。
 
 * `static Color HSV(float h, float s, float v)`
 
-* 等效于 `return(Color().HSV(h,s,v));`
+  * 等效于 `return(Color().HSV(h,s,v));`
 
-* 例如：`WS2801_LED p(8,11); p.set(WS2801_LED::HSV(240,100,75),8);` 将 8 像素设备中的每个像素的颜色设置为 75% 亮度下的深蓝色。
+  * 例如：`WS2801_LED p(8,11); p.set(WS2801_LED::HSV(240,100,75),8);` 将 8 像素设备中的每个像素的颜色设置为 75% 亮度下的深蓝色。
 
 最后需要注意的是，*WS2801* 设备的刷新率比 *DotStar* 设备慢得多。默认情况下，**WS2801_LED** 类会将每个实例化对象的 SPI 时钟频率设置为 2MHz，这与 WS2801 芯片的规格相符。但是，如果需要，您可以使用以下基于成员的方法为任何给定的 **WS2801_LED** 对象设置不同的 SPI 时钟频率：
 
 * `void setTiming(uint32_t freq)`
 
-* 将像素传输频率设置为 *freq*（单位为 Hz）
+  * 将像素传输频率设置为 *freq*（单位为 Hz）
 
-* 例如：`WS2801_LED p(8,11); p.setTiming(1000000); p.set(WS2801_LED::RGB(0,0,255),8);` 将传输频率更改为 1MHz，然后再将 8 像素设备中的每个像素的颜色设置为蓝色
+  * 例如：`WS2801_LED p(8,11); p.setTiming(1000000); p.set(WS2801_LED::RGB(0,0,255),8);` 将传输频率更改为 1MHz，然后再将 8 像素设备中的每个像素的颜色设置为蓝色
 
 #### WS2801 设备和 SPI 总线 - 技术细节（可选阅读）
 
