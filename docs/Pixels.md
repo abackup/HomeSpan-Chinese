@@ -1,12 +1,17 @@
-<!-- 原文时间：2024.9.26，校对时间：2025.2.28 -->
+<!-- 原文时间：2026.1.1，校对时间：2026.1.4 -->
 
-# 可寻址全彩 LEDs
+# 可寻址 RGB LED
+HomeSpan 包含三个专用类，可轻松控制“可寻址” RGB LED：
 
-HomeSpan 包括两个专用类，用于轻松控制“可寻址” RGB LEDs。**Pixel()** 类用于只需要一根“数据”控制线的 RGB、RGBW、RGBWC 和 WC LED，例如这个 8 像素的 [NeoPixel RGB Stick](https://www.adafruit.com/product/1426) 或这个单像素的 [NeoPixel RGBW LED](https://www.adafruit.com/product/2759)。**Dot()** 类用于需要两条控制线（“数据”和“时钟”）的 RGB LED，例如这个 144 像素的 [DotStar RGB Strip](https://www.adafruit.com/product/2241) 或这个 60 像素的 [RGB LED Strip](https://www.sparkfun.com/products/14015) 。
+* **Pixel()** - 此用于仅需一根“数据”控制线的 RGB、RGBW、RGBWC 和 WC LED，这些 LED 使用 NeoPixel 协议，例如这款 8 像素  [NeoPixel RGB Stick](https://www.adafruit.com/product/1426) 或这个单像素的 [NeoPixel RGBW LED](https://www.adafruit.com/product/2759)。
 
-这两个类都允许您将多像素 LED 灯条中的每个“像素”单独设置为不同的 24 位 RGB（红/绿/蓝）颜色。Pixel 类还支持 16 位 WC（暖白/冷白）像素、32 位 RGBW（红/绿/蓝/白）像素和 40 位 RGBWC 像素（即红/绿/蓝/暖白/冷白）。或者，这些类允许您简单地指定要在所有像素中复制的单一颜色。
+* **Dot()** - 此类用于使用 DotStar 协议的需要两条控制线（“数据”和“时钟”）的 RGB LED，例如这款 144 像素[DotStar RGB Strip](https://www.adafruit.com/product/2241) 或这个 60 像素的 [RGB LED Strip](https://www.sparkfun.com/products/14015) 。
 
-这两个类的方法几乎相同，这允许您轻松地交换为单线设备编写的代码，以便与双线设备一起使用（反之亦然），只需稍作修改。
+* **WS2801_LED()**- 此用于需要两根控制线（“数据”和“时钟”）的 RGB LED，这些控制线使用 WS2801 协议，例如这款 25 像素[漫射平面数字 RGB LED 灯串](https://www.adafruit.com/product/738)。
+
+这三个类都允许您将多像素 LED 灯条中的每个“像素”单独设置为不同的 24 位 RGB（红/绿/蓝）颜色。Pixel 类还支持 16 位 WC（暖白/冷白）像素、32 位 RGBW（红/绿/蓝/白）像素和 40 位 RGBWC（即红/绿/蓝/暖白/冷白）像素。此外，这些类还允许您简单地指定一种颜色，并将其复制到所有像素。
+
+每个类的方法几乎完全相同，这使得您只需稍作修改，即可轻松地将为一种设备编写的代码与另一种设备的代码互换使用。
 
 ## *Pixel(uint8_t pin, [const char \*pixelType])*
 
@@ -158,8 +163,7 @@ HomeSpan 包括两个专用类，用于轻松控制“可寻址” RGB LEDs。**
   
 ## *Dot(uint8_t dataPin, uint8_t clockPin)*
 
-创建此**类**实例会将指定的引脚配置为输出适用于控制双线可寻址 RGB LED 器件的波形信号，这些器件具有任意数量的像素，并且可以为每个 RGB LED 单独指定限流器。此类器件通常包含 SK9822 或 APA102 LED。参数如下：
-
+创建此**类**实例会将指定的引脚配置为输出适用于控制基于 DotStar 协议的双线可寻址 RGB LED 设备的波形信号，该设备可具有任意数量的像素。参数及其默认值（如果未指定）如下：
   * *dataPin* - 将输出 RGB 数据信号的引脚；通常连接到可寻址 LED 设备的“数据”输入
   * *clockPin* - 将输出 RGB 时钟信号的引脚；通常连接到可寻址 LED 器件的“时钟”输入
 
@@ -173,7 +177,7 @@ HomeSpan 包括两个专用类，用于轻松控制“可寻址” RGB LEDs。**
 
   * 将多像素设备中每个像素的颜色单独设置为 **color** 数组 *\*color*，大小为 *nPixels* 的 **color** 数组 *\*color* 中指定的颜色值，其中设备的第一个像素设置为中的值 *color\[0\]*，第二个像素设置为中的值 *color\[1\]*...最后一个像素设置为中的值 *color\[nPixels-1\]*。与上面类似，如果指定的值没有问题 *nPixels* 与设备中实际 RGB 像素总数不匹配
 
-在上述两种方法中，颜色都存储在 32 位 **color** 对象中，该对象配置为保存三个 8 位 RGB 值以及一个可用于限制 LED 电流的 5 位值。**color** 对象可以实例化为单个变量（例如 `Dot::Color myColor;` ）或数组（例如 `Dot::Color myColors\[8\];` ）。请注意，**Dot** 类使用的 **color** 对象的范围仅限于 **Dot** 类本身，因此你需要使用 full-合格的类名称 "Dot::Color"。创建 **color** 对象后，可以使用以下两种方法之一设置它存储的颜色：
+在上述两种方法中，颜色都存储在 32 位 **color** 对象中，该对象配置为保存三个 8 位 RGB 值以及一个可用于限制 LED 电流的 5 位值。**color** 对象可以实例化为单个变量（例如 `Dot::Color myColor;` ）或数组（例如 `Dot::Color myColors[8];` ）。请注意，**Dot** 类使用的 **color** 对象的范围仅限于 **Dot** 类本身，因此你需要使用 full-合格的类名称 "Dot::Color"。创建 **color** 对象后，可以使用以下两种方法之一设置它存储的颜色：
   
   * `Color RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t driveLevel=31)`
 
@@ -189,7 +193,7 @@ HomeSpan 包括两个专用类，用于轻松控制“可寻址” RGB LEDs。**
       
 请注意，上述两种方法都会返回完整的 **color** 对象本身，因此可以在需要 **color** 对象的任何地方使用：例如： `Dot p(5,6); Dot::Color myColor; p.set(myColor.RGB(255,215,0))` 将连接到引脚 5 和 6 的单个像素设备的颜色设置为亮金色。
 
- **Pixel** 类还支持以下类级方法作为创建颜色的便捷替代方法：
+ **Dot** 类还支持以下类级方法作为创建颜色的便捷替代方法：
   
 * `static Color RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t driveLevel=31)`
   * 相当于 `return(Color().RGB(r,g,b,driveLevel));`
@@ -201,9 +205,103 @@ HomeSpan 包括两个专用类，用于轻松控制“可寻址” RGB LEDs。**
 
 与 **Pixel** 类不同，**Dot** 类*不是*使用 ESP32 的 RMT 外设，因此没有限制你可以实例化 **Dot** 类对象的数量。此外，由于时钟信号是由 **Dot** 类本身生成的，因此无需设置定时参数，也不需要 *setTiming()* 方法。
 
+## *WS2801_LED(uint8_t dataPin, uint8_t clockPin [, spi_host_device_t spiBus])*
+
+创建此**类**的实例会将指定的引脚配置为输出适用于控制基于 *WS2801* 协议的双线可寻址 RGB LED 设备的波形信号，该设备可具有任意数量的像素。参数及其默认值（如果未指定）如下：
+
+* *dataPin* - RGB 数据信号的输出引脚；通常连接到可寻址 LED 设备的“数据”输入端
+
+* *clockPin* - RGB 时钟信号的输出引脚；通常连接到可寻址 LED 设备的“时钟”输入端
+
+* *spiBus* - 指定用于信号生成的 SPI 总线控制器。允许的值和默认值取决于设备：
+
+* 对于 ESP32，*spiBus* 可以设置为 **SPI2_HOST** 或 **SPI3_HOST**。如果未指定，*spiBus* 默认为 **SPI2_HOST**。
+
+* 对于 ESP32-S2/S3，*spiBus* 可以设置为 **SPI2_HOST** 或 **SPI3_HOST**。如果未指定，*spiBus* 默认为 **SPI3_HOST**
+
+* 对于 ESP32-C3/C5/C6，*spiBus* 只能设置为 **SPI2_HOST**，因此如果未指定，则默认为 **SPI2_HOST**
+
+设置像素颜色的两种主要方法是：
+
+* `void set(Color color, int nPixels=1)`
+
+* 将单像素设备中单个像素的颜色，或等效地，将多像素设备中前 *nPixels* 个像素的颜色设置为 *color*，其中 *color* 是下面定义的 **Color** 类型的对象。如果未指定，*nPixels* 默认为 1（即单个像素）。*nPixels* 的值与设备中实际 RGB 像素的总数不匹配不会有问题；如果 *nPixels* 小于设备像素的总数，则只会将前 *nPixels* 个像素的颜色设置为 *color*；如果 *nPixels* 大于设备像素总数，设备将忽略额外的输入。
+
+* `void set(Color *color, int nPixels)`
+
+* 将多像素设备中每个像素的颜色分别设置为大小为 *nPixels* 的 **Color** 数组 *color* 中指定的颜色值。其中，设备的第一个像素设置为 *color[0]* 中的值，第二个像素设置为 *color[1]* 中的值，……最后一个像素设置为 *color[nPixels-1]* 中的值。与上述类似，如果 *nPixels* 指定的值与设备中实际的 RGB 像素总数不匹配，也不会出现问题。
+
+在上述两种方法中，颜色都存储在一个 24 位 **Color** 对象中，该对象配置为存储三个 8 位 RGB 值。 **Color** 对象可以实例化为单个变量（例如 `WS2801_LED::Color myColor;`），但不应直接实例化为简单的数组变量（例如 `WS2801_LED::Color myColors[8];`）。这是因为 **WS2801_LED** 需要 SPI 总线的 DMA 功能来确保颜色数据正确传输到 LED，因此 **Color** 数组必须创建在 32 位对齐且支持 DMA 的内存中。
+
+ESP32 操作系统提供了两种创建存储在 32 位对齐且支持 DMA 的内存中的变量的方法。第一种方法是在实例化简单数组时添加属性 `DMA_ATTR`，如下所示：`DMA_ATTR WS2801_LED::Color c[5];`。
+
+但是，此属性只能在任何函数之外创建全局变量时使用。 `DMA_ATTR` 不能用于局部变量，因为局部变量是在运行时添加到堆栈中的，操作系统无法保证 32 位对齐。要使用 32 位对齐的 DMA 内存创建 **Color** 对象本地数组，请实例化一个指向 **Color** 数组的*指针*，并将其设置为以下静态类函数返回的内存段：
+
+* `static Color *getMem(size_t nColors)`
+
+* 返回一个指向动态分配的 32 位对齐的 DMA 内存段的 **Color** 指针，该内存段的大小足以容纳 *nColors* 个对象
+
+* 例如：`WS2801_LED::Color *myColors = WS2801_LED::getMem(8)` 将 *myColors* 设置为包含 8 个 **Color** 对象的数组
+
+* 请记住，与任何动态分配的内存一样，当不再需要时，必须释放它（例如，`free(myColors);`）。此类内存不会在函数结束时自动销毁！
+
+请注意，**WS2801_LED** 类使用的 **Color** 对象的作用域仅限于 **WS2801_LED** 类本身，因此在创建 Color 变量时，需要使用完全限定类名“WS2801_LED::Color”。
+
+创建 **Color** 对象后，可以使用以下两种方法之一设置其存储的颜色：
+
+* `Color RGB(uint8_t r, uint8_t g, uint8_t b)`
+
+* 其中 *r*、*g* 和 *b* 分别表示 0-255 范围内的 8 位红色、绿色和蓝色值。
+
+* 例如：`myColor.RGB(128,128,0)` 将 myColor 设置为黄色，亮度为一半，红绿 LED 的占空比为 50%（即 128/256）。
+* * `Color HSV(float h, float s, float v)`
+
+* 其中，*h* 表示色调，取值范围为 0-360；*s* 表示饱和度，取值范围为 0-100%；*v* 表示亮度，取值范围为 0-100%。这些值会被转换为等效的 8 位 RGB 值 (0-255)，并存储在 *Color* 对象中。
+
+* 例如：`myColor.HSV(120,100,50)` 将 myColor 设置为半亮度、完全饱和的绿色，占空比为 50%。
+
+请注意，以上两种方法都会返回完整的 **Color** 对象本身，因此可以在任何需要 **Color** 对象的地方使用：例如：`WS2801_LED p(5,6); WS2801_LED::Color myColor;` `p.set(myColor.RGB(255,215,0))` 将连接到引脚 5 和 6 的单个像素设备的颜色设置为亮金色。
+
+**WS2801_LED** 类还支持以下类级方法，作为创建颜色的便捷替代方案：
+
+* `static Color RGB(uint8_t r, uint8_t g, uint8_t b)`
+
+* 等效于 `return(Color().RGB(r,g,b));`
+
+* 例如：`WS2801_LED p(8,11);` `p.set(WS2801_LED::RGB(0,0,255),8);` 将 8 像素设备中的每个像素的颜色设置为蓝色。
+
+* `static Color HSV(float h, float s, float v)`
+
+* 等效于 `return(Color().HSV(h,s,v));`
+
+* 例如：`WS2801_LED p(8,11); p.set(WS2801_LED::HSV(240,100,75),8);` 将 8 像素设备中的每个像素的颜色设置为 75% 亮度下的深蓝色。
+
+最后需要注意的是，*WS2801* 设备的刷新率比 *DotStar* 设备慢得多。默认情况下，**WS2801_LED** 类会将每个实例化对象的 SPI 时钟频率设置为 2MHz，这与 WS2801 芯片的规格相符。但是，如果需要，您可以使用以下基于成员的方法为任何给定的 **WS2801_LED** 对象设置不同的 SPI 时钟频率：
+
+* `void setTiming(uint32_t freq)`
+
+* 将像素传输频率设置为 *freq*（单位为 Hz）
+
+* 例如：`WS2801_LED p(8,11); p.setTiming(1000000); p.set(WS2801_LED::RGB(0,0,255),8);` 将传输频率更改为 1MHz，然后再将 8 像素设备中的每个像素的颜色设置为蓝色
+
+#### WS2801 设备和 SPI 总线 - 技术细节（可选阅读）
+
+*DotStar* 和 *WS2801* 设备使用几乎相同的双线协议来表示和传输像素数据。然而，尽管两款器件都采用相同的 3 字节格式来控制每个像素的 24 位 RGB 颜色，但 *DotStar* 器件还包含第四个字节，用于控制每个像素内置的 32 级驱动电流限制器（*WS2801* 器件不具备此功能）。重要的是，由于 32 级电流限制器仅需 5 位即可表示，因此 *DotStar* 器件的第四个字节中还剩下 3 位，用于编码给定的 4 字节传输是否应被器件解释为有效的像素颜色，或者是否应被解释为传输开始指示符。传输开始指示符用于将器件对已传输数据的锁存重置回该像素链中的第一个像素。
+
+由于 *WS2801* 每个像素仅使用 3 个字节，因此没有额外的位来编码传输开始指示符。相反，当时钟信号被拉低超过 500 微秒时，WS2801 器件会将已发送数据的锁存状态重置回灯串中的第一个像素。在单处理器微控制器常用的简单单线程操作系统中，可以直接在软件中正确实现时钟信号。然而，ESP32 使用的是能够支持多处理器微控制器的完整多线程操作系统。因此，WS2801 协议无法完全通过软件实现，因为操作系统在像素数据传输期间执行的任何 CPU 任务切换都可能（而且经常会）使时钟信号保持低电平超过 500 微秒，从而导致像素器件在传输过程中重置。
+
+为了解决这个问题，**WS2801_LED** 类并没有在软件中实现 WS2801 协议，而是使用 ESP32 内置的 SPI 外设来传输数据。如果 SPI 外设配置为使用 DMA 存储器，则数据传输在*硬件*级别进行，因此不会受到操作系统在传输过程中执行的任何 CPU 任务切换的影响。
+
+ESP32、ESP32-S2 和 ESP-S3 设备具有 4 个 SPI 总线控制器（SPI0 至 SPI3）。SPI0 和 SPI1 分别保留用于与闪存和 SPI RAM 通信。这使得 SPI2 和 SPI3 可用作通用 SPI 总线，供任何程序使用。在 ESP32 上，Arduino-ESP32 内核使用 SPI3 总线实例化其全局 SPI 对象，因此 **WS2801_LED** 类默认使用 SPI2 总线。相比之下，在 ESP32-S2 和 ESP32-S3 上，Arduino-ESP32 内核使用 SPI2 总线实例化其全局 SPI 对象，因此 **WS2801_LED** 类默认使用 SPI3 总线。
+ESP32-C3、ESP32-C5 和 ESP32-C6 设备只有 3 个 SPI 总线控制器（SPI0 至 SPI2）。由于 SPI0 和 SPI1 分别用于与闪存和 SPI RAM 通信，因此只有 SPI2 可供 **WS2801_LED** 类以及 Arduino-ESP32 内核的全局 SPI 对象实例使用。
+
+**WS2801_LED** 类的设计旨在最大程度地减少与 Arduino-ESP32 内核的全局 SPI 对象之间的任何干扰，因此您的程序可以同时使用同一 SPI 总线（SPI2 或 SPI3，如果可用）连接任何外部 SPI 设备（例如基于 SPI 的以太网模块）和 **WS2801_LED** 类。
+
+如上所述，为了确保数据传输完全在硬件层面完成，无需占用 CPU 资源，待传输的数据需要存储在支持 DMA 的内存中。静态函数 `getMem()` 的作用就在于此——它返回一个指向动态分配的 32 位对齐的 DMA 内存段的指针，该内存段适用于 SPI DMA 硬件。
+
 ### 示例草图
 
-一个完整的示例展示了如何在 HomeSpan 草图中使用 Pixel 库来控制 RGB Pixel 设备、RGBW Pixel 设备和 RGB DotStar 设备（所有这些都来自 iPhone 上的“家庭”应用），可以在 Arduino IDE 中找到 [*文件→示例→HomeSpan→其他示例→像素*](../examples/Other%20Examples/Pixel/Pixel.ino)。第二个示例演示了如何使用 RGB 和 WC LED 的独立 Home App 控件来实现 RGBWC Pixel 灯条，可以在 Arduino IDE 中找到 [*文件→示例→HomeSpan→其他示例→Pixel-RGBWC*](../examples/Other%20Examples/Pixel-RGBWC/Pixel-RGBWC.ino).
+一个完整的示例演示了如何在 HomeSpan 程序中使用 **Pixel**、**Dot** 和 **WS2801_LED** 类来控制 RGB 像素设备、RGBW 像素设备、RGB DotStar 设备和 RGB WS2801 设备，所有这些设备都可以通过 iPhone 上的“家庭”App 进行控制。该示例位于 Arduino IDE 的 [*文件→示例→HomeSpan→其他示例→像素*](../examples/Other%20Examples/Pixel/Pixel.ino)。第二个示例演示了如何实现带有单独的 Home App 控制 RGB 和 WC LED 的 RGBWC 像素灯带，可以在 Arduino IDE 的 [*文件→示例→HomeSpan→其他示例→Pixel-RGBWC*](../examples/Other%20Examples/Pixel-RGBWC/Pixel-RGBWC.ino).
 
 如需更完整地展示 Pixel 库，请查看 [HomeSpan 项目](https://github.com/topics/homespan)上的 [节日灯](https://github.com/HomeSpan/HolidayLights)。此草图演示了如何使用 Pixel 库通过 60 像素 RGBW 条生成各种特殊效果。该草图还展示了使用 HomeSpan 的 [自定义特征宏](Reference.md#custom) 来实现在 Eve 应用中使用的特效“选择器”按钮。
 
