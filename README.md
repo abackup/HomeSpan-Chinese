@@ -82,7 +82,7 @@ HomeSpan 实现了以微控制器为中心的 Apple HomeKit 附件协议规范�
   * 新增 **WS2801_LED**  类 
   * 使用 SPI 总线以获得最佳性能
   * 包含与 HomeSpan 现有 **Pixel** 和 **Dot** 类相同的 `set()` 和 `Color()` 方法：
-  * 在 HomeSpan 的 [Pixels](examples/Other%20Examples/Pixel) 教程草图中添加了一个完整的示例，演示如何实现一个 [25 像素的 WS2801 RGB LED 灯串](https://www.adafruit.com/product/738)。
+  * 在 HomeSpan 的 [Pixels](examples/Other%20Examples/Pixel/Pixel.ino) 教程草图中添加了一个完整的示例，演示如何实现一个 [25 像素的 WS2801 RGB LED 灯串](https://www.adafruit.com/product/738)。
   * 请参阅 [Pixels](docs/Pixels.md) 页面以获取完整文档。
 
 ### 更新和更正
