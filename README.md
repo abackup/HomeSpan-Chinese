@@ -122,7 +122,7 @@ HomeSpan 包括以下文档：
 - [HomeSpan TLV8 特性](docs/TLV8.md) - 用于创建 TLV8 对象以与基于 TLV8 的特性一起使用的类和方法
 - [HomeSpan 设备复制](docs/Cloning.md) - 将损坏的设备无缝更换为新设备，而无需重新配对和丢失 HomeKit 自动化
 - [HomeSpan 项目](https://github.com/topics/homespan) - HomePan 库的实际应用
-- [HomeSpan 常见问题解答](docs/FAQ.md) - 常见问题解答
+- [HomeSpan FAQ](docs/FAQ.md) - 常见问题解答
 - [常见问题的解决方案](docs/Solutions.md) - 解决使用/编译 HomeSpan 时的一些常见问题
 - [HomeSpan 推荐示例](https://github.com/abackup/HomeSpanReferenceSketches-Chinese) - 一系列独立的参考示例，展示了一些更复杂的 HomeKit 服务，如恒温器和灌溉系统
 
