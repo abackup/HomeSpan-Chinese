@@ -11,7 +11,7 @@ void setup() {
  
   Serial.begin(115200);       // 启动串口接口
   
-  /// HomeSpan 设置代码在这里 ///
+  /// HomeSpan 设置代码在这里 /// 
   
 } // 设置结束
 
