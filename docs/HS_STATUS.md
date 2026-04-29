@@ -1,51 +1,50 @@
-# HomeSpan Status and the HomeSpan Status LED
+# HomeSpan 状态和状态指示灯
 
-In addition to keeping track of all the HomeKit Accessories, Services, and Characteristics you've implemented in a HomeSpan sketch, HomeSpan also keeps track of its global operating status (e.g. connecting to WiFi, updating via OTA, etc.).  The current HomeSpan status, represented as an *enum* of type **HS_STATUS**, can be read directly from within your sketch as well as communicated visually via different blinking patterns of an *optional* Status LED you can implement on your device.  This LED can be a simple analog single-color LED or an addressable Pixel LED. Many manufacturers include one or both of these on their ESP32 boards, though you can use a separate LED if desired.
+除了跟踪您在 HomeSpan 程序中实现的所有 HomeKit 配件、服务和特性之外，HomeSpan 还会跟踪其全局运行状态（例如，是否连接到 WiFi、是否通过 OTA 更新等）。当前的 HomeSpan 状态以枚举类型 **HS_STATUS** 表示，可以直接在您的程序中读取，也可以通过设备上可选的状态指示灯的不同闪烁模式进行可视化显示。该指示灯可以是简单的单色模拟 LED，也可以是可寻址像素 LED。许多制造商在其 ESP32 开发板上集成了其中一种或两种 LED，当然您也可以根据需要使用单独的 LED。
 
-To enable HomeSpan's Status LED functionality, simply call `homeSpan.setStatusPin()` or any related functions near the top of your HomeSpan sketch depending on the specific type of LED you are using.  Please see the [Reference API](Reference.md) for details on the various options available for enabling different types of Status LEDs.
+要启用 HomeSpan 的状态指示灯功能，只需在 HomeSpan 程序的顶部附近调用 `homeSpan.setStatusPin()` 或任何相关函数（具体取决于您使用的 LED 类型）。有关启用不同类型状态指示灯的各种选项的详细信息，请参阅[参考 API](Reference.md)。
 
-To instead read the status from within your sketch, call `homeSpan.getStatus()`.  This function returns a *pair* of values in the form `std::pair<HS_STATUS, uint32_t>`, where the first element indicates HomeSpan's current *status* and the second element indicates the *duration* (in seconds) since HomeSpan entered into that state.  This duration resets to zero whenever the HomeSpan status changes, and can also be reset manually by calling `homeSpan.resetStatusDuration()`.
+要从程序内部读取状态，请调用 `homeSpan.getStatus()`。此函数返回一个 `std::pair<HS_STATUS, uint32_t>` 形式的值对，其中第一个元素表示 HomeSpan 的当前状态，第二个元素表示 HomeSpan 进入该状态以来的持续时间（以秒为单位）。每当 HomeSpan 状态改变时，此持续时间都会重置为零，也可以通过调用 `homeSpan.resetStatusDuration()` 手动重置。
 
-For example, adding the following code to the main `loop()` in your sketch will monitor HomeSpan's status and output a warning every 30 seconds if the device has not yet been paired:
+例如，将以下代码添加到程序的主循环 `loop()` 中，即可监控 HomeSpan 的状态，并在设备尚未配对时每 30 秒输出一次警告：
 
 ```C++
 void loop(){
 
   homeSpan.poll();
 
-  auto [ status, duration] = homeSpan.getStatus();        // using "auto" is an easy way to read the data from a function that returns a std::pair
-  if(status==HS_PAIRING_NEEDED && duration > 30){         // check that current status has been HS_PAIRING_NEEDED for more than 30 second  
-    Serial.printf("Warning: HomeSpan is not paired.\n");  // print warning message
-    homeSpan.resetStatusDuration();                       // re-start the status duration timer
+  auto [ status, duration] = homeSpan.getStatus();        // 使用“auto”可以轻松地从返回 std::pair 的函数中读取数据
+  if(status==HS_PAIRING_NEEDED && duration > 30){         // 检查当前状态是否已持续超过 30 秒
+    Serial.printf("Warning: HomeSpan is not paired.\n");  // 打印警告信息
+    homeSpan.resetStatusDuration();                       // 重新启动状态持续时间计时器
   }  
 }
 ```
 
-In addition to reading the HomeSpan status directly, the method `homeSpan.setStatusCallback(void (*func)(HS_STATUS status))` can be used to create an optional callback function, *func*, that HomeSpan calls whenever it changes its status.[^setup]  HomeSpan passes *func* a single argument, *status*, of type **HS_STATUS**, that you can read from within your callback.  For ease of use, HomeSpan also provides the convenience function `const char* homeSpan.statusString(HS_STATUS s)` that returns a pre-defined character string for each **HS_STATUS** type.
+除了直接读取 HomeSpan 的状态之外，还可以使用 `homeSpan.setStatusCallback(void (*func)(HS_STATUS status))` 方法创建一个可选的回调函数 `*func*`，HomeSpan 会在状态改变时调用该函数。[^setup] HomeSpan 会向 `*func*` 传递一个类型为 `**HS_STATUS**` 的参数 `*status*`，您可以在回调函数中读取该参数。为了方便使用，HomeSpan 还提供了一个便捷函数 `const char* homeSpan.statusString(HS_STATUS s)`，该函数会为每个 `**HS_STATUS**` 类型返回一个预定义的字符串。
 
-[^setup]: Note HomeSpan boots with its status initialized to *HS_INITIAL_SETUP*, which itself does *not* trigger the callback.  The callback won't be triggered until  HomeSpan first changes its initial status from *HS_INITIAL_SETUP* to something else, and then upon all other subsequent changes.
+[^setup]：请注意，HomeSpan 启动时状态初始化为 `*HS_INITIAL_SETUP*`，该状态本身不会触发回调。回调只有在 HomeSpan 首次将其初始状态从 `*HS_INITIAL_SETUP*` 更改为其他值时才会触发，之后每次状态更改都会触发回调。
 
-For example, the code below creates an optional callback function printing the current HomeSpan status whenever it changes:
-
+例如，以下代码创建了一个可选的回调函数，用于在 HomeSpan 状态发生变化时打印该状态：
 
 ```C++
 #include "HomeSpan.h"
 
 void setup(){
-  homeSpan.setStatusCallback(statusUpdate);   // set callback function
+  homeSpan.setStatusCallback(statusUpdate);   // 设置回调函数
   ...
   homeSpan.begin();
   ...
 }
 
-// create a callback function that simply prints the pre-defined character string on the Serial Monitor whenever the HomeSpan status changes
+// 创建一个回调函数，当 HomeSpan 状态发生变化时，该函数只需在串口监视器上打印预定义的字符串即可。
 
 void statusUpdate(HS_STATUS status){
   Serial.printf("\n*** HOMESPAN STATUS CHANGE: %s\n",homeSpan.statusString(status));
 }
 ```
 
-You can of course create any alternative messsages, or take any actions desired, in *func* and do not need to use HomeSpan's pre-defined character strings.  Note that HomeSpan callbacks can also take anonymous *lambda functions* as an argument.  For example, this single line of code will create a callback that outputs log messages, formatted in red, to the Web Log whenever the HomeSpan status changes:
+当然，您可以在 *func* 中创建任何其他消息或执行任何所需的操作，而无需使用 HomeSpan 预定义的字符串。请注意，HomeSpan 回调函数还可以接受匿名 *lambda 函数* 作为参数。例如，以下一行代码将创建一个回调函数，当 HomeSpan 状态发生变化时，该函数会将红色格式的日志消息输出到 Web 日志：
 
 ```C++
 void setup(){
@@ -55,9 +54,9 @@ void setup(){
 }
 ```
 
-### Table of HomeSpan Status Types
+### HomeSpan 状态类型表
 
-The table below lists all possible HomeSpan **HS_STATUS** types along with each type's pre-defined character string (as returned by `statusString()`) and a graphic representation of the flashing pattern HomeSpan would display for that status type on the optional HomeSpan Status LED, if enabled.  Click on any entry for more details.  Note that graphic representations are all scaled to show the first 6 seconds of each pattern, which should be always sufficient to make the pattern (number of blinks, duration, etc.) obvious.
+下表列出了所有可能的 HomeSpan **HS_STATUS** 状态类型，以及每种类型的预定义字符串（由 `statusString()` 返回）和 HomeSpan 状态指示灯（如果启用）上该状态类型对应的闪烁模式的图形表示。点击任意条目可查看更多详情。请注意，所有图形表示均已缩放，仅显示每种模式的前 6 秒，这足以清晰地显示模式（闪烁次数、持续时间等）。
 
 |HomeSpan Status (HS_STATUS)|Status String|Status LED Pattern|
 |---|---|---|
@@ -87,34 +86,34 @@ The table below lists all possible HomeSpan **HS_STATUS** types along with each 
 |<details><summary>HS_AP_TERMINATED</summary><i>The HomeSpan Setup Access Point has been terminated</details>|Access Point Terminated|<img src="images/ledPatterns/rapidFlashing.svg" width=300>|
 |<details><summary>HS_OTA_STARTED</summary><i>HomeSpan is in the process of receiving an Over-the-Air software update</details>|OTA Update Started|<img src="images/ledPatterns/mediumTripleBlink.svg" width=300>|
 
-### Advanced Use Cases
+### 高级使用场景
 
-* If you have attached a text display to your HomeSpan device, add code to the callback function decribed above to have it display HomeSpan status messages to the user.
-* Instead of enabling the HomeSpan Status LED, implement your own custom LED patterns, use different colors, etc., by adding custom logic to the callback function.
+* 如果您已将文本显示屏连接到 HomeSpan 设备，请在上述回调函数中添加代码，使其向用户显示 HomeSpan 状态消息。
+* 除了启用 HomeSpan 状态 LED 指示灯外，您还可以通过在回调函数中添加自定义逻辑来实现自定义 LED 指示灯模式、使用不同颜色等。
 
-### Rebooting to Address "No Response" Issues in Home App
+### 重启以解决家庭应用“无响应”问题
 
-After a HomeSpan device establishes WiFi or Ethernet connectivity to your network, its status will change to either *HS_PAIRING_NEEDED*, or *HS_PAIRED*, depending on whether or not it has been paired with HomeKit.  If the status is *HS_PAIRING_NEEDED*, it will remain so until you pair the device with HomeKit using the Home App on your iPhone.
+当 HomeSpan 设备通过 Wi-Fi 或以太网连接到您的网络后，其状态将变为 *HS_PAIRING_NEEDED* 或 *HS_PAIRED*，具体取决于它是否已与 HomeKit 配对。如果状态为 *HS_PAIRING_NEEDED*，则该状态将保持，直到您使用 iPhone 上的“家庭”App 将设备与 HomeKit 配对。
 
-If instead pairing has already been completed, one or more of your HomeKit Hubs should automatically detect the HomeSpan device and initiate a secure connection request.  This may occur within a few seconds of the device first connecting to your network, or it may take a minute or two.  Upon successfully validating the first request HomeSpan receives for a secure connection from HomeKit, HomeSpan changes its status to *HS_CONNECTED*.  While in that state, you should be able to fully control your device from the Home App.
+如果配对已完成，则您的一个或多个 HomeKit 中枢应会自动检测到 HomeSpan 设备并发起安全连接请求。这可能在设备首次连接到您的网络后几秒钟内发生，也可能需要一两分钟。成功验证 HomeSpan 收到的来自 HomeKit 的第一个安全连接请求后，HomeSpan 的状态将变为 *HS_CONNECTED*。在此状态下，您应该能够通过“家庭”App 完全控制您的设备。
 
-If for whatever reason HomeKit closes all its secure connections with the device, but the device remains connected to your network and paired with HomeKit, HomeSpan will reset its status to *HS_PAIRED*. It then waits for HomeKit to request a new secure connection.
+如果由于任何原因，HomeKit 关闭了与设备的所有安全连接，但设备仍连接到您的网络并与 HomeKit 配对，HomeSpan 会将其状态重置为 *HS_PAIRED*。然后，它会等待 HomeKit 请求新的安全连接。
 
-As such, HomeSpan should maintain a status of *HS_PAIRED* only temporarily.  Remaining in the *HS_PAIRED* state for an extended period of time is undesireable and will likely cause the Home App to indicate "No Reponse" for your device.  HomeSpan cannot cure this issue by itself, since HomeKit does not allow devices to initiate outbound connections to a HomeKit Hub.  Rather, HomeKit must initiate all new connections to each device it finds on a home network.
+因此，HomeSpan 应该只是暂时保持 *HS_PAIRED* 状态。长时间保持 *HS_PAIRED* 状态是不理想的，并且很可能会导致“家庭”App 显示您的设备“无响应”。HomeSpan 本身无法解决此问题，因为 HomeKit 不允许设备主动发起与 HomeKit Hub 的连接。相反，HomeKit 必须主动发起与家庭网络中每个设备的新连接。
 
-The code below provides a potential solution to this problem by monitoring HomeSpan's status and checking if it has been in the *HS_PAIRED* status for an extended period of time. If so, it assumes something is wrong and reboots itself, with the hope that upon re-starting and re-connecting to your network, HomeKit will re-establish secure connectivity with the device:
+以下代码提供了一种可能的解决方案，通过监控 HomeSpan 的状态并检查其是否长时间处于 *HS_PAIRED* 状态。如果出现这种情况，它会认为出了问题并重启自身，希望重启并重新连接到网络后，HomeKit 能够重新与设备建立安全连接：
 
 ```C++
 void loop(){
 
   homeSpan.poll();
 
-  auto [ status, duration] = homeSpan.getStatus();        // using "auto" is an easy way to read the data from a function that returns a std::pair
-  if(status==HS_PAIRED && duration > 120)                 // check if HomeSpan has been waiting more than 2 minutes for a HomeKit connection
-    homeSpan.processSerialCommand("R");                   // if so, force HomeSpan to reboot
+  auto [ status, duration] = homeSpan.getStatus();        // 使用“auto”可以轻松地从返回 std::pair 的函数中读取数据
+  if(status==HS_PAIRED && duration > 120)                 // 检查 HomeSpan 是否已等待 HomeKit 连接超过 2 分钟
+    homeSpan.processSerialCommand("R");                   // 如果是，则强制 HomeSpan 重启
 }
 ```
 
 ---
 
-[↩️](../README.md) Back to the Welcome page
+[↩️](../README.md) 返回欢迎页面
