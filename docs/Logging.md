@@ -71,7 +71,7 @@ HomeSpan网络日志页面本身包含三个部分：
 
 HomeSpan 的 Web 日志通常以浅蓝色背景上的黑色文本显示。但是，您可以通过调用 `homeSpan.setWebLogCSS(const char *css)` 来设置自定义样式表 (CSS) 以更改格式，其中 *css* 是使用包含一个或多个自定义样式元素的 [HTML 类](https://www.w3schools.com/html/html_classes.asp) 构建的。 HomeSpan 为网络日志的不同部分实现了以下四个类名：
 
- * *body* - 此类指定 Web 日志页面主体部分的样式元素，包括背景颜色和顶部标题文本（其格式为 <h2>）。
+ * *body* - 此类指定 Web 日志页面主体部分的样式元素，包括背景颜色和顶部标题文本（其格式为 \<h2\>）。
 
  * *infoTable* - 此类指定*信息表*的样式元素。
 
