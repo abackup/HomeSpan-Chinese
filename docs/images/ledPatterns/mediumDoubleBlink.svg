@@ -1,0 +1,32 @@
+<svg width="600" height="30" xmlns="http://www.w3.org/2000/svg">
+  <rect width="15" height="30" x="0" y="0" fill="red" />
+  <rect width="15" height="30" x="15" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="30" y="0" fill="red" />
+  <rect width="15" height="30" x="45" y="0" fill="lightgrey" />
+  <rect width="40" height="30" x="60" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="100" y="0" fill="red" />
+  <rect width="15" height="30" x="115" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="130" y="0" fill="red" />
+  <rect width="15" height="30" x="145" y="0" fill="lightgrey" />
+  <rect width="40" height="30" x="160" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="200" y="0" fill="red" />
+  <rect width="15" height="30" x="215" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="230" y="0" fill="red" />
+  <rect width="15" height="30" x="245" y="0" fill="lightgrey" />
+  <rect width="40" height="30" x="260" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="300" y="0" fill="red" />
+  <rect width="15" height="30" x="315" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="330" y="0" fill="red" />
+  <rect width="15" height="30" x="345" y="0" fill="lightgrey" />
+  <rect width="40" height="30" x="360" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="400" y="0" fill="red" />
+  <rect width="15" height="30" x="415" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="430" y="0" fill="red" />
+  <rect width="15" height="30" x="445" y="0" fill="lightgrey" />
+  <rect width="40" height="30" x="460" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="500" y="0" fill="red" />
+  <rect width="15" height="30" x="515" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="530" y="0" fill="red" />
+  <rect width="15" height="30" x="545" y="0" fill="lightgrey" />
+  <rect width="40" height="30" x="560" y="0" fill="lightgrey" />  
+</svg>

@@ -1,0 +1,36 @@
+<svg width="600" height="30" xmlns="http://www.w3.org/2000/svg">
+  <rect width="15" height="30" x="0" y="0" fill="red" />
+  <rect width="15" height="30" x="15" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="30" y="0" fill="red" />
+  <rect width="15" height="30" x="45" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="60" y="0" fill="red" />
+  <rect width="15" height="30" x="75" y="0" fill="lightgrey" />
+  <rect width="40" height="30" x="90" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="130" y="0" fill="red" />
+  <rect width="15" height="30" x="145" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="160" y="0" fill="red" />
+  <rect width="15" height="30" x="175" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="190" y="0" fill="red" />
+  <rect width="15" height="30" x="205" y="0" fill="lightgrey" />
+  <rect width="40" height="30" x="220" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="260" y="0" fill="red" />
+  <rect width="15" height="30" x="275" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="290" y="0" fill="red" />
+  <rect width="15" height="30" x="305" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="320" y="0" fill="red" />
+  <rect width="15" height="30" x="335" y="0" fill="lightgrey" />
+  <rect width="40" height="30" x="350" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="390" y="0" fill="red" />
+  <rect width="15" height="30" x="405" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="420" y="0" fill="red" />
+  <rect width="15" height="30" x="435" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="450" y="0" fill="red" />
+  <rect width="15" height="30" x="465" y="0" fill="lightgrey" />
+  <rect width="40" height="30" x="480" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="520" y="0" fill="red" />
+  <rect width="15" height="30" x="535" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="550" y="0" fill="red" />
+  <rect width="15" height="30" x="565" y="0" fill="lightgrey" />
+  <rect width="15" height="30" x="580" y="0" fill="red" />
+  <rect width="5" height="30" x="595" y="0" fill="lightgrey" />
+</svg>
