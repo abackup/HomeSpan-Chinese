@@ -36,11 +36,13 @@ HomeSpan 日志消息通常以三种可能的详细级别直接输出到 Arduino
 
 HomeSpan 的网络日志功能还嵌入了调用 NTP 时间服务器来设置设备时钟的能力。此可选功能允许 HomeSpan 创建基于时钟的时间戳（例如 *Sat Apr 16 19:48:41 2022*）。
 
-HomeSpan网络日志页面本身包含两个部分：
+HomeSpan网络日志页面本身包含三个部分：
  
-  * 页面顶部提供 HomeSpan 生成的状态信息，例如设备名称、自上次重启以来的总正常运行时间以及各种软件组件的版本号
- 
-  * 页面底部发布你使用 **WEBLOG()** 宏创建的消息。此宏仅以 *printf* 样式的形式 `WEBLOG(const char *fmt, ...)` 出现，类似于上述 LOG() 宏的第二个版本。
+  * *Information Table* - provides HomeSpan-generated status information, such as the name of the device, total uptime since last reboot, and version numbers of the various software components
+
+  * *Client Connections Table* - lists all active client connections (similar to the 's' CLI command)
+    
+  * *Log Messages Table* - posts HomeSpan-generated log messages as well as messages you create using the **WEBLOG()** macro.  This macro comes only in the *printf*-style form `WEBLOG(const char *fmt, ...)`, similar to the second version of the LOG() macros described above.
  
 使用 WEBLOG() 生成的消息*也*以与 LOG1() 消息相同的优先级回显到 Arduino 串口监视器，这意味着如果 *Log Level* 设置为 1 或更高，它们将输出到串口监视器。网络日志页面按时间倒序显示消息，并补充了以下附加项目：
 * *Entry Number* - HomeSpan 为每条消息编号，从 1 开始表示重启后的第一条消息
@@ -67,20 +69,22 @@ HomeSpan网络日志页面本身包含两个部分：
 
 ## 自定义样式表（CSS）
 
-HomeSpan 的网络日志通常由浅蓝色背景上的黑色文本组成。但是，你可以设置自定义样式表（CSS） 以通过调用`homeSpan.setWebLogCSS(const char *css)` 来更改格式，其中 css 是使用包含一个或多个自定义样式元素的  [HTML 类](https://www.w3schools.com/html/html_classes.asp) 构造的。HomeSpan 为网络日志的不同部分实现以下三个类名：
- 
- * *bod1* - 此类指定网络日志页面主体的样式元素，包括背景颜色和顶部的标题文本（其本身的格式为 \<h2\>）
- * *tab1* - 此类指定网络日志页顶部状态表的样式元素
- * *tab2* - 此类指定网络日志页面的 botom 中的日志条目表的样式元素
- 
-例如，以下 CSS 将网络日志页面的背景颜色更改为浅黄色，将标题文本的颜色更改为蓝色，将顶部表格中单元格的颜色更改为浅绿色，将 botom 表中的单元格颜色更改为浅蓝色。它还将第二个表的标题行 (\<th\>) 中的文本颜色更改为红色，将第二个表中数据行 (\<th\>) 的颜色更改为深蓝色，并将数据行中的文本对齐方式更改为在每个表单元格中居中：
- 
- ```C++
- homeSpan.setWebLogCSS(".bod1 {background-color:lightyellow;}"
-                       ".bod1 h2 {color:blue;}"
-                       ".tab1 {background-color:lightgreen;}"
-                       ".tab2 {background-color:lightblue;} .tab2 th {color:red;} .tab2 td {color:darkblue; text-align:center;}"
-                       );
+HomeSpan's Web Log normally consists of black text on a light blue background.  However, you can set a Custom Style Sheet (CSS) to change the format by calling `homeSpan.setWebLogCSS(const char *css)`, where *css* is constructed using [HTML classes](https://www.w3schools.com/html/html_classes.asp) containing one or more custom style elements.  HomeSpan implements the following four class names for the different parts of the Web Log:
+
+ * *body* - this class specifies style elements for the main body of the Web Log page, including the background color and the header text at the top (which itself is formatted as \<h2\>)
+ * *infoTable* - this class specifies style elements for the *Information Table*
+ * *clientTable* - this class specifies style elements for the *Client Connections Table*
+ * *logTable* - this class specifies style elements for the *Log Messages Table*
+
+For example, the following CSS changes the colors used in the body as well as various colors and styles used for different elements in each of the three tables:
+
+```C++
+homeSpan.setWebLogCSS(".body {background-color:lightyellow;}"
+                      ".body h2 {color:blue;}"
+                      ".infoTable {background-color:lightgreen;}"
+                      ".clientTable {background-color:yellow;} .clientTable th {color:blue;} .clientTable td {color:black; text-align:center;}"
+                      ".logTable {background-color:lightblue;} .logTable th {color:red;} .logTable td {color:darkblue; text-align:center;}"
+                     );
  ```
  
 请注意，每当日志级别设置为 1 或更高时，HomeSpan 都会将网络日志 HTML 的全部内容（包括你在上面指定的任何 CSS）输出到串口监视器。在创建自己的 CSS 时，查看此输出会很有帮助。
