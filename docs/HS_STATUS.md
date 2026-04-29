@@ -60,35 +60,21 @@ void setup(){
 
 |HomeSpan 状态 (HS_STATUS)|状态字符串|状态指示灯图案|
 |---|---|---|
-|<details><summary>HS_INITIAL_SETUP</summary><i>HomeSpan 正在运行草图 setup() 部分的代码</details>|HomeSpan 初始化中|<img src="images/ledPatterns/off.svg" width=300>|
-
-|<details><summary>HS_WIFI_NEEDED</summary><i>WiFi 凭据尚未设置/存储，且以太网接口不可用</details>|需要 WiFi 凭据|<img src="images/ledPatterns/slowSingleBlink.svg" width=300>|
-
-|<details><summary>HS_WIFI_SCANNING</summary><i>HomeSpan 正在扫描（或重新扫描）WiFi 网络接入点</details>|WiFi 扫描已开始|<img src="images/ledPatterns/longTripleBlink.svg" width=300>|
-
-|<details><summary>HS_WIFI_CONNECTING</summary><i>HomeSpan 正在尝试连接到已存储的 WiFi 凭据中指定的 WiFi 网络</details>|WiFi 正在连接|<img src="images/ledPatterns/slowFlashing.svg" width=300>|
-
-|<details><summary>HS_ETH_CONNECTING</summary><i>HomeSpan 正在尝试使用已配置的以太网接口连接到以太网</details>|以太网连接中|<img src="images/ledPatterns/slowFlashing.svg" width=300>|
-
-|<details><summary>HS_PAIRING_NEEDED</summary><i>HomeSpan 已连接到网络，但设备尚未与 HomeKit 配对</details>|设备尚未配对|<img src="images/ledPatterns/slowDoubleBlink.svg" width=300>|
-
-|<details><summary>HS_PAIRED</summary><i>HomeSpan 已连接到网络，并且已与 HomeKit 配对，但没有活动的 HomeKit 连接</details>|已配对并等待 HomeKit|<img src="images/ledPatterns/slowDoubleBlinkInverted.svg" width=300>|
-
-|<details><summary>HS_CONNECTED</summary><i>HomeSpan 已连接到网络，设备已与 HomeKit 配对，并且至少有一个活动的 HomeKit 连接</details>|设备已连接到 HomeKit|<img src="images/ledPatterns/on.svg" width=300>|
-
-|<details><summary>HS_ENTERING_CONFIG_MODE</summary><i>用户已请求设备进入命令模式</details>|进入命令模式|<img src="images/ledPatterns/rapidFlashing.svg" width=300>|
-
-|<details><summary>HS_CONFIG_MODE_EXIT</summary><i>HomeSpan 处于命令模式，且已指定“退出命令模式”作为选项</details>|1. 退出命令模式|<img src="images/ledPatterns/fastBlink1.svg" width=300>|
-
-|<details><summary>HS_CONFIG_MODE_REBOOT</summary><i>HomeSpan 处于命令模式，且已指定“重启”作为选项</details>|2.重启设备|<img src="images/ledPatterns/fastBlink2.svg" width=300>|
-
-|<details><summary>HS_CONFIG_MODE_LAUNCH_AP</summary><i>HomeSpan 处于命令模式，已指定“启动接入点”作为选项</details>|3. 启动接入点|<img src="images/ledPatterns/fastBlink3.svg" width=300>|
-
-|<details><summary>HS_CONFIG_MODE_UNPAIR</summary><i>HomeSpan 处于命令模式，已指定“取消配对设备”作为选项</details>|4. 取消配对设备|<img src="images/ledPatterns/fastBlink4.svg" width=300>|
-
-|<details><summary>HS_CONFIG_MODE_ERASE_WIFI</summary><i>HomeSpan 处于命令模式，已选择“擦除 WiFi 凭据”</details>|5. 擦除 WiFi 凭据|<img src="images/ledPatterns/fastBlink5.svg" width=300>|
-
-|<details><summary>HS_CONFIG_MODE_EXIT_SELECTED</summary><i>用户已选择“退出命令模式”</details>|正在退出命令模式...|<img src="images/ledPatterns/rapidFlashing.svg" width=300>|
+|<details><summary>HS_INITIAL_SETUP</summary><i>HomeSpan is running code in the setup() portion of the sketch</details>|HomeSpan Initializing|<img src="images/ledPatterns/off.svg" width=300>|
+|<details><summary>HS_WIFI_NEEDED</summary><i>WiFi Credentials have not yet been set/stored, and an Ethernet interface is not available</details>|WiFi Credentials Needed|<img src="images/ledPatterns/slowSingleBlink.svg" width=300>|
+|<details><summary>HS_WIFI_SCANNING</summary><i>HomeSpan is in the process of scanning (or re-scanning) for WiFi network Access Points</details>|WiFi Scanning Started|<img src="images/ledPatterns/longTripleBlink.svg" width=300>|
+|<details><summary>HS_WIFI_CONNECTING</summary><i>HomeSpan is trying to connect to the WiFi network specified in the stored WiFi Credentials</details>|WiFi Connecting|<img src="images/ledPatterns/slowFlashing.svg" width=300>|
+|<details><summary>HS_ETH_CONNECTING</summary><i>HomeSpan is trying to connect to an Ethernet network using the Ethernet interface configured</details>|Ethernet Connecting|<img src="images/ledPatterns/slowFlashing.svg" width=300>|
+|<details><summary>HS_PAIRING_NEEDED</summary><i>HomeSpan is connected to a network, but the device has not yet been paired with HomeKit</details>|Device not yet Paired|<img src="images/ledPatterns/slowDoubleBlink.svg" width=300>|
+|<details><summary>HS_PAIRED</summary><i>HomeSpan is connected to a network and the device has been paired with HomeKit, but there are no active HomeKit connections</details>|Paired and waiting for HomeKit|<img src="images/ledPatterns/slowDoubleBlinkInverted.svg" width=300>|
+|<details><summary>HS_CONNECTED</summary><i>HomeSpan is connected to a network, the device has been paired to HomeKit, and there is at least one active HomeKit connection</details>|Device is Connected to HomeKit|<img src="images/ledPatterns/on.svg" width=300>|
+|<details><summary>HS_ENTERING_CONFIG_MODE</summary><i>User has requested the device to enter into Command Mode</details>|Entering Command Mode|<img src="images/ledPatterns/rapidFlashing.svg" width=300>|
+|<details><summary>HS_CONFIG_MODE_EXIT</summary><i>HomeSpan is in Command Mode with "Exit Command Mode" specified as choice</details>|1. Exit Command Mode|<img src="images/ledPatterns/fastBlink1.svg" width=300>|
+|<details><summary>HS_CONFIG_MODE_REBOOT</summary><i>HomeSpan is in Command Mode with "Reboot" specified as choice</details>|2. Reboot Device|<img src="images/ledPatterns/fastBlink2.svg" width=300>|
+|<details><summary>HS_CONFIG_MODE_LAUNCH_AP</summary><i>HomeSpan is in Command Mode with "Launch Access Point" specified as choice</details>|3. Launch Access Point|<img src="images/ledPatterns/fastBlink3.svg" width=300>|
+|<details><summary>HS_CONFIG_MODE_UNPAIR</summary><i>HomeSpan is in Command Mode with "Unpair Device" specified as choice</details>|4. Unpair Device|<img src="images/ledPatterns/fastBlink4.svg" width=300>|
+|<details><summary>HS_CONFIG_MODE_ERASE_WIFI</summary><i>HomeSpan is in Command Mode with "Erase WiFi Credentials" specified as choice</details>|5. Erase WiFi Credentials|<img src="images/ledPatterns/fastBlink5.svg" width=300>|
+|<details><summary>HS_CONFIG_MODE_EXIT_SELECTED</summary><i>User has selected "Exit Command Mode"</details>|Exiting Command Mode...|<img src="images/ledPatterns/rapidFlashing.svg" width=300>|
 |<details><summary>HS_CONFIG_MODE_REBOOT_SELECTED</summary><i>User has select "Reboot" from the Command Mode</details>|Rebooting Device...|<img src="images/ledPatterns/rapidFlashing.svg" width=300>|
 |<details><summary>HS_CONFIG_MODE_LAUNCH_AP_SELECTED</summary><i>User has selected "Launch AP Access" from the Command Mode</details>|Launching Access Point...|<img src="images/ledPatterns/rapidFlashing.svg" width=300>|
 |<details><summary>HS_CONFIG_MODE_UNPAIR_SELECTED</summary><i>User has selected "Unpair Device" from the Command Mode</details>|Unpairing Device...|<img src="images/ledPatterns/rapidFlashing.svg" width=300>|
