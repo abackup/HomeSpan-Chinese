@@ -60,9 +60,9 @@ void setup(){
 
 |HomeSpan 状态 (HS_STATUS)|状态字符串|状态指示灯图案|
 |---|---|---|
-|<details><summary>HS_INITIAL_SETUP</summary><i>HomeSpan is running code in the setup() portion of the sketch</details>|HomeSpan Initializing|<img src="images/ledPatterns/off.svg" width=300>|
-|<details><summary>HS_WIFI_NEEDED</summary><i>WiFi Credentials have not yet been set/stored, and an Ethernet interface is not available</details>|WiFi Credentials Needed|<img src="images/ledPatterns/slowSingleBlink.svg" width=300>|
-|<details><summary>HS_WIFI_SCANNING</summary><i>HomeSpan is in the process of scanning (or re-scanning) for WiFi network Access Points</details>|WiFi Scanning Started|<img src="images/ledPatterns/longTripleBlink.svg" width=300>|
+|<details><summary>HS_INITIAL_SETUP</summary><i>HomeSpan 在草图的 setup（）部分运行代码</details>|HomeSpan 初始化|<img src="images/ledPatterns/off.svg" width=300>|
+|<details><summary>HS_WIFI_NEEDED</summary><i>WiFi 凭证尚未设置或存储，且没有以太网接口</details>|需要 WiFi 凭证|<img src="images/ledPatterns/slowSingleBlink.svg" width=300>|
+|<details><summary>HS_WIFI_SCANNING</summary><i>HomeSpan 正在扫描（或重新扫描）WiFi 网络接入点</details>|WiFi 扫描开始|<img src="images/ledPatterns/longTripleBlink.svg" width=300>|
 |<details><summary>HS_WIFI_CONNECTING</summary><i>HomeSpan is trying to connect to the WiFi network specified in the stored WiFi Credentials</details>|WiFi Connecting|<img src="images/ledPatterns/slowFlashing.svg" width=300>|
 |<details><summary>HS_ETH_CONNECTING</summary><i>HomeSpan is trying to connect to an Ethernet network using the Ethernet interface configured</details>|Ethernet Connecting|<img src="images/ledPatterns/slowFlashing.svg" width=300>|
 |<details><summary>HS_PAIRING_NEEDED</summary><i>HomeSpan is connected to a network, but the device has not yet been paired with HomeKit</details>|Device not yet Paired|<img src="images/ledPatterns/slowDoubleBlink.svg" width=300>|
