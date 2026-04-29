@@ -40,6 +40,13 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
     * `PushButton::TRIGGER_ON_TOUCH` - 使用设备的触摸传感器外设在触摸 *pin* 时触发
       * ESP32-C3 上不可用
   * 或者，你可以将 *triggerType* 设置为任何用户定义的 `boolean(int arg)` 形式的函数，以将任何设备用作控制按钮。有关详细信息，请参阅下面的 **[SpanButton](#spanbutton)**
+    
+* `Span& setControlTimes(uint32_t comTime, uint32_t resTime)`
+  * allows users to override HomeSpan's default hold times for the Control Button as follows:
+    * *comTime* - the hold time (in milliseconds) required to trigger HomeSpan to enter or exit the Device Command Mode
+    * *resTime* - the hold time (in milliseconds) required to trigger a Factory Reset
+  * HomeSpan's defaults require holding the Control Button for 3000ms to enter/exit the Device Command Mode and for 10000ms to trigger a Factory Reset
+  * if the *resTime* specified is not greater than the *comTime*, HomeSpan ignores the request
 
 * `int getControlPin()`
   * 返回由 `setControlPin(pin)` 设置的 HomeSpan 控制按钮的引脚号，如果未设置引脚，则返回 -1
@@ -220,6 +227,9 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
  
 * `Span& useEthernet()`
   * 强制 HomeSpan 使用以太网而不是 WiFi，即使在调用 `homeSpan.begin()` 之前尚未调用 ETH 或未找到以太网卡
+
+* `boolean usingEthernet()`
+  * returns true if Ethernet is being used, else false if WiFi is being used
     
 * `Span& setPairCallback(void (*func)(boolean status))`
   * 设置可选的用户定义回调函数 *func*，在完成与控制器的配对（*status=true*）或与控制器的配对（*status=false*）后由 HomeSpan 调用
@@ -232,6 +242,14 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 注意此方法与 `setPairCallback()` 不同，仅当设备的配对状态发生变化时，例如在初始配对时添加第一个控制器，或在取消配对时删除最后一个控制器时，才会调用该方法 
   * 函数 func 的类型必须为 void 并且没有参数
   * 有关如何读取每个配对控制器的配对数据的详细信息，请参阅 （仅支持某些高级用例 `controllerListBegin()` `controllerListEnd())` 时需要） 
+
+* `std::pair< HS_STATUS, uint32_t > getStatus()`
+  * returns a std::pair containing:
+    * the current HomeSpan Status as an enum type [HS_STATUS](HS_STATUS.md)
+    * the duration (in seconds) since HomeSpan last changed to that Status
+
+* `void resetStatusDuration()`
+  * resets the duration timer returned by `getStatus()` above to zero
 
 * `Span& setStatusCallback(void (*func)(HS_STATUS status))`
   * 设置一个可选的用户定义回调函数 *func*，每当 HomeSpan 的运行状态（例如 WiFi 连接、需要配对...）发生变化时，该函数将被调用，从而改变（可选）状态指示灯的闪烁模式
@@ -380,37 +398,23 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 例如：`homeSpan.resetIID(100)` 导致 HomeSpan 将当前附件中定义的下一个服务或特性的 IID 设置为 100，然后向前增加 IID 计数，以便随后定义的任何服务或特性（在同一个附件内）具有 IID=101、102 等。
   * 注意：调用此函数仅影响当前附件的 IID 生成（实例化新附件时，计数将重置为 IID=1）
 
+* `const char *getPairingInfo(char **buf)`
+  * allocates memory to *buf*, a user-provided empty **pointer** to a `char *`, and fills it with HomeSpan's Accessory Device Pairing Data in the same base-64 format as provided by the 'P' CLI Command
+    * a pointer to *buf* itself is returned
+    * when *buf* is no longer needed, the user must call `free(buf)` to de-allocate the memory 
+  * see [Cloning Pairing Data](Cloning.md) for details
+    
 * `const_iterator controllerListBegin()` and `const_iterator controllerListEnd()`
-  * 返回一个*常量迭代器*，指向存储所有控制器数据的不透明链表的*开头*或*结尾*
-  * 迭代器应使用“auto”关键字定义，如下所示： `auto myIt=homeSpan.controllerListBegin();`
-  * 可以使用以下方法从取消引用的迭代器读取控制器数据：  
-    * `const uint8_t *getID()` 返回指向控制器 36 字节 ID 的指针
-    * `const uint8_t *getLTPK()` 返回指向控制器的 32 字节长期公钥的指针
-    * `boolean isAdmin()` 如果控制器具有管理员权限则返回 true，否则返回 false
-
-  * <details><summary>单击此处查看示例代码</summary><br>
-
-    ```C++
-    // 提取并打印有关每个控制器的相同数据，HomeSpan 使用 "s" CLI 命令时会将其打印到串行监视器
-    
-    Serial.printf("\nController Data\n");
-    
-    for(auto it=homeSpan.controllerListBegin(); it!=homeSpan.controllerListEnd(); ++it){  // 循环遍历每个控制器
-    
-      Serial.printf("Admin=%d",it->isAdmin());    // 指示控制器是否具有管理员权限
-
-      Serial.printf("  ID=");                     // 打印控制器的 36 字节设备 ID
-      for(int i=0;i<36;i++)
-        Serial.printf("%02X",it->getID()[i]);
-    
-      Serial.printf("  LTPK=");                   // 打印控制器的32字节长期公钥
-      for(int i=0;i<32;i++)
-        Serial.printf("%02X",it->getLTPK()[i]);
-    
-      Serial.printf("\n");
-    }
-    ```
-    </details>
+  * returns a *constant iterator* pointing to either the *beginning*, or the *end*, of an opaque linked list that stores all Controller Pairing Data
+  * iterators should be defined using the `auto` keyword as follows: `auto myIt=homeSpan.controllerListBegin();`
+  * Controller data can be read from a de-referenced iterator using the following methods:    
+    * `const uint8_t *getID()` returns pointer to the 36-byte ID of the Controller
+    * `const uint8_t *getLTPK()` returns pointer to the 32-byte Long Term Public Key of the Controller
+    * `boolean isAdmin()` returns true if Controller has admin permissions, else returns false
+    * `const char *getPairingInfo(char **buf)` allocates memory to *buf*, a user-provided empty **pointer** to a `char *`, and fills it with the Controller's Pairing Data in the same base64 format as provided by the 'P' CLI Command
+      * a pointer to *buf* itself is returned
+      * when *buf* is no longer needed, the user must call `free(buf)` to de-allocate the memory 
+  * see [Cloning Pairing Data](Cloning.md) for details
 
 * `Span& enableWatchdog(uint16_t nSeconds)`
    * 创建 HomeSpan *任务看门狗*，如果 HomeSpan `poll()` 函数未至少每 *nSeconds* 运行一次，则触发设备重启
@@ -572,18 +576,16 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
 * `void setVal(value [,boolean notify])`
   * 将基于数字的特性的值设置为 *value*，如果 *notify* 设置为 true，则通知所有 HomeKit 控制器有关更改。*notify* 标志是可选的，如果未指定，则将设置为 true。将 *notify* 标志设置为 false 允许您在不通知任何 HomeKit 控制器的情况下更新特性，这对于 HomeKit 自动调整的特性（例如倒数计时器）很有用，但如果 Home App 关闭然后重新打开，则会从配件中​​请求
   * 适用于任何整数、布尔值或浮点型数值*值*，但 HomeSpan 会将*值*转换为每个特征的适当类型（例如，在基于整数的特征上调用`setValue(5.5)`会导致*值*=5）
-  * 如果 *value* 超出了特征的最小/最大范围，则会引发运行时警告，其中最小/最大是 HAP 默认值，或者通过之前调用 `setRange()` 设置的任何新的最小/最大范围
+  * throws a runtime warning to both the Serial Monitor and the Web Log (when enabled) if *value* is outside of the min/max range for the Characteristic, where min/max is either the HAP default, or any new min/max range set via a prior call to `setRange()`
   * 请注意，*值* **不**限于步长增量；例如，在基于浮动的特性上调用 `setRange(0,100,5)` 后调用 `setVal(43.5)` 是完全有效的，即使 43.5 与指定的步长不一致。Home App 将正确保留该值为 43.5，但在滑块图形中使用时（例如设置恒温器的温度），它将四舍五入到最接近的步长增量（在本例中为 45）
   * 如果从 **SpanService** 的 `update()` 例程中调用，并且 `isUpdated()` 对于特征为 *true*（即，它正在通过 Home App 同时更新），则会引发运行时警告，*除非*您正在响应来自 HomeKit 的 *write-response* 请求来更改特征的值（通常仅用于某些基于 TLV 的特征）
   * 请注意，即使特征未获得事件通知 (EV) 许可，此方法也可用于更新特征的值，在这种情况下，HomeSpan 存储的值将被更新，但 Home App 将*不会*收到有关更改的通知
 
 * `SpanCharacteristic *setRange(min, max, step)`
-  * 覆盖指定了 *min*、*max* 和 *step* 参数的特性的默认 HAP 范围
-  * *step* 是可选的；如果未指定（或设置为非正数），则默认 HAP 步长保持不变
-  * 适用于任何整数或浮点型参数，但 HomeSpan 会将参数重铸为每个特征的适当类型（例如，在基于整数的特征上调用 `setRange(50.5,70.3,0.5)` 会导致 *min*=50、*max*=70 和 *step*=0）
-  * 如果出现以下情况，则会抛出错误：
-    * 在不支持范围更改的特征上调用，或者
-    * 在同一个特征上调用多次
+  * overrides the default HAP range for a Characteristic with the *min*, *max*, and *step* parameters specified
+  * *step* is optional; if unspecified (or set to a non-positive number), the step size remains unchanged
+  * works with any integer or floating-based parameters, though HomeSpan will recast the parameters into the appropriate type for each Characteristic (e.g. calling `setRange(50.5,70.3,0.5)` on an integer-based Characteristic results in *min*=50, *max*=70, and *step*=0)
+  * an error is thrown if called on a Characteristic that does not suport range changes
   * 返回指向特征本身的指针，以便在实例化期间可以链接该方法
   * 示例：`(new Characteristic::Brightness(50))->setRange(10,100,5);`
 
@@ -675,15 +677,19 @@ HomeSpan 库通过在 Arduino 草图中包含 *HomeSpan.h* 来调用，如下所
   * 示例：`(new Characteristic::ConfiguredName("HDMI 1"))->removePerms(PW);`
 
 * `SpanCharacteristic *setDescription(const char *desc)`
-  * 向特征添加可选描述 *desc*，如 HAP-R2 表 6-3 中所述
-  * 此字段通常用于提供有关自定义特征的信息，但 “家庭”应用似乎并未以任何方式使用
-  * 返回指向特征本身的指针，以便可以在实例化期间链接该方法
-  * 示例：`(new Characteristic::MyCustomChar())->setDescription("Tuner Frequency");`
+  * adds or updates the HAP description field, *desc*, for a Characteristic, as described in HAP-R2 Table 6-3
+  * this field is generally used to modify the default description field HomeSpan automatically generates when creating a custom Characteristic
+  * the description field is required by the Eve App when displaying custom Characteristics it does not recognize (i.e. those that are neither Apple nor Eve Characteristics)
+  * this field does not otherwise appear to be used in any way by the Home App for Apple Characteristics
+  * returns a pointer to the Characteristic itself so that the method can be chained during instantiation
+  * example: `(new Characteristic::MyCustomChar())->setDescription("Tuner Frequency");`
 
 * `SpanCharacteristic *setUnit(const char *unit)`
-  * 添加或覆盖特征的 *unit*，如 HAP-R2 表 6-6 中所述
-  * 返回指向特征本身的指针，以便在实例化期间可以链接该方法
-  * 示例：`(new Characteristic::RotationSpeed())->setUnit("percentage");`
+  * adds or updates the unit definition, *unit*, of a Characteristic, as described in HAP-R2 Table 6-6
+  * recognized values are: "celsius", "percentage", "arcdegrees", "lux", and "seconds"
+  * the unit definition is optional and used only by the Eve App to modify the label shown when displaying custom Characteristics it does not recognize (i.e. those that are neither Apple nor Eve Characteristics)
+  * returns a pointer to the Characteristic itself so that the method can be chained during instantiation
+  * example: `(new Characteristic::MyCustomChar())->setUnit("percentage");`
 
 * `uint32_t getIID()`
   * 返回特征的 IID
@@ -815,7 +821,7 @@ void saveConfig(const char *buf, void *obj){ ... do something with myConfigurati
 * *format* - 对于数值特性，指定数字格式。有效值为 BOOL、UINT8、UINT16、UNIT32、UINT64、INT 和 FLOAT。不适用于 STRING、DATA 或 TLV8 特性宏
 * *defaultValue* - 指定在实例化期间未定义特性的默认值。不适用于 DATA 或 TLV7 特征宏。
 * *minValue* - 指定有效值的默认最小范围，可以通过调用 `setRange()` 进行覆盖。不适用于 STRING、DATA 或 TLV8 特征宏
-* *minValue* - 指定有效值的默认最小范围，可以通过调用 `setRange()` 进行覆盖。不适用于 STRING、DATA 或 TLV8 特征宏
+* *maxValue* - 指定有效值的默认最大范围，可以通过调用 `setRange()` 进行覆盖。不适用于 STRING、DATA 或 TLV8 特征宏
 * *staticRange* - 如果 *minValue* 和 *maxValue* 是静态的，并且不能通过调用 `setRange()` 进行覆盖，则设置为 *true*。如果允许调用 `setRange()`，则设置为 *false*。不适用于 STRING、DATA 或 TLV8 特征宏
 
 例如，下面的第一行创建了一个名为 "Voltage" 的自定义特征，其 UUID 代码可被 *Eve 应用*识别。参数显示该特征是只读的 (PR) 并启用通知 (EV)。允许值的默认范围是 0-240，默认值为 120。随后调用 `setRange()` 可以覆盖该范围。下面的第二行创建了一个自定义的只读字符串型特性：
@@ -834,7 +840,7 @@ new Service::LightBulb();
 
 请注意，必须在全局级别（即不在 `setup()` 内）创建自定义特征，并在调用 `homeSpan.begin()` 之前创建
 
-> 高级提示 1：当出现无法识别的自定义特征时，*Eve 应用*会显示一个 *通用控件*，允许你与在 HomeSpan 中创建的任何自定义特征进行交互。但是，由于 Eve 无法识别该特征，因此只有在特征包含 **description** 字段时，它才会呈现通用控件，你可以使用上述 `setDescription()` 方法将其添加到任何特征中。你可能还想使用 `setUnit()` 和 `setRange()`，以便 Eve 应用显示具有适合你的自定义特征范围的控件。
+> 高级提示 1：当出现无法识别的自定义特征时，*Eve 应用*会显示一个 *通用控件*，允许你与在 HomeSpan 中创建的任何自定义特征进行交互。The name of the Characteristic will be displayed as per the *name* argument above, and the allowed range will similarly be set according to the *minValue* and *maxValue* parameters.  You can override the display name of the Characteristic using the `setDescription()` method as well as override the range and units using the `setRange()` and `setUnit()` methods.
 
 > 高级提示 2：尽管 DATA 格式是 HAP-R2 规范的一部分，但目前任何原生 “家庭”应用特性均未使用该格式。HomeSpan 中包含此格式是因为其他应用程序（例如 *Eve 应用*）确实使用这些类型的特性来创建 “家庭”应用之外的功能，因此可供高级用户进行实验。
 
