@@ -37,13 +37,13 @@ HomeSpan 日志消息通常以三种可能的详细级别直接输出到 Arduino
 HomeSpan 的网络日志功能还嵌入了调用 NTP 时间服务器来设置设备时钟的能力。此可选功能允许 HomeSpan 创建基于时钟的时间戳（例如 *Sat Apr 16 19:48:41 2022*）。
 
 HomeSpan网络日志页面本身包含三个部分：
- 
-  * *Information Table* - provides HomeSpan-generated status information, such as the name of the device, total uptime since last reboot, and version numbers of the various software components
 
-  * *Client Connections Table* - lists all active client connections (similar to the 's' CLI command)
-    
-  * *Log Messages Table* - posts HomeSpan-generated log messages as well as messages you create using the **WEBLOG()** macro.  This macro comes only in the *printf*-style form `WEBLOG(const char *fmt, ...)`, similar to the second version of the LOG() macros described above.
- 
+  * *信息表* - 提供 HomeSpan 生成的状态信息，例如设备名称、自上次重启以来的总运行时间以及各种软件组件的版本号。
+
+  * *客户端连接表* - 列出所有活动的客户端连接（类似于 CLI 命令 's'）。
+
+  * *日志消息表* - 发布 HomeSpan 生成的日志消息以及您使用 **WEBLOG()** 宏创建的消息。此宏仅以 *printf* 风格的形式 `WEBLOG(const char *fmt, ...)` 提供，类似于上面描述的 LOG() 宏的第二个版本。
+
 使用 WEBLOG() 生成的消息*也*以与 LOG1() 消息相同的优先级回显到 Arduino 串口监视器，这意味着如果 *Log Level* 设置为 1 或更高，它们将输出到串口监视器。网络日志页面按时间倒序显示消息，并补充了以下附加项目：
 * *Entry Number* - HomeSpan 为每条消息编号，从 1 开始表示重启后的第一条消息
 * *Up Time* - 相对消息时间，格式为 DDD:HH:MM:SS，从重启后的 000:00:00:00 开始
@@ -69,14 +69,17 @@ HomeSpan网络日志页面本身包含三个部分：
 
 ## 自定义样式表（CSS）
 
-HomeSpan's Web Log normally consists of black text on a light blue background.  However, you can set a Custom Style Sheet (CSS) to change the format by calling `homeSpan.setWebLogCSS(const char *css)`, where *css* is constructed using [HTML classes](https://www.w3schools.com/html/html_classes.asp) containing one or more custom style elements.  HomeSpan implements the following four class names for the different parts of the Web Log:
+HomeSpan 的 Web 日志通常以浅蓝色背景上的黑色文本显示。但是，您可以通过调用 `homeSpan.setWebLogCSS(const char *css)` 来设置自定义样式表 (CSS) 以更改格式，其中 *css* 是使用包含一个或多个自定义样式元素的 [HTML 类](https://www.w3schools.com/html/html_classes.asp) 构建的。 HomeSpan 为网络日志的不同部分实现了以下四个类名：
 
- * *body* - this class specifies style elements for the main body of the Web Log page, including the background color and the header text at the top (which itself is formatted as \<h2\>)
- * *infoTable* - this class specifies style elements for the *Information Table*
- * *clientTable* - this class specifies style elements for the *Client Connections Table*
- * *logTable* - this class specifies style elements for the *Log Messages Table*
+ * *body* - 此类指定 Web 日志页面主体部分的样式元素，包括背景颜色和顶部标题文本（其格式为 <h2>）。
 
-For example, the following CSS changes the colors used in the body as well as various colors and styles used for different elements in each of the three tables:
+ * *infoTable* - 此类指定*信息表*的样式元素。
+
+ * *clientTable* - 此类指定*客户端连接表*的样式元素。
+
+ * *logTable* - 此类指定*日志消息表*的样式元素。
+
+例如，以下 CSS 代码会更改主体部分的颜色，以及三个表格中不同元素的各种颜色和样式：
 
 ```C++
 homeSpan.setWebLogCSS(".body {background-color:lightyellow;}"
