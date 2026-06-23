@@ -1,4 +1,4 @@
-个人翻译的 [HomeSpan 2.1.8](https://github.com/HomeSpan/HomeSpan)（家庭扩展），请前往原文 [下载](https://github.com/HomeSpan/HomeSpan/releases) 体验。
+个人翻译的 [HomeSpan 2.1.8](https://github.com/HomeSpan/HomeSpan)（家庭互联框架），请前往原文 [下载](https://github.com/HomeSpan/HomeSpan/releases) 体验。
 
 # 欢迎！
 
